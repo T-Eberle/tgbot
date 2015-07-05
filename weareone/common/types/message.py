@@ -1,7 +1,6 @@
 __author__ = 'Thomas'
 
-from weareone.common.types.chatType import ChatType
-from weareone.common.types import User
+from weareone.common.types.user import User
 from weareone.common.types.audio import Audio
 
 
