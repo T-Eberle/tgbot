@@ -2,7 +2,9 @@ __author__ = 'Thomas'
 
 bot_id = "64887199:AAFMe9PbxLv7Jpz-RhOiMjHjNUaz1CPhNwk"
 
-bot_link = "https://api.telegram.org/bot"+bot_id+"/"
+botapi_link= "api.telegram.org"
+
+bot_link = "https://"+botapi_link+"/bot"+bot_id+"/"
 
 getMe_Method = "getMe"
 
