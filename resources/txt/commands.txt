@@ -1,2 +1,7 @@
-helloworld - Ein Hello World Command
+deinemudda - Deine Mutter Witze
 listener - Aktuelle Anzahl der Listener
+now - Aktueller Showdaten On Air
+sendeplan - Sendeplan eines ausgewählten Tages
+dj - Aktueller DJ On Air
+email - Emaildaten eines Members
+contact - Kontodaten eines Members
