@@ -1,16 +1,19 @@
 __author__ = 'Thomas'
 
+
+
 from telegram.bot.basicapi.model.message import Message
 from telegram.bot.basicapi.http.httprequestcontroller import HTTPRequestController
-from telegram.bot.parameters.tgbotparameters import *
-import urllib.parse
+from telegram.bot.config.tgbotconfigparser import TGBotConfigParser
 
+config = TGBotConfigParser("config.ini")
+data = config.load()
 
 class MessageController:
     def __init__(self, message:Message=None):
         self.message = message
 
     def sendMessage(self, chat_id, text):
-        url = bot_link + sendMessage_Method
+        url = data.get("tgapi","bot_link") + data.get("tgapi","sendMessage_Method")
         values = {"chat_id": chat_id, "text": text}
         HTTPRequestController.requestWithValues(None, url, values)

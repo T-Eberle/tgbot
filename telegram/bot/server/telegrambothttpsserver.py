@@ -1,14 +1,14 @@
-import sys
-sys.path.append('/var/www/WeAreOne_Bot')
-
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import socketserver
 import ssl
 import json
 from telegram.bot.weareone.common.weareonetgbot import WeAreOneBot
-from telegram.bot.parameters.serverparameters import *
+from telegram.bot.config.tgbotconfigparser import TGBotConfigParser
 
-sentMessage = ""
+config = TGBotConfigParser("config.ini")
+conf = config.load()
+
+
 class ForkingHTTPServer(socketserver.ForkingMixIn, HTTPServer):
     def finish_request(self, request, client_address):
         request.settimeout(30)
@@ -31,11 +31,11 @@ class RequestHandler(BaseHTTPRequestHandler):
 
 def start():
     try:
-        serveraddr = (address, port)
+        serveraddr = (conf.get("basics", "address"), int(conf.get("basics", "port")))
         srvr = ForkingHTTPServer(serveraddr, RequestHandler)
-        srvr.socket = ssl.wrap_socket(srvr.socket, keyfile=keyfile,
-                                      certfile=certfile,
-                                      ca_certs=ca_certs,
+        srvr.socket = ssl.wrap_socket(srvr.socket, keyfile=conf.get("ssl", "keyfile"),
+                                      certfile=conf.get("ssl", "certfile"),
+                                      ca_certs=conf.get("ssl", "ca_certs"),
                                       server_side=True)
         srvr.serve_forever()  # serve_forever
     except KeyboardInterrupt:
