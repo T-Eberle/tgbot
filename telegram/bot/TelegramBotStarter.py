@@ -1,7 +1,7 @@
 __author__ = 'Thomas'
 import sys
 
-sys.path.append('/var/www/WeAreOne_Bot')
+sys.path.append('/usr/tgbot')
 
 from telegram.bot.server.telegrambothttpsserver import start
 
