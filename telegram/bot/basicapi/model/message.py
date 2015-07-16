@@ -5,13 +5,17 @@ from telegram.bot.basicapi.model.audio import Audio
 from telegram.bot.basicapi.model.base import Base
 from telegram.bot.basicapi.model.chatType import ChatType
 from telegram.bot.basicapi.model.groupChat import GroupChat
+from telegram.bot.tglogging.TGLogger import logger
 
 
 class Message(Base):
+
+
     def chat_id(self):
         return self.chat.getchatid()
 
     def __createfromdata__(self, data):
+        self.data = data
         # MESSAGE ID
         self.message_id = data["message_id"]
 
@@ -34,11 +38,13 @@ class Message(Base):
             self.text = data["text"]
         # self.new_chat_title = data["new_chat_title"]
 
+
     def __init__(self, data=None, message_id=None, from_user=None, date=None, chat=None, forward_from_user: User=None,
                  forward_date: int=None, reply_to_message=None, text=None, audio: Audio=None,
                  document=None, photo=None, sticker=None, video=None, contact=None, location=None,
                  new_chat_participant: User=None, left_chat_participant: User=None, new_chat_title=None,
                  new_chat_photo=None, delete_chat_photo=None, group_chat_created=None):
+        logger.debug(str(data))
         if data:
             self.__createfromdata__(data["message"])
 
