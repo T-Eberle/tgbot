@@ -5,7 +5,7 @@ from telegram.bot.basicapi.http.httprequestcontroller import HTTPRequestControll
 from telegram.bot.config.tgbotconfigparser import TGBotConfigParser
 from telegram.bot.tglogging.TGLogger import logger
 
-config = TGBotConfigParser("config.ini")
+config = TGBotConfigParser()
 data = config.load()
 
 class MessageController:

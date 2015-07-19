@@ -9,8 +9,9 @@ from telegram.bot.weareone.common.weareonetgbot import WeAreOneBot
 from telegram.bot.config.tgbotconfigparser import TGBotConfigParser
 from telegram.bot.tglogging.TGLogger import logger
 
-config = TGBotConfigParser("config.ini")
+config = TGBotConfigParser()
 conf = config.load()
+
 
 class ForkingHTTPServer(socketserver.ForkingMixIn, HTTPServer):
     def finish_request(self, request, client_address):
@@ -28,8 +29,8 @@ class RequestHandler(BaseHTTPRequestHandler):
         sentMessage = postvar.decode("UTF-8")
         data = json.loads(sentMessage)
         WeAreOneBot.activateBot(data)
-        logger.debug(
-            "Message from @" + str(data["message"]["from"]["username"]) + ": \"" + str(data["message"]["text"]) + "\"")
+        logger.info(
+            "Message from @" + str(data["message"]["from"]["username"]) + " with ID #" + str(data["message"]["message_id"]))
         self.handle()
 
 

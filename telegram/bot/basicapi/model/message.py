@@ -36,6 +36,8 @@ class Message(Base):
         # self.forward_date = data["forward_date"]
         if "text" in data:
             self.text = data["text"]
+        else :
+            self.text = None
         # self.new_chat_title = data["new_chat_title"]
 
 

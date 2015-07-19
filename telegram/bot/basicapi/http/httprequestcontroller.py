@@ -11,7 +11,7 @@ class HTTPRequestController:
 
     def requestwithvaluesxwwwurlencoded(self, url, values):
         data = urlencode(values)
-        data = data.encode("ISO-8859-1")
+        data = data.encode("utf-8")
 
         request = Request(url)
         request.add_header("Content-Type","application/x-www-form-urlencoded;charset=utf-8")
