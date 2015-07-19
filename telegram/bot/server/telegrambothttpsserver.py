@@ -9,7 +9,7 @@ from telegram.bot.weareone.common.weareonetgbot import WeAreOneBot
 from telegram.bot.config.tgbotconfigparser import TGBotConfigParser
 from telegram.bot.tglogging.TGLogger import logger
 
-config = TGBotConfigParser()
+config = TGBotConfigParser("config.ini")
 conf = config.load()
 
 

@@ -6,17 +6,18 @@ import pkg_resources
 
 class TGBotConfigParser:
 
-    def __init__(self):
+    def __init__(self,filename):
+        self.filename = filename
         self.config = configparser.ConfigParser()
         self.config._interpolation = configparser.ExtendedInterpolation()
-        data = pkg_resources.resource_filename("resources.config", "config.ini")
-        self.config.read_file(open(data,encoding="latin-1"),source="config.ini")
+        data = pkg_resources.resource_filename("resources.config",filename)
+        self.config.read_file(open(data,encoding="latin-1"),source=filename)
 
     def load(self):
         self.config = configparser.ConfigParser()
         self.config._interpolation = configparser.ExtendedInterpolation()
-        data = pkg_resources.resource_filename("resources.config", "config.ini")
-        self.config.read_file(open(data,encoding="latin-1"),source="config.ini")
+        data = pkg_resources.resource_filename("resources.config", self.filename)
+        self.config.read_file(open(data,encoding="latin-1"),source=self.filename)
         return self.config
 
 

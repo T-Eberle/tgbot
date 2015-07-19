@@ -8,13 +8,15 @@ from telegram.bot.basicapi.commands.messagecommands import MessageController
 from telegram.bot.tglogging.TGLogger import logger
 import codecs
 
+
 def parsecommand(message):
     chat = message.chat
     user = message.from_User
-    text = message.text.replace("/", "")
+    text = message.text
 
-    if(text in radiocommands):
-        parseradiocommands(message,text)
+    if any(radio in text for radio in allradiocommands):
+        rcommands = RadioCommands()
+        rcommands.parseradiocommands(message,text)
     elif "deinemudda" == text:
         MessageController.sendmessage(message, message.chat_id(),
                                       "Command für deine Mutter Witze \n Noch nicht implementiert.")
@@ -22,7 +24,7 @@ def parsecommand(message):
         MessageController.sendreply(message, message.chat_id(),
                                     "\U0001F4E7" + "Emailaddresse von @" + user.username + ": " + user.first_name + "@imakeyousexy.com \n")
     elif "contact" == text:
-        MessageController.sendmessage(message, messagels .chat_id(),
+        MessageController.sendmessage(message, message .chat_id(),
                                       "Command für Kontaktdaten eines Members \n Noch nicht implementiert.")
     elif "me" == text:
         logger.debug("Befehl /me erkannt.")
@@ -32,3 +34,4 @@ def parsecommand(message):
                                     "\U0001F539" + " Nachname: " + user.last_name + "\n" +
                                     "\U0001F539" + " Username: @" + user.username + "\n" +
                                     "\U0001F539" + " Chat ID: " + str(user.chat_id))
+

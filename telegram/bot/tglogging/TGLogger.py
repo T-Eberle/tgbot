@@ -12,7 +12,7 @@ stream.setFormatter(formatter)
 
 logger.addHandler(stream)
 
-syslog = SysLogHandler(address="/dev/log")
-syslog.setFormatter(formatter)
+#syslog = SysLogHandler(address="/dev/log")
+#syslog.setFormatter(formatter)
 
-logger.addHandler(syslog)
+#logger.addHandler(syslog)
