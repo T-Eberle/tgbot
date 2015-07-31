@@ -4,6 +4,7 @@ __author__ = 'Thomas'
 
 from telegram.bot.weareone.commands.radiocommands import *
 from telegram.bot.weareone.commands.datacommands import *
+from telegram.bot.weareone.commands.registercommands import *
 from telegram.bot.basicapi.commands.messagecommands import MessageController
 from telegram.bot.tglogging.TGLogger import logger
 import codecs
@@ -15,11 +16,11 @@ def parsecommand(message):
     text = message.text
 
     if any(radio in text for radio in allradiocommands):
-        rcommands = RadioCommands()
-        rcommands.parseradiocommands(message,text)
-    elif "deinemudda" == text:
-        MessageController.sendmessage(message, message.chat_id(),
-                                      "Command für deine Mutter Witze \n Noch nicht implementiert.")
+        radcommands = RadioCommands()
+        radcommands.parseradiocommands(message,text)
+    elif any(register in text for register in registercommands):
+        regcommands = RegisterCommands()
+        regcommands.parseregistercommands(message,text)
     elif "email" == text:
         MessageController.sendreply(message, message.chat_id(),
                                     "\U0001F4E7" + "Emailaddresse von @" + user.username + ": " + user.first_name + "@imakeyousexy.com \n")

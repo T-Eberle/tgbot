@@ -1,5 +1,6 @@
 __author__ = 'Thomas'
 import sys
+import locale
 path = '/usr/tgbot/'
 sys.path.append(path)
 
@@ -11,4 +12,5 @@ from telegram.bot.server.telegrambothttpsserver import start
 
 if __name__ == '__main__':
     logger.info("Main method initiated.")
+    locale.setlocale(locale.LC_ALL,"de_DE.UTF8")
     start_pipe()

@@ -1,19 +1,25 @@
 __author__ = 'Thomas'
 
+from telegram.bot.tglogging.TGLogger import logger
+from telegram.bot.basicapi.commands.messagecommands import MessageController
+from telegram.bot.weareone.commands.commandutilities import *
+from telegram.bot.tgredis.tgredishandler import *
 
 registercommands = ["register","unregister"]
 
+class RegisterCommands:
 
-def parseregistercommands(message,text):
-    logger.debug("/"+text+" command recognized.")
-    if (text == registercommands[0]):
-        register(message)
-    elif (text == registercommands[1]):
-        unregister(message)
+    def parseregistercommands(self,message,text):
+        logger.debug("/"+text+" command recognized.")
+        for registercommand in registercommands:
+            if getcommand(text)==registercommand:
+                getattr(self, registercommand)(message)
 
 
-def register(message):
-    pass
 
-def unregister(message):
-    pass
+    def register(self, message):
+        TGRedisHandler.setuser(message)
+        MessageController.sendreply(message, message.chat_id(), "Witzbold.")
+
+    def unregister(message):
+         MessageController.sendreply(message, message.chat_id(), "Witzbold.")
