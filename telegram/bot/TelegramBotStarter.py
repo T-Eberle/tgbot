@@ -1,7 +1,7 @@
-__author__ = 'Thomas'
+__author__ = 'Thomas Eberle'
 import sys
 import locale
-path = '/usr/tgbot/'
+path = '/home/tgbot/telegrambot'
 sys.path.append(path)
 
 from telegram.bot.tglogging.TGLogger import logger

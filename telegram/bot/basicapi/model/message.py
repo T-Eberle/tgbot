@@ -1,4 +1,4 @@
-__author__ = 'Thomas'
+__author__ = 'Thomas Eberle'
 
 from telegram.bot.basicapi.model.user import User
 from telegram.bot.basicapi.model.audio import Audio

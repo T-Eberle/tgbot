@@ -1,4 +1,4 @@
-__author__ = 'Tommy'
+__author__ = 'Thomas Eberle'
 from urllib.request import Request, urlopen
 from urllib.parse import urlencode
 from telegram.bot.tglogging.TGLogger import logger

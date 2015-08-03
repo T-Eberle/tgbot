@@ -1,4 +1,4 @@
-__author__ = 'Thomas'
+__author__ = 'Thomas Eberle'
 
 import redis
 from telegram.bot.tglogging.TGLogger import logger

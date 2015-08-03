@@ -1,4 +1,4 @@
-__author__ = 'Tommy'
+__author__ = 'Thomas Eberle'
 
 import sys
 

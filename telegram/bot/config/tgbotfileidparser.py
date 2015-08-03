@@ -1,4 +1,4 @@
-__author__ = 'Thomas'
+__author__ = 'Thomas Eberle'
 
 import configparser
 import pkg_resources

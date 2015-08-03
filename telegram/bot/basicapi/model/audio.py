@@ -1,4 +1,4 @@
-__author__ = 'Thomas'
+__author__ = 'Thomas Eberle'
 
 from telegram.bot.basicapi.model.base import Base
 

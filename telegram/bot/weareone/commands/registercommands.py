@@ -1,4 +1,4 @@
-__author__ = 'Thomas'
+__author__ = 'Thomas Eberle'
 
 from telegram.bot.tglogging.TGLogger import logger
 from telegram.bot.basicapi.commands.messagecommands import MessageController
@@ -18,7 +18,6 @@ class RegisterCommands:
 
 
     def register(self, message):
-        TGRedisHandler.setuser(message)
         MessageController.sendreply(message, message.chat_id(), "Witzbold.")
 
     def unregister(message):

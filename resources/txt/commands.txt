@@ -1,7 +1,11 @@
-deinemudda - Deine Mutter Witze
-listener - Aktuelle Anzahl der Listener
+listener - Aktuelle Listeneranzahl
 now - Aktueller Showdaten On Air
-sendeplan - Sendeplan eines ausgewählten Tages
+montag - Sendeplan von Montag
+dienstag - Sendeplan von Dienstag
+mittwoch - Sendeplan von Mittwoch
+donnerstag - Sendeplan von Donnerstag
+freitag - Sendeplan von Freitag
+samstag - Sendeplan von Samstag
+sonntag - Sendeplan von Sonntag
 dj - Aktueller DJ On Air
-email - Emaildaten eines Members
-contact - Kontodaten eines Members
+me - Meine eigenen Chatdaten

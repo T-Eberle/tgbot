@@ -1,4 +1,4 @@
-__author__ = 'Thomas'
+__author__ = 'Thomas Eberle'
 
 from telegram.bot.basicapi.model.sticker import Sticker
 from telegram.bot.basicapi.http.httprequestcontroller import HTTPRequestController

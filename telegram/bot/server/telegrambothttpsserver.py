@@ -1,3 +1,4 @@
+__author__ = 'Thomas Eberle'
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import socketserver
 import ssl

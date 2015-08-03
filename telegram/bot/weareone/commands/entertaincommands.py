@@ -1,4 +1,4 @@
-__author__ = 'Thomas'
+__author__ = 'Thomas Eberle'
 
 from telegram.bot.config.tgbotfileidparser import TGBotFileIDParser
 from telegram.bot.tglogging.TGLogger import logger

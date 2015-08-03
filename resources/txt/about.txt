@@ -1,4 +1,11 @@
-Hallo, ich bin der Bot für euer Radio.
+Hallo, mein Name ist Butler Elroy.
+Ich bin für den Informationsfluss hier in Telegram verantwortlich.
+Du möchtest die aktuellen Listenerzahlen von deinem Stream einsehen?
+Keine Sorge, frag mich einfach!
+Ich kann dir Informationen zu diversen Radios im "We Are One"-Universum leisten.
+Diverse Befehle stehen dir zur Verfügung.
+(kleiner Einstieg: Listenerzahlen fragt man mit /listener und Angabe des Streams ab)
+Und falls dir das nicht reichen sollte: Alle Befehle werden über dem Hilfsbefehl /help angezeigt.
+Viel Vergnügen!
 
-Ich kann alles, du kannst nichts ;)
-TEst
+Dein Butler Elroy

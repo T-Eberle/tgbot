@@ -1,0 +1,21 @@
+Ich reagiere auf folgende Kommandos:
+
+/montag bis /sonntag - Sendeplan vom ausgewählten Tag
+/now - Aktuelle Showdaten
+/listener - Aktuelle Listeneranzahl
+/dj - Aktueller DJ on Air
+/next - Nächste Show
+
+Falls du Informationsbedarf für einen anderen Stream hast,
+dann gebe einfach den stream oder den Kürzel des Streams als Parameter weiter, z.B.:
+/dj hardbase , /now ht, /next ht tb trancebase
+
+Falls kein Stream als Parameter ausgewählt wurde, so schaue ich in meiner Datenbank nach eurer Chatgruppe.
+Solltet ihr mit Stream eingetragen sein, gebe ich eure spezifischen Stream als Wert zurück.
+
+Es kann sein dass du zu viel von mir verlangst, dann werde ich dich höflich darauf hinweisen ;).
+Nimm es mir nicht übel!
+
+Butler Elroy stets zu deinen Diensten!
+
+

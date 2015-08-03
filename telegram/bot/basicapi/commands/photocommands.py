@@ -1,4 +1,4 @@
-__author__ = 'Thomas'
+__author__ = 'Thomas Eberle'
 
 from telegram.bot.config.tgbotconfigparser import TGBotConfigParser
 from telegram.bot.basicapi.http.httprequestcontroller import HTTPRequestController

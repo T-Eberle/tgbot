@@ -1,5 +1,4 @@
-__author__ = 'Thomas'
-
+__author__ = 'Thomas Eberle'
 from telegram.bot.basicapi.model.chatType import ChatType
 
 
