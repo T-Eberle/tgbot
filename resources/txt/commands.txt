@@ -1,5 +1,7 @@
 listener - Aktuelle Listeneranzahl
 now - Aktueller Showdaten On Air
+next - Nächste Show on Air
+heute - heutiger Sendeplan
 montag - Sendeplan von Montag
 dienstag - Sendeplan von Dienstag
 mittwoch - Sendeplan von Mittwoch
