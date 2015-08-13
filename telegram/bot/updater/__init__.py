@@ -15,6 +15,9 @@ def updateuser(user):
         if jsonusers.getValues(user.chat_id):
             oldValues = jsonusers.getValues(user.chat_id).copy()
             values = jsonusers.getValues(user.chat_id)
+            values["first_name"]= user.first_name
+            values["user_name"]= user.username
+            values["last_name"]= user.last_name
             if values != oldValues:
                 logger.debug("User has changed!")
                 jsonusers.write(user.chat_id,values)

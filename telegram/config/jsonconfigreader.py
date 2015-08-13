@@ -62,3 +62,5 @@ class JSONConfigReader:
             return self.jsondata[str(key)]
         except TypeError:
             return None
+        except KeyError:
+            return None

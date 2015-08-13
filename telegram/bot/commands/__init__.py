@@ -22,18 +22,23 @@ data = config.load()
 
 def getparameter(text,alternative_text=None):
     m = regex.match(text)
-    result = m.group("parameter")
-    if not result:
-        if not alternative_text:
-            return ""
-        else:
-            return alternative_text
+    if not m:
+        return ""
     else:
-        return result
+        result = m.group("parameter")
+        if not result:
+            if not alternative_text:
+                return ""
+            else:
+                return alternative_text
+        else:
+            return result
 
 def getcommand(text):
     m = regex.match(text)
-    return m.group("command")
+    value = m.group("command")
+    value.lower()
+    return value
 
 def printshowplan(data):
     reply =""
@@ -88,9 +93,7 @@ def getshowfromday(data,date,stream):
             reply +=showstring
             logger.debug("REPLY: "+reply)
             return reply
-
-
-def createshowstring(show,start,ende):
+def getDJNameByShow(show):
     name = None
     with open(data["json_files"]["json_path"]+"users.json") as f:
         jsonfile = json.load(f)
@@ -100,6 +103,23 @@ def createshowstring(show,start,ende):
                 logger.debug("WeAreOne-ID found. Telegram Chat ID: "+ str(key))
     if not name:
         name = show["username"]
+    return name
+
+def getDJNameByOnAir(dj,id):
+    name = None
+    with open(data["json_files"]["json_path"]+"users.json") as f:
+        jsonfile = json.load(f)
+        for key, value in jsonfile.items():
+            if value.get("wao_id") == id:
+                name = "@"+value.get("user_name")
+                logger.debug("WeAreOne-ID found. Telegram Chat ID: "+ str(key))
+    if not name:
+        name = dj
+    return name
+
+def createshowstring(show,start,ende):
+    name = getDJNameByShow(show)
+
     showname = show["showname"]
     if not showname:
         return str("\U0001F3A4Show by " + name

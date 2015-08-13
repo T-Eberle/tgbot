@@ -8,6 +8,7 @@ import telegram.bot.parser.textparser as textparser
 from telegram.bot.commands.admincommands import *
 from telegram.bot.parser import *
 from telegram.bot.updater import *
+from telegram.tgredis import *
 from telegram.config.jsonconfigreader import JSONConfigReader
 
 jsongroups = JSONConfigReader("groups")
@@ -17,21 +18,19 @@ def parseMessage(message):
     chat = message.chat
     user = message.from_User
     updategroup(message)
-    if message.text=="/me":
-        meCommand(message)
-    elif message.text is not None and isPermitted(message):
-        logger.debug("Trying to get users.")
-        updateuser(user)
-        if any("/"+admin in message.text for admin in admincommands) and isAdmin(message):
-            admCommands = AdminCommands()
-            admCommands.parseadmincommands(message,message.text)
-        if re.match(r'/(\w)*', message.text):
-            commandparser.parsecommand(message)
-        else:
-            textparser.parsetext(message)
-
-def parseAdminCommand(message):
-    return False
+    if message.text:
+        if message.text.lower()=="/me":
+            meCommand(message)
+        elif message.text is not None and isPermitted(message):
+            logger.debug("Trying to get users.")
+            updateuser(user)
+            if any("/"+admin in message.text.lower() for admin in admincommands) and isAdmin(message):
+                admCommands = AdminCommands()
+                admCommands.parseadmincommands(message,message.text)
+            if re.match(r'/(\w)*', message.text):
+                commandparser.parsecommand(message)
+            else:
+                textparser.parsetext(message)
 
 def meCommand(message):
     user = message.from_User

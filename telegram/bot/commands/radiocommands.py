@@ -8,6 +8,8 @@ from telegram.bot.commands import *
 from telegram.config.tgbotfileidparser import TGBotFileIDParser
 from telegram.config.weareonejsonparser import WeAreOneJSONParser
 from telegram.config.jsonconfigreader import JSONConfigReader
+from telegram.tgredis import *
+
 import traceback
 
 multipleradiocommands = ["listener", "dj", "now", "track", "next"]
@@ -32,7 +34,10 @@ class RadioCommands:
         user = message.from_User
         jsonconfig.read()
         values = jsonconfig.getValues(user.chat_id)
-        self.chat=values.get("stream")
+        if values:
+            self.chat=values.get("stream")
+        else:
+            self.chat=""
         logger.debug(text + " command recognized.")
         for multipleradiocommand in multipleradiocommands:
             if getcommand(text)== multipleradiocommand:
@@ -131,8 +136,9 @@ class RadioCommands:
     @staticmethod
     def dj(message, stream):
         dj = waoParser.getjsonelement(stream + "_onAir", "dj")
+        id = waoParser.getjsonelement(stream + "_onAir","djid")
         if dj:
-            return str("\U0001F3A4" + "Aktueller DJ @ " + stream.capitalize() + ": " + dj + "\n")
+            return str("\U0001F3A4" + "Aktueller DJ @ " + stream.capitalize() + ": " + getDJNameByOnAir(dj,id) + "\n")
         else:
             return str("\U0001F44EKein DJ ON AIR @ " + stream.capitalize() + "!\n")
 
@@ -144,13 +150,14 @@ class RadioCommands:
     @staticmethod
     def now(message, stream):
         dj = waoParser.getjsonelement(stream + "_onAir", "dj")
+        id = waoParser.getjsonelement(stream + "_onAir","djid")
         show = waoParser.getjsonelement(stream + "_onAir", "show")
         style = waoParser.getjsonelement(stream + "_onAir", "style")
         start = waoParser.getjsonelement(stream + "_onAir", "start")
         end = waoParser.getjsonelement(stream + "_onAir", "end")
         if dj:
             return str("\U00002139Aktuelle Show-Info @ " + stream.capitalize() + "\U00002139\n"
-                       + "\U0001F3A4" + "DJ: " + dj + "\n" + "\U0001F4E2"
+                       + "\U0001F3A4" + "DJ: " + getDJNameByOnAir(dj,id) + "\n" + "\U0001F4E2"
                        + "Showname: " + show + "\n" + "\U0001F3A7" +
                        "Style: " + style + "\n" + "\U000023F0Uhrzeit: "
                        + start + ":00 bis " + end + ":00\n")
