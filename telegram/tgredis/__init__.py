@@ -47,8 +47,8 @@ def commandAllowed(message):
         return False
     elif value == limit+1:
         expire = limitserver.ttl(str(user.chat_id))
-        MessageController.sendreply(message, message.chat_id(), "\U0000274E@"+user.username+", für dich sind die Commands erstmal für "
-                                                                                 +str(expire)+" Sekunden blockiert.")
+        MessageController.sendreply(message, message.chat_id(),
+                                    '''\U0000274E @%s, für dich sind die Commands erstmal für %s Sekunden blockiert.'''%(user.username,str(expire)))
     else:
         logger.debug("User "+str(user.chat_id)+" führt den  "+ str(value) + ". Command aus.")
         return True

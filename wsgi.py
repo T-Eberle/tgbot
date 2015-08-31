@@ -3,14 +3,21 @@ __author__ = 'Tommy'
 import sys
 import locale
 import json
+from uwsgidecorators import *
+from telegram.config.tgbotconfigparser import TGBotConfigParser
+from telegram.tglogging import *
+from telegram.bot.timer import *
 
 from telegram import activateBot
 
+configParser = TGBotConfigParser("config.ini")
+config = configParser.load()
+
 path = '/home/tgbot/telegrambot'
 sys.path.append(path)
+locale.setlocale(locale.LC_ALL,"de_DE.UTF8")
 
 def application(environ,start_response):
-    locale.setlocale(locale.LC_ALL,"de_DE.UTF8")
     start_response('200 OK',[('Content-Type','text/html')])
 
     try:
@@ -23,3 +30,11 @@ def application(environ,start_response):
         obj = json.loads(request_body.decode('utf-8'))
         activateBot(obj)
     return b''
+
+
+#TODO Timer für getimte Events: Check Ticket #81
+@cron(int(config.get("basics","time_interval")), -1, -1, -1, -1,target='spooler')
+def execute_me_every_x_min(num):
+    if not(int(config.get("basics","sleep_start")) <= datetime.now().hour < int(config.get("basics","sleep_end"))):
+        logger.debug(config.get("basics","time_interval")+" minutes, what a long time!")
+        checkPrimetime()

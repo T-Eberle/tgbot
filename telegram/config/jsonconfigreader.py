@@ -10,6 +10,7 @@ class JSONConfigReader:
     def __init__(self, filename):
         config = TGBotConfigParser("config.ini")
         inidata = config.load()
+        self.filename = filename
         self.data = inidata["json_files"]["json_path"]+"/"+filename+".json"
         self.jsondata = None
 
@@ -33,8 +34,8 @@ class JSONConfigReader:
             with open(self.data,"r") as f:
                 f.seek(0)
                 file = f.read()
-                logger.debug("FILE: "+str(file))
                 self.jsondata = json.loads(file)
+                logger.debug("Reading file %s successful."% (self.filename))
 
         except ValueError as error:
             logger.exception(error)

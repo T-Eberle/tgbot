@@ -1,12 +1,19 @@
+# -*- coding: utf-8 -*-
 __author__ = 'Thomas'
 
+from telegram.bot.parser import commandparser
+from telegram.bot.parser import textparser
+from telegram.bot.updater import *
+from telegram.tgredis import *
 from telegram.config.tgbotconfigparser import TGBotConfigParser
 from telegram.config.jsonconfigreader import JSONConfigReader
 from telegram.tglogging import *
+from telegram.bot.commands.admincommands import AdminCommands,admincommands
+import re
+from telegram.bot.commands.datacommands import *
 
 config = TGBotConfigParser("config.ini")
 data = config.load()
-
 jsongroups = JSONConfigReader("groups")
 
 def isPermitted(message):
@@ -34,3 +41,25 @@ def isPermittedGroup(message):
         return True
     else:
         return False
+
+
+
+def parseMessage(message):
+    chat = message.chat
+    user = message.from_User
+    updategroup(message)
+    if message.text:
+        if message.text.lower()=="/me":
+            meCommand(message)
+        elif message.text is not None and isPermitted(message):
+            logger.debug("Trying to get users.")
+            updateuser(user)
+            if any("/"+admin in message.text.lower() for admin in admincommands) and isAdmin(message):
+                admCommands = AdminCommands()
+                admCommands.parseadmincommands(message,message.text)
+            if re.match(r'/(\w)*', message.text):
+                commandparser.parsecommand(message)
+            else:
+                textparser.parsetext(message)
+
+

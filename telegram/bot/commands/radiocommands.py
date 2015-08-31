@@ -9,35 +9,29 @@ from telegram.config.tgbotfileidparser import TGBotFileIDParser
 from telegram.config.weareonejsonparser import WeAreOneJSONParser
 from telegram.config.jsonconfigreader import JSONConfigReader
 from telegram.tgredis import *
-
-import traceback
+import collections
 
 multipleradiocommands = ["listener", "dj", "now", "track", "next"]
 
-singleradiocommands = ["heute","montag","dienstag","mittwoch","donnerstag","freitag","samstag","sonntag"]
+singleradiocommands = ["heute","morgen","montag","dienstag","mittwoch","donnerstag","freitag","samstag","sonntag"]
 
-radiostreams = {"tb": "technobase", "ht": "housetime", "hb": "hardbase", "trb": "trancebase", "ct": "coretime",
+unsorted_radiostreams = {"tb": "technobase", "ht": "housetime", "hb": "hardbase", "trb": "trancebase", "ct": "coretime",
                 "clt": "clubtime"}
+radiostreams = collections.OrderedDict(sorted(unsorted_radiostreams.items()))
 
 
 allradiocommands = multipleradiocommands + singleradiocommands + list(radiostreams.values())
 waoParser = WeAreOneJSONParser("housetime_onAir")
 
-
-jsonconfig = JSONConfigReader("users")
-config = TGBotFileIDParser()
-data = config.load()
-
+fileconfig = TGBotFileIDParser()
+filedata = fileconfig.load()
 
 class RadioCommands:
     def parseradiocommands(self, message, text):
         user = message.from_User
-        jsonconfig.read()
-        values = jsonconfig.getValues(user.chat_id)
-        if values:
-            self.chat=values.get("stream")
-        else:
-            self.chat=""
+        jsonuser.read()
+        jsongroup.read()
+        self.chat = getStreamParameter(message)
         logger.debug(text + " command recognized.")
         for multipleradiocommand in multipleradiocommands:
             if getcommand(text)== multipleradiocommand:
@@ -47,7 +41,7 @@ class RadioCommands:
                     self.basicradiocommand(message, text, singleradiocommand,True)
         for radiostream in list(radiostreams.values()):
             if radiostream == getcommand(text):
-                StickerController.sendstickerwithid(message.chat_id(), data.get("file_ids", radiostream))
+                StickerController.sendstickerwithid(message.chat_id(), filedata.get("file_ids", radiostream))
 
     def basicradiocommand(self, message, text, method_name,multiple_message):
         try:
@@ -57,11 +51,11 @@ class RadioCommands:
                 if multiple_message:
                     for stream in radiostreams.values():
                         reply = getattr(self, method_name)(message, stream)
-                        MessageController.sendreply(message, message.chat_id(), reply + " #" + method_name)
+                        MessageController.sendreply(message, message.chat_id(), reply+"#%s"%(method_name))
                 else:
                     for stream in radiostreams.values():
                         reply += getattr(self, method_name)(message, stream)
-                    MessageController.sendreply(message, message.chat_id(), reply + " #" + method_name)
+                    MessageController.sendreply(message, message.chat_id(), reply+"#%s"%(method_name))
             elif not (any(radio in parameter for radio in list(radiostreams.values())) or any(
                             radio in parameter for radio in list(radiostreams.keys()))):
                 MessageController.sendreply(message, message.chat_id(),
@@ -71,12 +65,12 @@ class RadioCommands:
                     for radiostream in radiostreams.items():
                         if radiostream[0] in parameter or radiostream[1] in parameter:
                             reply = getattr(self, method_name)(message, radiostream[1])
-                            MessageController.sendreply(message, message.chat_id(), reply)
+                            MessageController.sendreply(message, message.chat_id(), reply+"#%s"%(method_name))
                 else:
                     for radiostream in radiostreams.items():
                         if radiostream[0] in parameter or radiostream[1] in parameter:
                             reply += getattr(self, method_name)(message, radiostream[1])
-                    MessageController.sendreply(message, message.chat_id(), reply)
+                    MessageController.sendreply(message, message.chat_id(), reply+"#%s"%(method_name))
         except TypeError as typo:
             logger.exception(typo)
             MessageController.sendreply(message, message.chat_id(), "Witzbold.")
@@ -122,6 +116,11 @@ class RadioCommands:
         return getshowfromtoday(showplan,stream)
 
     @staticmethod
+    def morgen(message,stream):
+        showplan = waoParser.load(stream+"_shows")
+        return getshowfromtomorrow(showplan,stream)
+
+    @staticmethod
     def next(message,stream):
         showplan = waoParser.load(stream+"_shows")
         return nextshow(showplan,stream)
@@ -130,25 +129,33 @@ class RadioCommands:
     def track(message, stream):
         artist = waoParser.getjsonelement(stream + "_onAir", "artist")
         track = waoParser.getjsonelement(stream + "_onAir", "track")
-        return str("\U0001F3B6" + "Aktueller Track @ " + stream.capitalize() + ": " + artist + " - " + track + "\n")
+        return str('''\U0001F3B6Aktueller Track @ %s: %s - %s
+        '''% (stream.capitalize(),artist,track))
 
 
     @staticmethod
     def dj(message, stream):
+        jsonuser.read()
+        jsonfile = jsonuser.jsondata
         dj = waoParser.getjsonelement(stream + "_onAir", "dj")
         id = waoParser.getjsonelement(stream + "_onAir","djid")
         if dj:
-            return str("\U0001F3A4" + "Aktueller DJ @ " + stream.capitalize() + ": " + getDJNameByOnAir(dj,id) + "\n")
+            return str('''\U0001F3A4Aktueller DJ @ %s: %s
+            '''% (stream.capitalize(),getDJNameByOnAir(dj,id,jsonfile)))
         else:
-            return str("\U0001F44EKein DJ ON AIR @ " + stream.capitalize() + "!\n")
+            return str('''\U0001F44EKein DJ ON AIR @ %s!
+            '''%(stream.capitalize()))
 
     @staticmethod
     def listener(message, stream):
         listener = waoParser.getjsonelement(stream + "_onAir", "listener")
-        return str("\U0001F4E1" + "Aktuelle Listeneranzahl @ " + stream.capitalize() + ": " + listener + "\n")
+        return str('''\U0001F4E1Aktuelle Listeneranzahl @ %s: %s
+        '''%(stream.capitalize(),listener))
 
     @staticmethod
     def now(message, stream):
+        jsonuser.read()
+        jsonfile = jsonuser.jsondata
         dj = waoParser.getjsonelement(stream + "_onAir", "dj")
         id = waoParser.getjsonelement(stream + "_onAir","djid")
         show = waoParser.getjsonelement(stream + "_onAir", "show")
@@ -156,13 +163,15 @@ class RadioCommands:
         start = waoParser.getjsonelement(stream + "_onAir", "start")
         end = waoParser.getjsonelement(stream + "_onAir", "end")
         if dj:
-            return str("\U00002139Aktuelle Show-Info @ " + stream.capitalize() + "\U00002139\n"
-                       + "\U0001F3A4" + "DJ: " + getDJNameByOnAir(dj,id) + "\n" + "\U0001F4E2"
-                       + "Showname: " + show + "\n" + "\U0001F3A7" +
-                       "Style: " + style + "\n" + "\U000023F0Uhrzeit: "
-                       + start + ":00 bis " + end + ":00\n")
+            return str('''\U00002139Aktuelle Show-Info @ %s\U00002139
+            \U0001F3A4DJ: %s
+            \U0001F4E2Showname: %s
+            \U0001F3A7Style: %s
+            \U000023F0Uhrzeit: %s:00 bis %s:00
+            '''%(stream.capitalize(),getDJNameByOnAir(dj,id,jsonfile),show,style,start,end))
 
         else:
-            return str("\U00002139Aktuelle Show-Info @ " + stream.capitalize() + "\U00002139\n" +
-                       "\U0001F44EKein DJ ON AIR @ " + stream.capitalize() + "!\n")
+            return str('''\U00002139Aktuelle Show-Info @ %s\U00002139
+            \U0001F44EKein DJ ON AIR!
+                       '''%(stream.capitalize()))
 
