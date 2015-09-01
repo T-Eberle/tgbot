@@ -15,6 +15,7 @@ from telegram.config.jsonconfigreader import JSONConfigReader
 regex =re.compile(r'/(?P<command>\w+)(\s(?P<parameter>.+))?')
 oldtimeformat = "%A, %d.%m.%y %H:%M"
 timeformat = "%H:%M"
+daytimeformat ="%a %H:%M"
 de_timezone = timezone("Europe/Berlin")
 wochentag=["Montag","Dienstag","Mittwoch","Donnerstag","Freitag","Samstag","Sonntag"]
 
@@ -64,8 +65,8 @@ def nextshow(data,stream):
     for show in data:
         reply= "\U00002139Nächste Show @ " + stream.capitalize() + "\U00002139\n"
         start = getcorrectdate(int(show["start "]))
-        startofficial =getcorrectdateinstring(int(show["start "]))
-        ende = getcorrectdateinstring(show["end"]-int(show["start "]))
+        startofficial =dateindaytimeformat(int(show["start "]))
+        ende = dateindaytimeformat(show["end"]-int(show["start "]))
         now = datetime.now()
         if start > now:
             reply+=createshowstring(show,startofficial,ende,jsonfile)
@@ -80,8 +81,12 @@ def getcorrectdate(showdate):
     #offset = de_timezone.utcoffset(date)
     #return date+offset
     return date
+
 def getcorrectdateinstring(showdate):
     return getcorrectdate(showdate).strftime(timeformat)
+
+def dateindaytimeformat(showdate):
+    return getcorrectdate(showdate).strftime(daytimeformat)
 
 def getshowfromtoday(data,stream):
     return getshowfromday(data,getcorrectdate(datetime.now().timestamp()).weekday(),stream)
