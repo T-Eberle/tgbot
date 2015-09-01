@@ -141,13 +141,13 @@ def createshowstring(show,start,ende,jsonfile):
     showname = show["showname"]
     if not showname:
         return str('''\U0001F3A4Show by %s
-                \U000023F0Zeit: %s - %s
-                ''' % (name,str(start,str(ende))))
+\U000023F0Zeit: %s - %s
+''' % (name,str(start,str(ende))))
 
     else:
         return str('''\U0001F3A4Show: \"%s\" by %s
-                \U000023F0Zeit: %s - %s
-                ''' % (show["showname"],name,str(start),str(ende)))
+\U000023F0Zeit: %s - %s
+''' % (show["showname"],name,str(start),str(ende)))
 
 def getStreamParameter(message):
     user = message.from_User

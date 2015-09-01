@@ -59,7 +59,7 @@ class RadioCommands:
             elif not (any(radio in parameter for radio in list(radiostreams.values())) or any(
                             radio in parameter for radio in list(radiostreams.keys()))):
                 MessageController.sendreply(message, message.chat_id(),
-                                            "\U0000274CBitte den Radiostream als Parameter mitgeben!\n #" + method_name)
+                                            "\U0000274CBitte den Radiostream als Parameter mitgeben!\n#" + method_name)
             else:
                 if multiple_message:
                     for radiostream in radiostreams.items():
@@ -130,7 +130,7 @@ class RadioCommands:
         artist = waoParser.getjsonelement(stream + "_onAir", "artist")
         track = waoParser.getjsonelement(stream + "_onAir", "track")
         return str('''\U0001F3B6Aktueller Track @ %s: %s - %s
-        '''% (stream.capitalize(),artist,track))
+'''% (stream.capitalize(),artist,track))
 
 
     @staticmethod
@@ -141,16 +141,16 @@ class RadioCommands:
         id = waoParser.getjsonelement(stream + "_onAir","djid")
         if dj:
             return str('''\U0001F3A4Aktueller DJ @ %s: %s
-            '''% (stream.capitalize(),getDJNameByOnAir(dj,id,jsonfile)))
+'''% (stream.capitalize(),getDJNameByOnAir(dj,id,jsonfile)))
         else:
             return str('''\U0001F44EKein DJ ON AIR @ %s!
-            '''%(stream.capitalize()))
+'''%(stream.capitalize()))
 
     @staticmethod
     def listener(message, stream):
         listener = waoParser.getjsonelement(stream + "_onAir", "listener")
         return str('''\U0001F4E1Aktuelle Listeneranzahl @ %s: %s
-        '''%(stream.capitalize(),listener))
+'''%(stream.capitalize(),listener))
 
     @staticmethod
     def now(message, stream):
@@ -164,14 +164,14 @@ class RadioCommands:
         end = waoParser.getjsonelement(stream + "_onAir", "end")
         if dj:
             return str('''\U00002139Aktuelle Show-Info @ %s\U00002139
-            \U0001F3A4DJ: %s
-            \U0001F4E2Showname: %s
-            \U0001F3A7Style: %s
-            \U000023F0Uhrzeit: %s:00 bis %s:00
-            '''%(stream.capitalize(),getDJNameByOnAir(dj,id,jsonfile),show,style,start,end))
+\U0001F3A4DJ: %s
+\U0001F4E2Showname: %s
+\U0001F3A7Style: %s
+\U000023F0Uhrzeit: %s:00 bis %s:00
+'''%(stream.capitalize(),getDJNameByOnAir(dj,id,jsonfile),show,style,start,end))
 
         else:
             return str('''\U00002139Aktuelle Show-Info @ %s\U00002139
-            \U0001F44EKein DJ ON AIR!
-                       '''%(stream.capitalize()))
+\U0001F44EKein DJ ON AIR!
+'''%(stream.capitalize()))
 
