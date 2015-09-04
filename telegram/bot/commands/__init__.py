@@ -2,14 +2,13 @@
 __author__ = 'Thomas Eberle'
 
 import re
-import json
 from datetime import  datetime,timedelta
 
 from pytz import timezone
 
 from telegram.config.tgbotconfigparser import TGBotConfigParser
 from telegram.tglogging import logger
-from telegram.config.jsonconfigreader import JSONConfigReader
+from telegram.tgredis import getfile,getfilevalue
 
 
 regex =re.compile(r'/(?P<command>\w+)(\s(?P<parameter>.+))?')
@@ -24,11 +23,6 @@ config = TGBotConfigParser("config.ini")
 data = config.load()
 
 
-
-jsonuser = JSONConfigReader("users")
-
-
-jsongroup = JSONConfigReader("groups")
 
 def getparameter(text,alternative_text=None):
     m = regex.match(text)
@@ -60,8 +54,6 @@ def printshowplan(data):
     return reply
 
 def nextshow(data,stream):
-    jsonuser.read()
-    jsonfile = jsonuser.jsondata
     for show in data:
         reply= "\U00002139Nächste Show @ " + stream.capitalize() + "\U00002139\n"
         start = getcorrectdate(int(show["start "]))
@@ -69,7 +61,7 @@ def nextshow(data,stream):
         ende = dateindaytimeformat(show["end"]-int(show["start "]))
         now = datetime.now()
         if start > now:
-            reply+=createshowstring(show,startofficial,ende,jsonfile)
+            reply+=createshowstring(show,startofficial,ende)
             return reply
 
 def getutcdate(showdate):
@@ -99,8 +91,6 @@ def getshowfromtomorrow(data,stream):
 def getshowfromday(data,date,stream):
         now = datetime.now().date()
         result_date = now
-        jsonuser.read()
-        jsonfile = jsonuser.jsondata
         while result_date.weekday() != date:
             result_date+=timedelta(days=1)
         reply="\U00002139"+"Shows am " + wochentag[date] + " @ " + stream.capitalize()+"\U00002139\n"
@@ -111,7 +101,7 @@ def getshowfromday(data,date,stream):
             if start.date()==result_date<=end.date():
                 start_string =getcorrectdateinstring(int(show["start "]))
                 end_string = getcorrectdateinstring(show["end"]-int(show["start "]))
-                showstring += createshowstring(show,start_string,end_string,jsonfile)
+                showstring += createshowstring(show,start_string,end_string)
         if not showstring:
             reply+= str('''\U0001F44E\U0001F44E\U0001F44EKEINE SHOW VORHANDEN!''')
             logger.debug("REPLY: "+reply)
@@ -120,9 +110,9 @@ def getshowfromday(data,date,stream):
             reply +=showstring
             logger.debug("REPLY: "+reply)
             return reply
-def getDJNameByShow(show,jsonfile):
+def getDJNameByShow(show):
     name = None
-    for key, value in jsonfile.items():
+    for key, value in getfile("users").items():
         if value.get("wao_id") == show["user_id"]:
             name = "@"+value.get("user_name")
             logger.debug("WeAreOne-ID found. Telegram Chat ID: "+ str(key))
@@ -130,9 +120,9 @@ def getDJNameByShow(show,jsonfile):
         name = show["username"]
     return name
 
-def getDJNameByOnAir(dj,id,jsonfile):
+def getDJNameByOnAir(dj,id):
     name = None
-    for key, value in jsonfile.items():
+    for key, value in getfile("users").items():
         if value.get("wao_id") == id:
             name = "@"+value.get("user_name")
             logger.debug("WeAreOne-ID found. Telegram Chat ID: "+ str(key))
@@ -140,14 +130,14 @@ def getDJNameByOnAir(dj,id,jsonfile):
         name = dj
     return name
 
-def createshowstring(show,start,ende,jsonfile):
-    name = getDJNameByShow(show,jsonfile)
+def createshowstring(show,start,ende):
+    name = getDJNameByShow(show)
 
     showname = show["showname"]
     if not showname:
         return str('''\U0001F3A4Show by %s
 \U000023F0Zeit: %s - %s
-''' % (name,str(start,str(ende))))
+''' % (name,str(start),str(ende)))
 
     else:
         return str('''\U0001F3A4Show: \"%s\" by %s
@@ -156,10 +146,8 @@ def createshowstring(show,start,ende,jsonfile):
 
 def getStreamParameter(message):
     user = message.from_User
-    jsonuser.read()
-    jsongroup.read()
-    uservalues = jsonuser.getValues(user.chat_id)
-    groupvalues = jsongroup.getValues(message.chat_id())
+    uservalues = getfilevalue("users",user.chat_id)
+    groupvalues = getfilevalue("groups",message.chat_id())
     if uservalues:
         if uservalues.get("stream"):
             logger.debug("USER VALUE USED")

@@ -3,65 +3,50 @@ __author__ = 'Tommy'
 
 import json
 
+from telegram.tgredis import *
 from telegram.config.tgbotconfigparser import TGBotConfigParser
 from telegram.tglogging import *
 
+
 class JSONConfigReader:
-    def __init__(self, filename):
-        config = TGBotConfigParser("config.ini")
-        inidata = config.load()
-        self.filename = filename
-        self.data = inidata["json_files"]["json_path"]+"/"+filename+".json"
-        self.jsondata = None
 
 
-    def write(self,key,value):
-        try:
-            with open(self.data,"r") as f:
-                self.jsondata = json.loads(f.read())
-        except ValueError:
-            self.jsondata = {}
-        except FileNotFoundError:
-            with open(self.data,"w+") as f:
-                f.write("{}")
-        finally:
-            with open(self.data,"w") as f:
-                self.jsondata[str(key)] = value
-                self.dump(self.jsondata)
+    def __init__(self,filenames,config):
+        self.filenames = filenames
+        self.config = config
 
-    def read(self):
-        try:
-            with open(self.data,"r") as f:
-                f.seek(0)
-                file = f.read()
-                self.jsondata = json.loads(file)
-                logger.debug("Reading file %s successful."% (self.filename))
+    def createCacheForFiles(self):
+        for filename in self.filenames:
+             jsondata = {}
+             data = self.config["json_files"]["json_path"]+"/"+filename+".json"
+             try:
+                with open(data,"r") as f:
+                    f.seek(0)
+                    file = f.read()
+                    logger.debug("Reading file %s."% (filename))
+                    jsondata = json.loads(file)
+                    logger.debug("Reading file %s successful."% (filename))
 
-        except ValueError as error:
-            logger.exception(error)
-            self.jsondata = {}
+             except ValueError as error:
+                logger.exception(error)
+                with open(data,"w+") as f:
+                    f.write("{}")
+                jsondata = {}
 
-        except FileNotFoundError:
-            with open(self.data,"w+") as f:
-                f.write("{}")
+             except FileNotFoundError:
+                with open(data,"w+") as f:
+                    f.write("{}")
+                jsondata = {}
+             finally:
+                setfile(filename,jsondata)
 
-    def dump(self,jsondata):
-        with open(self.data, 'w') as f:
-            f.write(json.dumps(jsondata))
+    def saveCacheToFiles(self):
+        for filename in self.filenames:
+            data = self.config["json_files"]["json_path"]+"/"+filename+".json"
+            self.dump(data,filename)
+        flushallfiles()
 
-    def delete(self,key):
-        self.read()
-        del self.jsondata[str(key)]
-        self.dump(self.jsondata)
+    def dump(self,data,filename):
+        with open(data, 'w') as f:
+            f.write(json.dumps(getfile(filename)))
 
-    def deleteall(self):
-        self.read()
-        self.dump({})
-
-    def getValues(self,key):
-        try:
-            return self.jsondata[str(key)]
-        except TypeError:
-            return None
-        except KeyError:
-            return None

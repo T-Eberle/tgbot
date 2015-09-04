@@ -3,17 +3,16 @@ __author__ = 'Tommy'
 
 
 from telegram.basicapi.commands.messagecommands import MessageController
-from telegram.config.jsonconfigreader import JSONConfigReader
 from telegram.config.tgbotconfigparser import TGBotConfigParser
 from telegram.config.weareonejsonparser import WeAreOneJSONParser
 from datetime import  datetime
 from telegram.bot.commands.radiocommands import radiostreams
 from telegram.tglogging import *
+from telegram.tgredis import getfile,getfilevalue
 
 
 
 timeformat = "%A, %H:%M"
-groupconfig = JSONConfigReader("groups")
 config = TGBotConfigParser("config.ini")
 data = config.load()
 controller = MessageController()
@@ -23,12 +22,10 @@ primetime_end= int(data["primetime"]["primetime_end"])
 
 def checkPrimetime():
     now = datetime.now()
-    groupconfig.read()
-    groupdata = groupconfig.jsondata
-    keys = groupdata.keys()
+    keys = getfile("groups").keys()
     for key in keys:
         result=""
-        value = groupdata[key]
+        value = getfilevalue("groups",key)
         for radiostream in radiostreams.items():
             if radiostream[0] in value.get("stream") or radiostream[1] in value.get("stream"):
                 showplan = waoParser.load(radiostream[1]+"_shows")

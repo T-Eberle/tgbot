@@ -5,12 +5,11 @@ from telegram.bot.commands import *
 from telegram.config.jsonconfigreader import JSONConfigReader
 from telegram.basicapi.commands.messagecommands import MessageController
 import uwsgi
+from telegram.tgredis import setfilevalue,deleteentryfromfile
 
-admincommands = ["restart","reggroup","unreggroup","unregisterall","groupstream"]
-
-
-jsongroups = JSONConfigReader("groups")
-jsonusers = JSONConfigReader("users")
+admincommands = ["restart","reggroup","unreggroup",
+                 # "unregisterall",
+                 "groupstream"]
 
 class AdminCommands:
 
@@ -30,42 +29,40 @@ class AdminCommands:
         chat = message.chat
         value = {"title":chat.title}
         logger.debug("VALUE: "+str(value))
-        jsongroups.write(message.chat_id(),value)
+        setfilevalue("groups",message.chat_id(),value)
         MessageController.sendreply(message, message.chat_id(), "Der Gruppenchat "+value["title"]+" wurde erfolgreich registriert.")
 
     def unreggroup(self,message,text):
         user = message.from_User
-        jsongroups.deleteall()
-        MessageController.sendreply(message, message.chat_id(), user.first_name+", du hast alle Users gelöscht. Sei stolz auf dich.")
+        deleteentryfromfile("groups",message.chat_id())
+        MessageController.sendreply(message, message.chat_id(), user.first_name+", du hast die Gruppe aus den registrierten Gruppen gelöscht.")
 
 
-    def unregisterall(self,message,text):
-        user = message.from_User
-        jsonusers.deleteall()
-        MessageController.sendreply(message, message.chat_id(), user.first_name+", du hast alle Users gelöscht. Sei stolz auf dich.")
+    # def unregisterall(self,message,text):
+    #     user = message.from_User
+    #     jsonusers.deleteall()
+    #     MessageController.sendreply(message, message.chat_id(), user.first_name+", du hast alle Users gelöscht. Sei stolz auf dich.")
 
     def groupstream(self,message,text):
-        jsongroups.read()
         param = getparameter(text)
         chat = message.chat
-        values = jsongroups.getValues(message.chat_id())
+        values = getfilevalue("groups",message.chat_id())
         logger.debug("VALUE GROUPSTREAM: "+str(values))
         if param:
             if not values:
-                jsondump = {"title":chat.title,"stream":param}
-                jsongroups.write(message.chat_id(),jsondump)
+                dump = {"title":chat.title,"stream":param}
+                setfilevalue("groups",message.chat_id(),dump)
             else:
                values["stream"]=param
-               jsongroups.write(message.chat_id(),values)
+               setfilevalue("groups",message.chat_id(),values)
 
             MessageController.sendreply(message, message.chat_id(), "Stream der Gruppe wurde auf "+param+" gesetzt.")
         else:
             try:
                 del values["stream"]
-                jsongroups.write(message.chat_id(),values)
+                setfilevalue("groups",message.chat_id(),values)
                 MessageController.sendreply(message, message.chat_id(), "Streamparameter für"+values["title"]+ "zurückgesetzt.")
             except KeyError as error:
                 logger.warn(str(error) +" - Eintrag in dem Dictionary nicht vorhanden.")
             except TypeError as error:
                 logger.warn(str(error) +" - Eintrag in dem Dictionary nicht vorhanden.")
-

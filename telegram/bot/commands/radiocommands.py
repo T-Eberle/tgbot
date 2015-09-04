@@ -7,7 +7,6 @@ from telegram.tglogging import logger
 from telegram.bot.commands import *
 from telegram.config.tgbotfileidparser import TGBotFileIDParser
 from telegram.config.weareonejsonparser import WeAreOneJSONParser
-from telegram.config.jsonconfigreader import JSONConfigReader
 from telegram.tgredis import *
 import collections
 
@@ -26,11 +25,13 @@ waoParser = WeAreOneJSONParser("housetime_onAir")
 fileconfig = TGBotFileIDParser()
 filedata = fileconfig.load()
 
+
+# Klasse der Radiobefehle
 class RadioCommands:
+
+
     def parseradiocommands(self, message, text):
         user = message.from_User
-        jsonuser.read()
-        jsongroup.read()
         self.chat = getStreamParameter(message)
         logger.debug(text + " command recognized.")
         for multipleradiocommand in multipleradiocommands:
@@ -43,6 +44,9 @@ class RadioCommands:
             if radiostream == getcommand(text):
                 StickerController.sendstickerwithid(message.chat_id(), filedata.get("file_ids", radiostream))
 
+    # Grundgerüst aller Radiobefehle.
+    # Einsetzen der Parameter
+    # Unterscheidung zwischen einer einzigen und mehreren Messages
     def basicradiocommand(self, message, text, method_name,multiple_message):
         try:
             parameter = getparameter(text,self.chat)
@@ -135,13 +139,11 @@ class RadioCommands:
 
     @staticmethod
     def dj(message, stream):
-        jsonuser.read()
-        jsonfile = jsonuser.jsondata
         dj = waoParser.getjsonelement(stream + "_onAir", "dj")
         id = waoParser.getjsonelement(stream + "_onAir","djid")
         if dj:
             return str('''\U0001F3A4Aktueller DJ @ %s: %s
-'''% (stream.capitalize(),getDJNameByOnAir(dj,id,jsonfile)))
+'''% (stream.capitalize(),getDJNameByOnAir(dj,id)))
         else:
             return str('''\U0001F44EKein DJ ON AIR @ %s!
 '''%(stream.capitalize()))
@@ -154,8 +156,6 @@ class RadioCommands:
 
     @staticmethod
     def now(message, stream):
-        jsonuser.read()
-        jsonfile = jsonuser.jsondata
         dj = waoParser.getjsonelement(stream + "_onAir", "dj")
         id = waoParser.getjsonelement(stream + "_onAir","djid")
         show = waoParser.getjsonelement(stream + "_onAir", "show")
@@ -168,7 +168,7 @@ class RadioCommands:
 \U0001F4E2Showname: %s
 \U0001F3A7Style: %s
 \U000023F0Uhrzeit: %s:00 bis %s:00
-'''%(stream.capitalize(),getDJNameByOnAir(dj,id,jsonfile),show,style,start,end))
+'''%(stream.capitalize(),getDJNameByOnAir(dj,id),show,style,start,end))
 
         else:
             return str('''\U00002139Aktuelle Show-Info @ %s\U00002139

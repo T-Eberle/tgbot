@@ -3,32 +3,31 @@ __author__ = 'Tommy'
 
 from telegram.config.jsonconfigreader import JSONConfigReader
 from telegram.tglogging import logger
-
-
-jsonusers = JSONConfigReader("users")
-jsongroups = JSONConfigReader("groups")
-
+from telegram.tgredis import setfile,getfile
 
 def updateuser(user):
-    jsonusers.read()
+    jsonusers = getfile("users")
     try:
-        if jsonusers.getValues(user.chat_id):
-            oldValues = jsonusers.getValues(user.chat_id).copy()
-            values = jsonusers.getValues(user.chat_id)
+        if jsonusers[user.chat_id]:
+            oldValues = jsonusers[user.chat_id].copy()
+            values = jsonusers[user.chat_id]
             values["first_name"]= user.first_name
             values["user_name"]= user.username
             values["last_name"]= user.last_name
             if values != oldValues:
                 logger.debug("User has changed!")
-                jsonusers.write(user.chat_id,values)
+                jsonusers[str(user.chat_id)] = values
+                setfile("users",jsonusers)
     except KeyError as error:
         pass
 
 def updategroup(message):
-    jsongroups.read()
+    jsongroups = getfile("groups")
     try:
-        if jsongroups.getValues(message.chat_id()) and message.new_chat_title:
-            jsongroups.write(message.chat_id(),message.new_chat_title)
+        logger.debug(str(jsongroups))
+        if jsongroups and message.new_chat_title:
+            jsongroups[message.chat_id()] = message.new_chat_title
+            setfile("groups",jsongroups)
             logger.debug("Groupname has changed!")
     except KeyError as error:
         pass

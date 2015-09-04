@@ -3,17 +3,58 @@ __author__ = 'Thomas Eberle'
 
 
 import redis
+import json
+import ast
 from telegram.config.tgbotconfigparser import TGBotConfigParser
 from telegram.tglogging import logger
 from telegram.basicapi.commands.messagecommands import MessageController
 
 limitdb = 0
 convdb = 1
+filedb = 2
 limitserver = redis.StrictRedis(host="localhost",port="6379",db=limitdb)
 convserver = redis.StrictRedis(host="localhost",port="6379",db=convdb)
+fileserver = redis.StrictRedis(host="localhost",port="6379",db=filedb)
 
 config = TGBotConfigParser("config.ini")
 configdata = config.load()
+
+def setfile(filename,jsonfile):
+    logger.debug("SET FILE: "+str(jsonfile))
+    fileserver.set(filename,jsonfile)
+
+def getfile(filename):
+    data = {}
+    try:
+        file = fileserver.get(filename)
+        if file:
+            data = ast.literal_eval(file.decode("utf-8"))
+    except redis.exceptions.ResponseError:
+        logger.debug("REDIS: Couldn't find "+filename)
+    return data
+
+def setfilevalue(filename,key,value):
+    data = getfile(filename)
+    data[str(key)]=value
+    setfile(filename,data)
+
+def getfilevalue(filename,key):
+    try:
+        data = getfile(filename)
+        result = data[str(key)]
+    except KeyError:
+        result = None
+    return result
+
+def deleteentryfromfile(filename,key):
+    data = getfile(filename)
+    del data[str(key)]
+    setfile(filename,data)
+
+
+def flushallfiles():
+    fileserver.flushdb()
+
 
 def getmessage(message):
     user = message.from_User
