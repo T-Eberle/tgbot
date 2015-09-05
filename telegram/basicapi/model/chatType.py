@@ -8,6 +8,7 @@ class ChatType(Base):
         self.chat_id = data["id"]
 
     def __init__(self, data=None, chat_id=None):
+        super().__init__()
         if data:
             self.__createfromdata__(data)
         else:

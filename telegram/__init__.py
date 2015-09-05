@@ -2,11 +2,11 @@ __author__ = 'Tommy'
 
 from telegram.basicapi.model.message import Message
 from telegram.tglogging import logger
-from telegram.bot.parser import parseMessage
+from telegram.bot.parser import parsemessage
 
 
-def activateBot(data):
-    logger.debug("Message arrived.\nMessage: "+str(data))
+def activatebot(data):
+    logger.debug("Message arrived.\nMessage: " + str(data))
     message = Message(data=data)
 
-    parseMessage(message)
+    parsemessage(message)

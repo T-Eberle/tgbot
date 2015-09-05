@@ -1,7 +1,8 @@
 listener - Aktuelle Listeneranzahl
-now - Aktueller Showdaten On Air
-next - Nächste Show on Air
-heute - heutiger Sendeplan
+now - Aktuelle Showdaten On Air
+next - Nächste Show On Air
+heute - Sendeplan von Heute
+morgen - Sendeplan von Morgen
 montag - Sendeplan von Montag
 dienstag - Sendeplan von Dienstag
 mittwoch - Sendeplan von Mittwoch
@@ -10,4 +11,5 @@ freitag - Sendeplan von Freitag
 samstag - Sendeplan von Samstag
 sonntag - Sendeplan von Sonntag
 dj - Aktueller DJ On Air
+track - Aktuell laufender Track
 me - Meine eigenen Chatdaten

@@ -8,9 +8,9 @@ class GroupChat(ChatType):
         return self.chat_id
 
     def __createfromdata__(self, data):
-        self.title =data["title"]
+        self.title = data["title"]
         super(GroupChat, self).__createfromdata__(data)
 
     def __init__(self, data=None, chat_id=None, title=None):
         self.title = title
-        super(GroupChat, self).__init__(data=data,chat_id=chat_id)
+        super(GroupChat, self).__init__(data=data, chat_id=chat_id)

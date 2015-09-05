@@ -7,8 +7,6 @@ from telegram.basicapi.model.groupChat import GroupChat
 
 
 class Message(Base):
-
-
     def chat_id(self):
         return self.chat.getchatid()
 
@@ -20,7 +18,7 @@ class Message(Base):
         if "new_chat_title" in data:
             self.new_chat_title = data["new_chat_title"]
         else:
-            self.new_chat_title=None
+            self.new_chat_title = None
 
         # DATE
         self.date = data["date"]
@@ -39,16 +37,16 @@ class Message(Base):
         # self.forward_date = data["forward_date"]
         if "text" in data:
             self.text = data["text"]
-        else :
+        else:
             self.text = None
-        # self.new_chat_title = data["new_chat_title"]
-
+            # self.new_chat_title = data["new_chat_title"]
 
     def __init__(self, data=None, message_id=None, from_user=None, date=None, chat=None, forward_from_user: User=None,
-                 forward_date: int=None, reply_to_message=None, text=None, audio: Audio=None,
-                 document=None, photo=None, sticker=None, video=None, contact=None, location=None,
-                 new_chat_participant: User=None, left_chat_participant: User=None, new_chat_title=None,
-                 new_chat_photo=None, delete_chat_photo=None, group_chat_created=None):
+                 forward_date: int=None, reply_to_message=None, text=None, audio: Audio=None, document=None, photo=None,
+                 sticker=None, video=None, contact=None, location=None, new_chat_participant: User=None,
+                 left_chat_participant: User=None, new_chat_title=None, new_chat_photo=None, delete_chat_photo=None,
+                 group_chat_created=None):
+        super().__init__()
         if data:
             self.__createfromdata__(data["message"])
 

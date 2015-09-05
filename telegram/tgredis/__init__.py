@@ -1,27 +1,30 @@
 # -*- coding: utf-8 -*-
 __author__ = 'Thomas Eberle'
 
+import ast
 
 import redis
-import json
-import ast
+
 from telegram.config.tgbotconfigparser import TGBotConfigParser
 from telegram.tglogging import logger
 from telegram.basicapi.commands.messagecommands import MessageController
+from resources import emoji
 
 limitdb = 0
 convdb = 1
 filedb = 2
-limitserver = redis.StrictRedis(host="localhost",port="6379",db=limitdb)
-convserver = redis.StrictRedis(host="localhost",port="6379",db=convdb)
-fileserver = redis.StrictRedis(host="localhost",port="6379",db=filedb)
+limitserver = redis.StrictRedis(host="localhost", port="6379", db=limitdb)
+convserver = redis.StrictRedis(host="localhost", port="6379", db=convdb)
+fileserver = redis.StrictRedis(host="localhost", port="6379", db=filedb)
 
 config = TGBotConfigParser("config.ini")
 configdata = config.load()
 
-def setfile(filename,jsonfile):
-    logger.debug("SET FILE: "+str(jsonfile))
-    fileserver.set(filename,jsonfile)
+
+def setfile(filename, jsonfile):
+    logger.debug("SET FILE: " + str(jsonfile))
+    fileserver.set(filename, jsonfile)
+
 
 def getfile(filename):
     data = {}
@@ -30,15 +33,17 @@ def getfile(filename):
         if file:
             data = ast.literal_eval(file.decode("utf-8"))
     except redis.exceptions.ResponseError:
-        logger.debug("REDIS: Couldn't find "+filename)
+        logger.debug("REDIS: Couldn't find " + filename)
     return data
 
-def setfilevalue(filename,key,value):
-    data = getfile(filename)
-    data[str(key)]=value
-    setfile(filename,data)
 
-def getfilevalue(filename,key):
+def setfilevalue(filename, key, value):
+    data = getfile(filename)
+    data[str(key)] = value
+    setfile(filename, data)
+
+
+def getfilevalue(filename, key):
     try:
         data = getfile(filename)
         result = data[str(key)]
@@ -46,10 +51,11 @@ def getfilevalue(filename,key):
         result = None
     return result
 
-def deleteentryfromfile(filename,key):
+
+def deleteentryfromfile(filename, key):
     data = getfile(filename)
     del data[str(key)]
-    setfile(filename,data)
+    setfile(filename, data)
 
 
 def flushallfiles():
@@ -60,6 +66,7 @@ def getmessage(message):
     user = message.from_User
     return limitserver.get(str(user.chat_id))
 
+
 def increasemessage(message):
     expire = configdata["basics"]["commandlimittime"]
     user = message.from_User
@@ -69,28 +76,24 @@ def increasemessage(message):
     pipe.incr(str(user.chat_id))
     values = pipe.execute()
     if not values[0]:
-        limitserver.expire(str(user.chat_id),expire)
+        limitserver.expire(str(user.chat_id), expire)
 
-    logger.debug("Response from Redis for key "+str(user.chat_id)+": "+ str(values))
+    logger.debug("Response from Redis for key " + str(user.chat_id) + ": " + str(values))
 
 
-def getuser_(message):
-    userserver = redis.StrictRedis(db=convdb)
-    userserver.hget("user-" + message.chat_id())
-
-def commandAllowed(message):
+def commandallowed(message):
     increasemessage(message)
     user = message.from_User
     limit = int(configdata["basics"]["commandlimit"])
     value = int(limitserver.get(str(user.chat_id)))
-    if value>limit+1:
-        logger.debug("User "+str(user.chat_id)+" hat sein Commandlimit von "+ str(limit) + " erreicht.")
+    if value > limit + 1:
+        logger.debug("User " + str(user.chat_id) + " hat sein Commandlimit von " + str(limit) + " erreicht.")
         return False
-    elif value == limit+1:
+    elif value == limit + 1:
         expire = limitserver.ttl(str(user.chat_id))
         MessageController.sendreply(message, message.chat_id(),
-                                    '''\U0000274E @%s, für dich sind die Commands erstmal für %s Sekunden blockiert.'''%(user.username,str(expire)))
+                                    '''%s @%s, für dich sind die Commands erstmal für %s Sekunden blockiert.'''
+                                    % (emoji.cross_mark,user.username, str(expire)))
     else:
-        logger.debug("User "+str(user.chat_id)+" führt den  "+ str(value) + ". Command aus.")
+        logger.debug("User " + str(user.chat_id) + " führt den  " + str(value) + ". Command aus.")
         return True
-

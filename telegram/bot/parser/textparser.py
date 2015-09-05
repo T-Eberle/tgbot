@@ -6,9 +6,7 @@ from telegram.tgredis import *
 
 
 def parsetext(message):
-    chat = message.chat
-    user = message.from_User
     text = message.text.lower()
 
-    if any(entertain in text for entertain in entertaincommands) and commandAllowed(message):
+    if any(entertain in text for entertain in entertaincommands) and commandallowed(message):
         parseentertaintext(message)

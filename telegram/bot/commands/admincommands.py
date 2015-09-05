@@ -1,68 +1,91 @@
 # -*- coding: utf-8 -*-
 __author__ = 'Thomas Eberle'
-from telegram.tglogging import logger
 from telegram.bot.commands import *
-from telegram.config.jsonconfigreader import JSONConfigReader
 from telegram.basicapi.commands.messagecommands import MessageController
 import uwsgi
-from telegram.tgredis import setfilevalue,deleteentryfromfile
+from telegram.tgredis import setfilevalue, deleteentryfromfile
+from resources import emoji
 
-admincommands = ["restart","reggroup","unreggroup",
+admincommands = ["restart", "reggroup", "unreggroup",
                  # "unregisterall",
                  "groupstream"]
 
+
 class AdminCommands:
+    def parseadmincommands(self, message):
+        """
+        Parst den Befehl und führt den korrekten aus.
+        :param message: Die gesendete Nachricht
+        """
+        text = message.text
+        logger.debug(text + " command recognized.")
 
-    def parseadmincommands(self,message,text):
-        logger.debug(text+" command recognized.")
         for registercommand in admincommands:
-            if getcommand(text)==registercommand:
-                getattr(self, registercommand)(message,text)
+            if getcommand(text) == registercommand:
+                getattr(self, registercommand)(message)
 
-    def restart(self,message,text):
+    @staticmethod
+    def restart(message):
+        """
+        Startet den Bot neu.
+        :param message: Die gesendete Nachricht
+        """
         logger.debug("Server will shutdown!")
-        MessageController.sendreply(message, message.chat_id(), "Ich, Butler Elroy, werde jetzt neu gestartet.")
+        MessageController.sendreply(message, message.chat_id(), "%sIch - der WeAreOne Bot - werde jetzt neu gestartet.%s"
+                                    % (emoji.warning,emoji.warning))
         uwsgi.reload()
 
-
-    def reggroup(self,message,text):
+    @staticmethod
+    def reggroup(message):
+        """
+        Diese Methode registriert die Gruppe mit dem Bot, in der die Nachricht geschrieben wurde
+        :param message: Die gesendete Nachricht
+        """
         chat = message.chat
-        value = {"title":chat.title}
-        logger.debug("VALUE: "+str(value))
-        setfilevalue("groups",message.chat_id(),value)
-        MessageController.sendreply(message, message.chat_id(), "Der Gruppenchat "+value["title"]+" wurde erfolgreich registriert.")
+        value = {"title": chat.title}
+        logger.debug("VALUE: " + str(value))
+        setfilevalue("groups", message.chat_id(), value)
+        MessageController.sendreply(message, message.chat_id(),
+                                    "Der Gruppenchat " + value["title"] + " wurde erfolgreich registriert.")
 
-    def unreggroup(self,message,text):
+    @staticmethod
+    def unreggroup(message):
+        """
+        Die angeschriebene Gruppen wird ausgetragen, die Registrierung gelöscht
+        :param message: Die gesendete Nachricht
+        """
         user = message.from_User
-        deleteentryfromfile("groups",message.chat_id())
-        MessageController.sendreply(message, message.chat_id(), user.first_name+", du hast die Gruppe aus den registrierten Gruppen gelöscht.")
+        deleteentryfromfile("groups", message.chat_id())
+        MessageController.sendreply(message, message.chat_id(),
+                                    user.first_name + ", du hast die Gruppe aus den registrierten Gruppen gelöscht.")
 
-
-    # def unregisterall(self,message,text):
-    #     user = message.from_User
-    #     jsonusers.deleteall()
-    #     MessageController.sendreply(message, message.chat_id(), user.first_name+", du hast alle Users gelöscht. Sei stolz auf dich.")
-
-    def groupstream(self,message,text):
-        param = getparameter(text)
+    @staticmethod
+    def groupstream(message):
+        """
+        Zuteilung von Streams zu einer Gruppe
+        :param message: Die gesendete Nachricht
+        """
+        param = getparameter(message.text)
         chat = message.chat
-        values = getfilevalue("groups",message.chat_id())
-        logger.debug("VALUE GROUPSTREAM: "+str(values))
+        values = getfilevalue("groups", message.chat_id())
+        logger.debug("VALUE GROUPSTREAM: " + str(values))
         if param:
             if not values:
-                dump = {"title":chat.title,"stream":param}
-                setfilevalue("groups",message.chat_id(),dump)
+                dump = {"title": chat.title, "stream": param}
+                setfilevalue("groups", message.chat_id(), dump)
             else:
-               values["stream"]=param
-               setfilevalue("groups",message.chat_id(),values)
+                values["stream"] = param
+                setfilevalue("groups", message.chat_id(), values)
 
-            MessageController.sendreply(message, message.chat_id(), "Stream der Gruppe wurde auf "+param+" gesetzt.")
+            MessageController.sendreply(message, message.chat_id(),
+                                        "Stream der Gruppe wurde auf " + param + " gesetzt.")
         else:
             try:
                 del values["stream"]
-                setfilevalue("groups",message.chat_id(),values)
-                MessageController.sendreply(message, message.chat_id(), "Streamparameter für"+values["title"]+ "zurückgesetzt.")
+                setfilevalue("groups", message.chat_id(), values)
+                MessageController.sendreply(message, message.chat_id(),
+                                            "Streamparameter für" + values["title"] + "zurückgesetzt.")
             except KeyError as error:
-                logger.warn(str(error) +" - Eintrag in dem Dictionary nicht vorhanden.")
+                logger.warn(str(error) + " - Eintrag in dem Dictionary nicht vorhanden.")
             except TypeError as error:
-                logger.warn(str(error) +" - Eintrag in dem Dictionary nicht vorhanden.")
+                logger.warn(str(error) + " - Eintrag in dem Dictionary nicht vorhanden.")

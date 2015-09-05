@@ -13,8 +13,9 @@ class PhotoController:
     def __init__(self, photo=None):
         self.photo = photo
 
-    def sendphoto(self, chat_id, photo):
+    @staticmethod
+    def sendphoto(chat_id, photo):
         url = data.get("tgapi", "bot_link") + data.get("tgapi", "sendPhoto_Method")
         values = {"chat_id": chat_id, "photo": photo}
         logger.debug("Photo sent! -> " + photo)
-        HTTPRequestController.requestwithvaluesmultipart(None, url, values)
+        pass

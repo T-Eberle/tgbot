@@ -5,59 +5,56 @@ from telegram.bot.parser import commandparser
 from telegram.bot.parser import textparser
 from telegram.bot.updater import *
 from telegram.tgredis import *
-from telegram.tglogging import *
-from telegram.bot.commands.admincommands import AdminCommands,admincommands
-import re
+from telegram.bot.commands.admincommands import AdminCommands, admincommands
 from telegram.bot.commands.datacommands import *
 
 config = TGBotConfigParser("config.ini")
 data = config.load()
 
-def isPermitted(message):
-    if isAdmin(message) or isPermittedGroup(message):
+
+def ispermitted(message):
+    if isadmin(message) or ispermittedgroup(message):
         return True
     else:
         return False
 
-def isAdmin(message):
+
+def isadmin(message):
     user = message.from_User
-    if str(user.chat_id) in data.get("basics","superadmins"):
-        logger.debug("@"+user.username+"("+str(user.chat_id)+") ist ein SuperAdmin.")
+    if str(user.chat_id) in data.get("basics", "superadmins"):
+        logger.debug("@" + user.username + "(" + str(user.chat_id) + ") ist ein SuperAdmin.")
         return True
     else:
+        logger.debug("@" + user.username + "(" + str(user.chat_id) + ") ist kein SuperAdmin")
         return False
-        logger.debug("@"+user.username+"("+str(user.chat_id)+") ist kein SuperAdmin")
 
-def isPermittedGroup(message):
+
+def ispermittedgroup(message):
     groups = getfile("groups")
-    logger.debug("Is this a permitted group? "+str(message.chat_id()))
-    logger.debug("Permitted Chat_Ids:"+str(groups.keys()))
+    logger.debug("Is this a permitted group? " + str(message.chat_id()))
+    logger.debug("Permitted Chat_Ids:" + str(groups.keys()))
     if str(message.chat_id()) in groups.keys():
-        logger.debug("PERMITTED GROUP CHAT: "+ str(message.chat_id()))
+        logger.debug("PERMITTED GROUP CHAT: " + str(message.chat_id()))
         return True
     else:
         return False
 
 
-
-def parseMessage(message):
-    chat = message.chat
+def parsemessage(message):
     user = message.from_User
     updategroup(message)
-    if message.text is not None and isPermitted(message):
-            logger.debug("Trying to get users.")
-            updateuser(user)
-            if any("/"+admin in message.text.lower() for admin in admincommands) and isAdmin(message):
-                admCommands = AdminCommands()
-                admCommands.parseadmincommands(message,message.text)
-            elif re.match(r'/(\w)*', message.text):
-                if message.text.lower()=="/hilfe":
-                    help(message)
-                elif message.text.lower()=="/me":
-                    me(message)
-                else:
-                    commandparser.parsecommand(message)
+    if message.text is not None and ispermitted(message):
+        logger.debug("Trying to get users.")
+        updateuser(user)
+        if any("/" + admin in message.text.lower() for admin in admincommands) and isadmin(message):
+            admcommands = AdminCommands()
+            admcommands.parseadmincommands(message)
+        elif re.match(r'/(\w)*', message.text):
+            if message.text.lower() == "/hilfe":
+                helpme(message)
+            elif message.text.lower() == "/me":
+                me(message)
             else:
-                textparser.parsetext(message)
-
-
+                commandparser.parsecommand(message)
+        else:
+            textparser.parsetext(message)

@@ -2,6 +2,9 @@
 __author__ = 'Thomas Eberle'
 from urllib.request import Request, urlopen
 from urllib.parse import urlencode
+import requests
+import pkg_resources
+from telegram.tglogging import *
 
 
 class HTTPRequestController:
@@ -9,22 +12,29 @@ class HTTPRequestController:
         self.url = url
         self.values = values
 
-    def requestwithvaluesxwwwurlencoded(self, url, values):
+    @staticmethod
+    def requestwithvaluesxwwwurlencoded(url, values):
         data = urlencode(values)
         data = data.encode("utf-8")
 
         request = Request(url)
-        request.add_header("Content-Type","application/x-www-form-urlencoded;charset=utf-8")
+        request.add_header("Content-Type", "application/x-www-form-urlencoded;charset=utf-8")
         response = urlopen(request.get_full_url(), data)
         html = response.read()
         return html
 
-    def requestwithvaluesmultipart(self,url,values):
-        data = urlencode(values)
-        data = data.encode("utf-8")
+    @staticmethod
+    def requestwithimg(url, values,filename):
+        logger.debug("URL: " + str(url))
+        file = pkg_resources.resource_filename("resources.img", filename)
+        logger.debug("FILE: "+str(file))
+        files = {"sticker": open(file,"rb")}
+        html = requests.post(url,data=values,files=files)
 
-        request = Request(url)
-        request.add_header("Content-Type","multipart/form-data")
-        response = urlopen(request.get_full_url(), data)
-        html = response.read()
-        return html
+    @staticmethod
+    def requestwithdoc(url, values,filename):
+        logger.debug("URL: " + str(url))
+        file = pkg_resources.resource_filename("resources.documents", filename)
+        logger.debug("FILE: "+str(file))
+        files = {"document": open(file,"rb")}
+        html = requests.post(url,data=values,files=files)
