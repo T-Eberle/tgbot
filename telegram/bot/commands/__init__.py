@@ -4,6 +4,7 @@ __author__ = 'Thomas Eberle'
 import re
 from datetime import datetime, timedelta
 from telegram.config.tgbotconfigparser import TGBotConfigParser
+from telegram.config.waoapiparser import WAOAPIParser
 from telegram.tglogging import logger
 from telegram.tgredis import getfile, getfilevalue
 from resources import emoji
@@ -16,6 +17,8 @@ wochentag = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag
 
 config = TGBotConfigParser("config.ini")
 data = config.load()
+waoconfig = TGBotConfigParser("wao-config.ini")
+waodata =waoconfig.load()
 
 
 def getparameter(text, alternative_text=None):
@@ -51,78 +54,39 @@ def getcommand(text):
     return value
 
 
-def printshowplan(showdata):
-    """
-    Gibt den kompletten Sendeplan zurück
-    :param showdata: Sendeplandatei
-    :return: Sendeplan als String
-    """
-    reply = ""
-    for show in showdata:
-        start = getdateinstring(int(show["start "]))
-        ende = getdateinstring(show["end"] - int(show["start "]))
-        reply += createshowstring(show, start, ende)
-
-    return reply
-
-
-def nextshow(showdata, stream):
+def nextshow(stream):
     """
     Erstellt einen String der nächsten Show
     :param showdata: Sendeplandatei
     :param stream: der Stream
     :return: String der nächsten Show
     """
-    for show in showdata:
-        reply = "\U00002139Nächste Show @ " + stream.capitalize() + "\U00002139\n"
-        start = getdate(int(show["start "]))
-        startofficial = dateindaytimeformat(int(show["start "]))
-        ende = dateindaytimeformat(show["end"] - int(show["start "]))
-        now = datetime.now()
-        if start > now:
-            reply += createshowstring(show, startofficial, ende)
-            return reply
+    waoapi = WAOAPIParser(waoapi=stream)
+    two_shows = waoapi.loadwaoapishowplan(count=2,upcoming=True)
+    for show in two_shows:
+        start_timestamp= show[waodata.get("waoapi-showplan","start")]
+        start_date = WAOAPIParser.correcdate(start_timestamp)
+        if datetime.now() < start_date:
+            reply = "\U00002139Nächste Show @ " + stream.capitalize() + "\U00002139\n"
+            start = WAOAPIParser.correctdate_timeformat(start_timestamp)
+            end = WAOAPIParser.correctdate_timeformat(show[waodata.get("waoapi-showplan","end")])
+            return reply+createshowstring(show,start,end)
 
+    return emoji.thumb_down+"Keine Shows mehr heute @ "+stream.capitalize()
 
-def getdate(showdate):
-    """
-    Gibt das Datum von einem Timestamp zurück.
-    :param showdate:
-    :return: Datum von einem Timestamp
-    """
-    date = datetime.fromtimestamp(showdate)
-    return date
-
-
-def getdateinstring(showdate):
-    """
-    Gibt einen String im timeformat von einem Datum zurück.
-    :param showdate:
-    :return:
-    """
-    return getdate(showdate).strftime(timeformat)
-
-
-def dateindaytimeformat(showdate):
-    """
-    Gibt einen String im daytimeformat von einem Datum zurück.
-    :param showdate: Datum der Show
-    :return: Datum als String in daytimeformat
-    """
-    return getdate(showdate).strftime(daytimeformat)
-
-
-def getshowfromtoday(showdata, stream):
+def getshowfromtoday(stream):
     """
     Erstellt den heutigen Sendeplan
     :param showdata: Sendeplandatei
     :param stream: Stream
     :return: Sendeplan von heute für den jeweiligen Stream als String
     """
-    return getshowfromday(showdata, getdate(datetime.now().timestamp()).weekday(), stream)
+    return getshowfromday(datetime.now().weekday(), stream)
 
+def getshowfromyesterday(stream):
+    return getshowfromday(None, stream)
 
-def getshowfromtomorrow(showdata, stream):
+def getshowfromtomorrow(stream):
     """
     Erstellt den morgigen Sendeplan
     :param showdata: Sendeplandatei
@@ -130,10 +94,10 @@ def getshowfromtomorrow(showdata, stream):
     :return: Sendeplan von morgen für den jeweiligen Stream als String
     """
     tomorrow = datetime.now() + timedelta(days=1)
-    return getshowfromday(showdata, getdate(tomorrow.timestamp()).weekday(), stream)
+    return getshowfromday(tomorrow.weekday(), stream)
 
 
-def getshowfromday(showdata, date, stream):
+def getshowfromday(date, stream):
     """
     Erstellt den Sendeplan von einem ausgewählten Datum
     :param showdata: Sendeplandatei
@@ -141,20 +105,25 @@ def getshowfromday(showdata, date, stream):
     :param stream: Stream
     :return: Sendeplan von einem ausgewählten Datum für den jeweiligen Stream als String
     """
-    now = datetime.now().date()
-    result_date = now
-    while result_date.weekday() != date:
-        result_date += timedelta(days=1)
-    reply = "%sShows am %s @ %s%s\n" % (emoji.info_button,wochentag[date],
+    now = datetime.now()
+    waoapi = WAOAPIParser(waoapi=stream)
+    if date==None:
+        site = 0
+        result_date = datetime.now()-timedelta(days=1)
+    else:
+        result_date = now
+        while result_date.weekday()!= date:
+            result_date += timedelta(days=1)
+        difference = 1-datetime.now().weekday()
+        site = date+difference
+    shows = waoapi.loadwaoapishowplan(site=site)
+    reply = "%sShows am %s @ %s%s\n" % (emoji.info_button,result_date.strftime("%A"),
                                         stream.capitalize(),emoji.info_button)
     showstring = ""
-    for show in showdata:
-        start = getdate(int(show["start "]))
-        end = getdate(show["end"] - int(show["start "]))
-        if start.date() == result_date <= end.date():
-            start_string = getdateinstring(int(show["start "]))
-            end_string = getdateinstring(show["end"] - int(show["start "]))
-            showstring += createshowstring(show, start_string, end_string)
+    for show in shows:
+        start_string = WAOAPIParser.correctdate_timeformat(show[waodata.get("waoapi-showplan","start")])
+        end_string = WAOAPIParser.correctdate_timeformat(show[waodata.get("waoapi-showplan","end")])
+        showstring += createshowstring(show, start_string, end_string)
     if not showstring:
         reply += str('''%sKEINE SHOW VORHANDEN!''' % emoji.thumb_down)
         logger.debug("REPLY: " + reply)
@@ -177,11 +146,11 @@ def getdjnamebyshow(show):
     name = None
     users = getfile("users")
     for key, value in users.items():
-        if value.get("wao_id") == show["user_id"]:
+        if value.get("wao_id") == str(show[waodata.get("waoapi-showplan","djid")]):
             name = "@" + value.get("user_name")
             logger.debug("WeAreOne-ID found. Telegram Chat ID: " + str(key))
     if not name:
-        name = show["username"]
+        name = show[waodata.get("waoapi-showplan","dj")]
     return name
 
 
@@ -217,7 +186,7 @@ def createshowstring(show, start, ende):
     """
     name = getdjnamebyshow(show)
 
-    showname = show["showname"]
+    showname = show[waodata.get("waoapi-showplan","show")]
     if not showname:
         return str('''%sShow by %s
 %sZeit: %s - %s
@@ -226,7 +195,7 @@ def createshowstring(show, start, ende):
     else:
         return str('''%sShow: \"%s\" by %s
 %sZeit: %s - %s
-''' % (emoji.microphone,show["showname"], name,emoji.alarm_clock, str(start), str(ende)))
+''' % (emoji.microphone,showname, name,emoji.alarm_clock, str(start), str(ende)))
 
 
 def getstreamparameter(message):
@@ -258,3 +227,6 @@ def getstreamparameter(message):
         return groupvalues.get("stream")
     else:
         return ""
+
+if __name__ == '__main__':
+    print(datetime.fromtimestamp(1441741568).weekday())

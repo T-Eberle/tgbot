@@ -1,3 +1,4 @@
+hilfe - Anleitung zum WeAreOne Bot
 listener - Aktuelle Listeneranzahl
 now - Aktuelle Showdaten On Air
 next - Nächste Show On Air

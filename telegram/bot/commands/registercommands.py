@@ -28,6 +28,13 @@ class RegisterCommands:
         """
         users = getfile("users")
         user = message.from_User
+        if not user.username:
+            MessageController.sendmessage(message.chat_id(),
+                                                  emoji.cross_mark +
+                                                  "Du musst dir erst einen Nutzernamen vergeben,"
+                                                  " bevor du dich "
+                                                  "registrieren kannst.")
+            return
         param = getparameter(text, None)
         values = getfilevalue("users", user.chat_id)
         if not values:

@@ -6,13 +6,13 @@ import collections
 from telegram.basicapi.commands.stickercommands import StickerController
 from telegram.bot.commands import *
 from telegram.config.tgbotfileidparser import TGBotFileIDParser
-from telegram.config.weareonejsonparser import WeAreOneJSONParser
+from telegram.config.waoapiparser import WAOAPIParser
 from telegram.tgredis import *
 from resources import emoji
 
 multipleradiocommands = ["listener", "dj", "now", "track", "next"]
 
-singleradiocommands = ["heute", "morgen", "montag", "dienstag", "mittwoch", "donnerstag", "freitag", "samstag",
+singleradiocommands = ["heute", "morgen","gestern", "montag", "dienstag", "mittwoch", "donnerstag", "freitag", "samstag",
                        "sonntag"]
 
 unsorted_radiostreams = {"tb": "technobase", "ht": "housetime", "hb": "hardbase", "trb": "trancebase", "ct": "coretime",
@@ -20,7 +20,7 @@ unsorted_radiostreams = {"tb": "technobase", "ht": "housetime", "hb": "hardbase"
 radiostreams = collections.OrderedDict(sorted(unsorted_radiostreams.items()))
 
 allradiocommands = multipleradiocommands + singleradiocommands + list(radiostreams.values())
-waoParser = WeAreOneJSONParser("housetime_onAir")
+waoParser = WAOAPIParser("housetime_onAir")
 
 fileconfig = TGBotFileIDParser()
 filedata = fileconfig.load()
@@ -94,96 +94,106 @@ class RadioCommands:
             MessageController.sendreply(message, message.chat_id(), "Witzbold.")
 
     @staticmethod
+    def gestern(stream):
+        return getshowfromday(None,stream)
+
+    @staticmethod
     def montag(stream):
-        showplan = waoParser.load(stream + "_shows")
-        return getshowfromday(showplan, 0, stream)
+        return getshowfromday(0, stream)
 
     @staticmethod
     def dienstag(stream):
-        showplan = waoParser.load(stream + "_shows")
-        return getshowfromday(showplan, 1, stream)
+        return getshowfromday(1, stream)
 
     @staticmethod
     def mittwoch(stream):
-        showplan = waoParser.load(stream + "_shows")
-        return getshowfromday(showplan, 2, stream)
+        return getshowfromday(2, stream)
 
     @staticmethod
     def donnerstag(stream):
-        showplan = waoParser.load(stream + "_shows")
-        return getshowfromday(showplan, 3, stream)
+        return getshowfromday(3, stream)
 
     @staticmethod
     def freitag(stream):
-        showplan = waoParser.load(stream + "_shows")
-        return getshowfromday(showplan, 4, stream)
+        return getshowfromday(4, stream)
 
     @staticmethod
     def samstag(stream):
-        showplan = waoParser.load(stream + "_shows")
-        return getshowfromday(showplan, 5, stream)
+        return getshowfromday(5, stream)
 
     @staticmethod
     def sonntag(stream):
-        showplan = waoParser.load(stream + "_shows")
-        return getshowfromday(showplan, 6, stream)
+        return getshowfromday(6, stream)
 
     @staticmethod
     def heute(stream):
-        showplan = waoParser.load(stream + "_shows")
-        return getshowfromtoday(showplan, stream)
+        return getshowfromtoday(stream)
 
     @staticmethod
     def morgen(stream):
-        showplan = waoParser.load(stream + "_shows")
-        return getshowfromtomorrow(showplan, stream)
+        return getshowfromtomorrow(stream)
 
     @staticmethod
     def next(stream):
-        showplan = waoParser.load(stream + "_shows")
-        return nextshow(showplan, stream)
+        return nextshow(stream)
 
     @staticmethod
     def track(stream):
-        artist = waoParser.getjsonelement(stream + "_onAir", "artist")
-        track = waoParser.getjsonelement(stream + "_onAir", "track")
-        return str('''%sAktueller Track @ %s: %s - %s
-''' % (emoji.musical_note,stream.capitalize(), artist, track))
+        try:
+            artist = WAOAPIParser.nowartist(stream)
+            track =WAOAPIParser.nowtrack(stream)
+            release =WAOAPIParser.nowrelease(stream)
+            release_string =""
+            if release!="0":
+                release_string =str("Check: http://www.technobase.fm/release/%s\n" % release)
+            return str("%sAktueller Track @ %s: %s - %s\n"% (emoji.musical_note,stream.capitalize(), artist, track))\
+                   + release_string
 
-    @staticmethod
-    def dj(stream):
-        dj = waoParser.getjsonelement(stream + "_onAir", "dj")
-        djid = waoParser.getjsonelement(stream + "_onAir", "djid")
-        if dj:
-            return str('''%sAktueller DJ @ %s: %s
-''' % (emoji.microphone,stream.capitalize(), getdjnamebyonair(dj, djid)))
-        else:
+        except KeyError as error:
+            logger.exception(error)
             return str('''%sKein DJ ON AIR @ %s!
 ''' % (emoji.thumb_down,stream.capitalize()))
 
+
+
+    @staticmethod
+    def dj(stream):
+        try:
+            dj = WAOAPIParser.now(stream,"dj")
+            djid = str(WAOAPIParser.now(stream,"djid"))
+            return str('''%sAktueller DJ @ %s: %s
+''' % (emoji.microphone,stream.capitalize(), getdjnamebyonair(dj, djid)))
+        except KeyError:
+            return str('''%sKein DJ ON AIR @ %s!
+''' % (emoji.thumb_down,stream.capitalize()))
+
+
     @staticmethod
     def listener(stream):
-        listener = waoParser.getjsonelement(stream + "_onAir", "listener")
+        listener = waoParser.gettrayelement(stream + "_onAir", "listener")
         return str('''%sAktuelle Listeneranzahl @ %s: %s
 ''' % (emoji.satellite,stream.capitalize(), listener))
 
     @staticmethod
     def now(stream):
-        dj = waoParser.getjsonelement(stream + "_onAir", "dj")
-        djid = waoParser.getjsonelement(stream + "_onAir", "djid")
-        show = waoParser.getjsonelement(stream + "_onAir", "show")
-        style = waoParser.getjsonelement(stream + "_onAir", "style")
-        start = waoParser.getjsonelement(stream + "_onAir", "start")
-        end = waoParser.getjsonelement(stream + "_onAir", "end")
-        if dj:
-            return str('''%sAktuelle Show-Info @ %s%s
-%sDJ: %s
-%sShowname: %s
-%sStyle: %s
-%sUhrzeit: %s:00 bis %s:00
-''' % (emoji.info_button,stream.capitalize(),emoji.info_button,emoji.microphone,
-       getdjnamebyonair(dj, djid),emoji.loudspeaker, show,emoji.headphone, style,emoji.alarm_clock, start, end))
-        else:
+        try:
+            WAOAPIParser.now(stream,"playlist")
             return str('''%sAktuelle Show-Info @ %s%s
 %sKein DJ ON AIR!
 ''' % (emoji.info_button,stream.capitalize(),emoji.info_button,emoji.thumb_down))
+        except KeyError:
+            dj = WAOAPIParser.now(stream,"dj")
+            djid = str(WAOAPIParser.now(stream, "djid"))
+            show = WAOAPIParser.now(stream,"show")
+            style = WAOAPIParser.now(stream,"style")
+            start = WAOAPIParser.nowstart_string(stream)
+            end = WAOAPIParser.nowend_string(stream)
+            if dj:
+                return str('''%sAktuelle Show-Info @ %s%s
+%sDJ: %s
+%sShowname: %s
+%sStyle: %s
+%sUhrzeit: %s bis %s
+''' % (emoji.info_button,stream.capitalize(),emoji.info_button,emoji.microphone,
+       getdjnamebyonair(dj, djid),emoji.loudspeaker, show,emoji.headphone, style,emoji.alarm_clock, start, end))
+

@@ -30,7 +30,9 @@ def me(message):
     else:
         if value.get("wao_id"):
             logger.debug("User " + str(user.getchatid()) + " is registered.")
-            extrainfos += emoji.blue_diamond + " WeAreOne-ID: " + value.get("wao_id") + "\n"
+            extrainfos += emoji.blue_diamond + " WeAreOne-ID: " + value.get("wao_id") + "\n"+\
+                          emoji.blue_diamond + " Profile Pic: " +"http://p.image.web.tb-group.fm/profile/profil_small"\
+                          + value.get("wao_id")+"\n"
         if value.get("stream"):
             extrainfos += emoji.blue_diamond + " Streams: " + value.get("stream") + "\n"
 
