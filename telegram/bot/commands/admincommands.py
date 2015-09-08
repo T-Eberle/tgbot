@@ -78,13 +78,13 @@ class AdminCommands:
                 setfilevalue("groups", message.chat_id(), values)
 
             MessageController.sendreply(message, message.chat_id(),
-                                        "Stream der Gruppe wurde auf " + param + " gesetzt.")
+                                        emoji.check_mark+"Stream der Gruppe wurde auf " + param + " gesetzt.")
         else:
             try:
                 del values["stream"]
                 setfilevalue("groups", message.chat_id(), values)
                 MessageController.sendreply(message, message.chat_id(),
-                                            "Streamparameter für" + values["title"] + "zurückgesetzt.")
+                                            "Streamparameter für " + values["title"] + "zurückgesetzt.")
             except KeyError as error:
                 logger.warn(str(error) + " - Eintrag in dem Dictionary nicht vorhanden.")
             except TypeError as error:

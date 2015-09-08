@@ -6,6 +6,7 @@ from telegram.basicapi.commands.messagecommands import MessageController
 from telegram.tgredis import getfilevalue
 from resources import emoji
 from telegram.basicapi.commands.filecommands import FileController
+from telegram.bot.commands import getparameter
 
 
 def me(message):
@@ -31,17 +32,17 @@ def me(message):
         if value.get("wao_id"):
             logger.debug("User " + str(user.getchatid()) + " is registered.")
             extrainfos += emoji.blue_diamond + " WeAreOne-ID: " + value.get("wao_id") + "\n"+\
-                          emoji.blue_diamond + " Profile Pic: " +"http://p.image.web.tb-group.fm/profile/profil_small"\
-                          + value.get("wao_id")+"\n"
+                          emoji.blue_diamond + " [Profile Picture]" +"(http://p.image.web.tb-group.fm/profile/profil_small"\
+                          + value.get("wao_id")+")\n"
         if value.get("stream"):
             extrainfos += emoji.blue_diamond + " Streams: " + value.get("stream") + "\n"
 
     MessageController.sendreply(message, message.chat_id(),
-                                emoji.info_button + "Daten über dich" + emoji.info_button + "\n" +
-                                emoji.blue_diamond + " Vorname: " + user.first_name + "\n" +
-                                emoji.blue_diamond + " Nachname: " + user.last_name + "\n" +
-                                emoji.blue_diamond + " Username: @" + user.username + "\n" +
-                                emoji.blue_diamond + " Chat ID: " + str(user.chat_id) + "\n" + extrainfos)
+                                emoji.info_button + "*Daten über dich*" + emoji.info_button + "\n" +
+                                emoji.blue_diamond + " _Vorname:_ " + user.first_name + "\n" +
+                                emoji.blue_diamond + " _Nachname:_ " + user.last_name + "\n" +
+                                emoji.blue_diamond + " _Username:_ @" + user.username + "\n" +
+                                emoji.blue_diamond + " _Chat ID:_ " + str(user.chat_id) + "\n" + extrainfos)
 
 
 def helpme(message):
@@ -50,6 +51,11 @@ def helpme(message):
     :param message: Die vom Nutzer gesendete Nachricht
     """
     FileController.senddocument(message.chat_id(),"TG-Bot-Manual.pdf")
-    # MessageController.sendreply(message, message.chat_id(),
-    #                             emoji.info_button + "Hilfe bekommst du in der PDF-Datei auf unserer Cloud.\n" +
-    #                             "https://cloud.tb-group.fm/")
+
+
+def keyboard(message):
+    if message.reply_to_message:
+        MessageController.hide_Keyboard(message,message.chat_id(),"Wow, dein Liebliengsstream ist "+getparameter(message.text)+"? Hammer.")
+    else:
+        keyboard= [["Housetime"],["Technobase"],["Hardbase"],["Clubtime"],["Coretime"],["Trancebase"]]
+        MessageController.sendreply_one_keyboardmarkup(message,message.chat_id(),"Welcher ist dein Lieblingsstream? /keyboard",keyboard)

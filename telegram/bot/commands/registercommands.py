@@ -29,7 +29,7 @@ class RegisterCommands:
         users = getfile("users")
         user = message.from_User
         if not user.username:
-            MessageController.sendmessage(message.chat_id(),
+            MessageController.sendtext(message.chat_id(),
                                                   emoji.cross_mark +
                                                   "Du musst dir erst einen Nutzernamen vergeben,"
                                                   " bevor du dich "
@@ -47,7 +47,7 @@ class RegisterCommands:
         if param:
             for key, value in users.items():
                 if value.get("wao_id") == param:
-                    MessageController.sendmessage(message.chat_id(),
+                    MessageController.sendtext(message.chat_id(),
                                                   emoji.cross_mark +
                                                   "Die WAO-ID wurde schon auf folgenden User registriert: @" +
                                                   value.get("user_name"))
@@ -55,7 +55,7 @@ class RegisterCommands:
             values["wao_id"] = param
             setfilevalue("users", user.chat_id, values)
 
-            MessageController.sendmessage(message.chat_id(),
+            MessageController.sendtext(message.chat_id(),
                                           emoji.check_mark + "@" + user.username +
                                           " mit folgendem WeAreOne Account registriert:\n" +
                                           "http://www.technobase.fm/member/" + param)

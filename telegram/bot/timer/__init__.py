@@ -57,7 +57,7 @@ def checkprimetime():
                         result += "\U000026A0DJ WANTED @ " + radiostream[
                             1].capitalize() + " für folgende Zeiten\U000026A0\n" + djwanted
             if result:
-                controller.sendmessage(key, result)
+                controller.sendtext(key, result)
             else:
                 logger.debug("checkPrimetime: No times in Primetime available.")
         except TypeError:

@@ -117,7 +117,7 @@ def getshowfromday(date, stream):
         difference = 1-datetime.now().weekday()
         site = date+difference
     shows = waoapi.loadwaoapishowplan(site=site)
-    reply = "%sShows am %s @ %s%s\n" % (emoji.info_button,result_date.strftime("%A"),
+    reply = "%s*Shows am %s @ %s*%s\n" % (emoji.info_button,result_date.strftime("%A"),
                                         stream.capitalize(),emoji.info_button)
     showstring = ""
     for show in shows:

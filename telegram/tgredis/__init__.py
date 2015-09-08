@@ -21,9 +21,33 @@ config = TGBotConfigParser("config.ini")
 configdata = config.load()
 
 
+def addtoconv(message,value):
+    user = message.from_User
+    new_value=""
+    conv = getconv(message)
+    if conv!="None":
+        new_value += conv+" ; "
+    new_value += value
+    pipe = convserver.pipeline()
+    pipe.set(user.chat_id,new_value)
+    pipe.expire(user.chat_id,120)
+    pipe.execute()
+
+def getconv(message):
+    user = message.from_User
+    return str(convserver.get(user.chat_id))
+
+def deleteconv(message):
+    user = message.from_User
+    convserver.delete(user.chat_id)
+
+
 def setfile(filename, jsonfile):
     logger.debug("SET FILE: " + str(jsonfile))
-    fileserver.set(filename, jsonfile)
+    pipe = fileserver.pipeline()
+    pipe.set(filename, jsonfile)
+    pipe.expire(filename,int(configdata["json_files"]["file_expire"]))
+    pipe.execute()
 
 
 def getfile(filename):

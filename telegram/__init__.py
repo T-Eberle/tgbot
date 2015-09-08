@@ -7,6 +7,6 @@ from telegram.bot.parser import parsemessage
 
 def activatebot(data):
     logger.debug("Message arrived.\nMessage: " + str(data))
-    message = Message(data=data)
+    message = Message(data=data["message"])
 
     parsemessage(message)

@@ -34,6 +34,11 @@ class Message(Base):
         else:
             self.chat = User(data=chat)
 
+        if "reply_to_message" in data:
+            self.reply_to_message=data["reply_to_message"]
+        else:
+            self.reply_to_message=None
+
         # self.forward_date = data["forward_date"]
         if "text" in data:
             self.text = data["text"]
@@ -48,7 +53,7 @@ class Message(Base):
                  group_chat_created=None):
         super().__init__()
         if data:
-            self.__createfromdata__(data["message"])
+            self.__createfromdata__(data)
 
         else:
             self.message_id = message_id

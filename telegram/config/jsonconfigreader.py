@@ -47,7 +47,6 @@ class JSONConfigReader:
         for filename in self.filenames:
             data = self.config["json_files"]["json_path"] + "/" + filename + ".json"
             self.dump(data, filename)
-        flushallfiles()
 
     @staticmethod
     def dump(data, filename):

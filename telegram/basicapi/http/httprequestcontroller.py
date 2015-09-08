@@ -16,18 +16,16 @@ class HTTPRequestController:
 
     @staticmethod
     def requestwithvaluesxwwwurlencoded(url, values):
-        try:
-            data = urlencode(values)
-            data = data.encode("utf-8")
-
-            request = Request(url)
-            request.add_header("Content-Type", "application/x-www-form-urlencoded;charset=utf-8")
-            response = urlopen(request.get_full_url(), data)
-            html = response.read()
-            return html
-        except HTTPError as error:
-            logger.exception(error)#
-            return None
+        req = requests.post(url,params=values)
+        # data = urlencode(values)
+        # data = data.encode("utf-8")
+        #
+        # request = Request(url)
+        # request.add_header("Content-Type", "application/x-www-form-urlencoded;charset=utf-8")
+        logger.debug("URL: "+str(req.url))
+        # response = urlopen(request.get_full_url(), data)
+        # html = response.read()
+        return req.raise_for_status()
 
 
     @staticmethod

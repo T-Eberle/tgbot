@@ -63,35 +63,44 @@ class RadioCommands:
         wenn jeweils eine Nachricht pro Stream geschickt werden soll
         """
         try:
-            parameter = getparameter(text, self.chat)
+            parameter = getparameter(text, self.chat).lower()
             reply = ""
             if "wao" in parameter or "all" in parameter:
                 if multiple_message:
                     for stream in radiostreams.values():
                         reply = getattr(self, method_name)(stream)
-                        MessageController.sendreply(message, message.chat_id(), reply + "#%s" % method_name)
+                        MessageController.hide_Keyboard(message, message.chat_id(), reply + "#%s" % method_name)
+                        deleteconv(message)
                 else:
                     for stream in radiostreams.values():
                         reply += getattr(self, method_name)(stream)
-                    MessageController.sendreply(message, message.chat_id(), reply + "#%s" % method_name)
-            elif not (any(radio in parameter for radio in list(radiostreams.values())) or any(
-                        radio in parameter for radio in list(radiostreams.keys()))):
-                MessageController.sendreply(message, message.chat_id(),
-                                            "\U0000274CBitte den Radiostream als Parameter mitgeben!\n#" + method_name)
+                    MessageController.hide_Keyboard(message, message.chat_id(), reply + "#%s" % method_name)
+                    deleteconv(message)
+            elif (not (any(radio in parameter.lower() for radio in list(radiostreams.values())) or any(
+                        radio in parameter.lower() for radio in list(radiostreams.keys()))))or parameter.lower()=="markup":
+                keyboard= [["Housetime"],["Technobase"],["Hardbase"],["Clubtime"],["Coretime"],["Trancebase"]]
+                MessageController.sendreply_one_keyboardmarkup(message,message.chat_id(),
+                                                "\U0000274CBitte wähle einen Radiostream aus.\n/"
+                                                               + method_name
+                                                ,keyboard)
+                addtoconv(message,"/"+method_name)
             else:
                 if multiple_message:
                     for radiostream in radiostreams.items():
-                        if radiostream[0] in parameter or radiostream[1] in parameter:
+                        if radiostream[0] in parameter.lower() or radiostream[1] in parameter:
                             reply = getattr(self, method_name)(radiostream[1])
-                            MessageController.sendreply(message, message.chat_id(), reply + "#%s" % method_name)
+                            MessageController.hide_Keyboard(message, message.chat_id(), reply + "#%s" % method_name)
+                            deleteconv(message)
                 else:
                     for radiostream in radiostreams.items():
-                        if radiostream[0] in parameter or radiostream[1] in parameter:
+                        if radiostream[0] in parameter.lower() or radiostream[1] in parameter:
                             reply += getattr(self, method_name)(radiostream[1])
-                    MessageController.sendreply(message, message.chat_id(), reply + "#%s" % method_name)
+                    MessageController.hide_Keyboard(message, message.chat_id(), reply + "#%s" % method_name)
+                    deleteconv(message)
         except TypeError as typo:
             logger.exception(typo)
-            MessageController.sendreply(message, message.chat_id(), "Witzbold.")
+            MessageController.hide_Keyboard(message, message.chat_id(), "Witzbold.")
+            deleteconv(message)
 
     @staticmethod
     def gestern(stream):
@@ -171,7 +180,7 @@ class RadioCommands:
     @staticmethod
     def listener(stream):
         listener = waoParser.gettrayelement(stream + "_onAir", "listener")
-        return str('''%sAktuelle Listeneranzahl @ %s: %s
+        return str('''%s*Aktuelle Listeneranzahl* @ _%s_: %s
 ''' % (emoji.satellite,stream.capitalize(), listener))
 
     @staticmethod
