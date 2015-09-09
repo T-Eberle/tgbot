@@ -10,6 +10,7 @@ from telegram.bot.timer import *
 from telegram.config.jsonconfigreader import JSONConfigReader
 from telegram import activatebot
 from datetime import timedelta
+import uwsgi
 import shutil
 
 configParser = TGBotConfigParser("config.ini")
@@ -23,7 +24,7 @@ locale.setlocale(locale.LC_ALL, "de_DE.UTF8")
 
 
 def application(environ, start_response):
-    filereader.createcacheforfiles()
+    uwsgi.signal(13)
     start_response('200 OK', [('Content-Type', 'text/html')])
 
     try:
@@ -35,18 +36,30 @@ def application(environ, start_response):
         request_body = environ['wsgi.input'].read(request_body_size)
         obj = json.loads(request_body.decode('utf-8'))
         activatebot(obj)
-    filereader.savecachetofiles()
+    uwsgi.signal(14)
     return b''
+
+@lock
+@signal(13)
+def loadfromfile(num):
+    logger.info("LOAD FILES.")
+    filereader.createcacheforfiles()
+
+@lock
+@signal(14)
+def savetofile(num):
+    logger.info("SAVING FILES.")
+    filereader.savecachetofiles()
 
 
 # TODO Timer für getimte Events: Check Ticket #81
 @cron(int(config.get("basics", "time_interval")), -1, -1, -1, -1, target='spooler')
 def primetime(num):
-    filereader.createcacheforfiles()
+    uwsgi.signal(13)
     if not (int(config.get("basics", "sleep_start")) <= datetime.now().hour < int(config.get("basics", "sleep_end"))):
         logger.debug(config.get("basics", "time_interval") + " minutes, what a long time!")
         checkprimetime()
-    filereader.savecachetofiles()
+    uwsgi.signal(14)
 
 @cron(0, -1, -1, -1, -1, target='spooler')
 def backup(num):

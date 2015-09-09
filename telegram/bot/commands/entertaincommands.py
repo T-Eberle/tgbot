@@ -5,6 +5,7 @@ from telegram.config.tgbotfileidparser import TGBotFileIDParser
 from telegram.tglogging import logger
 from telegram.basicapi.commands.stickercommands import StickerController
 from telegram.basicapi.commands.messagecommands import MessageController
+from telegram.basicapi.commands.voicecommands import VoiceController
 
 entertaincommands = ["genius", "me gusta", "halt stop", "halt, stop", "halt,stop"]
 
@@ -37,3 +38,6 @@ def megusta(message):
 def haltstop(message):
     MessageController.sendreply(message, message.chat_id(), "JETZT REDE ICH!\n" +
                                 "https://www.youtube.com/watch?v=C1fCJvgNDow")
+
+def macarena(message):
+    VoiceController.sendvoice(message.chat_id(), "macarena.ogg")

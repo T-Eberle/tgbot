@@ -30,4 +30,4 @@ def updategroup(message):
             setfile("groups", jsongroups)
             logger.debug("Groupname has changed!")
     except KeyError:
-        pass
+        logger.error("Updater: Can't get group?!")

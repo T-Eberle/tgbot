@@ -7,6 +7,7 @@ from telegram.tgredis import getfilevalue
 from resources import emoji
 from telegram.basicapi.commands.filecommands import FileController
 from telegram.bot.commands import getparameter
+from telegram.config.waoapiparser import WAOAPIParser
 
 
 def me(message):
@@ -54,8 +55,7 @@ def helpme(message):
 
 
 def keyboard(message):
-    if message.reply_to_message:
-        MessageController.hide_Keyboard(message,message.chat_id(),"Wow, dein Liebliengsstream ist "+getparameter(message.text)+"? Hammer.")
-    else:
-        keyboard= [["Housetime"],["Technobase"],["Hardbase"],["Clubtime"],["Coretime"],["Trancebase"]]
-        MessageController.sendreply_one_keyboardmarkup(message,message.chat_id(),"Welcher ist dein Lieblingsstream? /keyboard",keyboard)
+    waoapiparser = WAOAPIParser(waoapi="housetime")
+    shows = waoapiparser.loadwaoapishowplan(count=2,upcoming=True)
+    MessageController.sendreply(message,message.chat_id(),'''%sÜbergabeprotokoll%s'''%(emoji.warning,emoji.warning))
+    pass

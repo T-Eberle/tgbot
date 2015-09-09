@@ -37,9 +37,13 @@ class HTTPRequestController:
         html = requests.post(url,data=values,files=files)
 
     @staticmethod
-    def requestwithdoc(url, values,filename):
+    def requestwithdoc(url, values,file_id,filename,path="resources.documents",complete_path=None):
         logger.debug("URL: " + str(url))
-        file = pkg_resources.resource_filename("resources.documents", filename)
-        logger.debug("FILE: "+str(file))
-        files = {"document": open(file,"rb")}
+        if not complete_path:
+            file = pkg_resources.resource_filename(path, filename)
+        else:
+            file = complete_path
+        logger.debug("PATH: "+str(path))
+        logger.debug("FILE: "+str(filename))
+        files = {file_id: open(file,"rb")}
         html = requests.post(url,data=values,files=files)

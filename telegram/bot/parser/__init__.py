@@ -8,6 +8,7 @@ from telegram.tgredis import *
 from telegram.basicapi.model.message import Message
 from telegram.bot.commands.admincommands import AdminCommands, admincommands
 from telegram.bot.commands.datacommands import *
+from telegram.bot.commands.entertaincommands import macarena
 
 config = TGBotConfigParser("config.ini")
 data = config.load()
@@ -73,6 +74,8 @@ def parsemessage(message):
         if "/keyboard" in message.text.lower():
                 keyboard(message)
         elif re.match(r'/(\w)+', message.text):
+            if message.text.lower() == "/macarena":
+                macarena(message)
             if message.text.lower() == "/hilfe":
                 helpme(message)
             elif message.text.lower() == "/me":

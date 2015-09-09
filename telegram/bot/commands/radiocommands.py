@@ -78,7 +78,7 @@ class RadioCommands:
                     deleteconv(message)
             elif (not (any(radio in parameter.lower() for radio in list(radiostreams.values())) or any(
                         radio in parameter.lower() for radio in list(radiostreams.keys()))))or parameter.lower()=="markup":
-                keyboard= [["Housetime"],["Technobase"],["Hardbase"],["Clubtime"],["Coretime"],["Trancebase"]]
+                keyboard= [["Technobase","Housetime","Hardbase"],["Coretime","Clubtime","Trancebase"]]
                 MessageController.sendreply_one_keyboardmarkup(message,message.chat_id(),
                                                 "\U0000274CBitte wähle einen Radiostream aus.\n/"
                                                                + method_name
