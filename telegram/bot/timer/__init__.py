@@ -5,7 +5,7 @@ from telegram.basicapi.commands.messagecommands import MessageController
 from telegram.config.tgbotconfigparser import TGBotConfigParser
 from telegram.config.waoapiparser import WAOAPIParser
 from datetime import datetime
-from telegram.bot.commands.radiocommands import radiostreams
+import collections
 from telegram.tglogging import *
 from telegram.tgredis import getfile, getfilevalue
 
@@ -17,6 +17,9 @@ waoParser = WAOAPIParser("housetime_onAir")
 primetime_start = int(data["primetime"]["primetime_start"])
 primetime_end = int(data["primetime"]["primetime_end"])
 
+unsorted_radiostreams = {"tb": "technobase", "ht": "housetime", "hb": "hardbase", "trb": "trancebase", "ct": "coretime",
+                         "clt": "clubtime"}
+radiostreams = collections.OrderedDict(sorted(unsorted_radiostreams.items()))
 
 def checkprimetime():
     """

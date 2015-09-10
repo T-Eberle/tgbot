@@ -14,9 +14,9 @@ timeformat = "%H:%M"
 
 
 class WAOAPIParser:
-    def __init__(self, tray=None,waoapi=None):
+    def __init__(self, tray=None,stream=None):
         self.tray = tray
-        self.waoapi=waoapi
+        self.stream=stream
         self.data = None
         self.showplan= None
         self.url = None
@@ -100,18 +100,31 @@ class WAOAPIParser:
         self.data = json.loads(response.read().decode("utf-8"))
         return self.data
 
-    def loadwaoapishowplan(self, waoapi=None,count=-1,upcoming=False,site=1):
-        if not self.waoapi and not waoapi:
-            logger.error("You need to set the variable waoapi.")
+
+    def loadwaoapi(self,method,stream=None,site=1,**kwargs):
+        if not self.stream and not stream:
+            logger.error("You need to set the variable stream.")
             return
-        elif not self.waoapi and waoapi:
-            self.waoapi = waoapi
-        url = config.get("waoapi", "url") + config.get("waoapi", "showplan")+config.get("waoapi-site",self.waoapi)\
+        elif not self.stream and stream:
+            self.stream = stream
+        url = config.get("waoapi", "url") + config.get("waoapi",method)+config.get("waoapi-site",self.stream)\
               +"/"+str(site)
         logger.info(url)
-        values = {"count":count,"upcoming":upcoming}
+        values={}
+        for key in kwargs.keys():
+            values[str(key)]=kwargs[key]
         self.showplan = WAOAPIParser.getjson(url,values)
         return self.showplan
+
+    def loadwaoapishowplan(self, stream=None,count=-1,upcoming=False,site=1):
+        self.showplan = self.loadwaoapi(method="showplan", stream=stream,site=site,count=count,upcoming=upcoming)
+        return self.showplan
+
+    def loadwaoapitracklist(self, stream=None,count=20,upcoming=False):
+        self.tracklist = self.loadwaoapi(method="tracklist", stream=stream,site="",count=count)
+        return self.tracklist
+
+
 
     def gettrayelement(self, json_file, jsonid):
         data = self.loadtray(json_file)
@@ -121,10 +134,10 @@ class WAOAPIParser:
 if __name__ == '__main__':
     waoconfig = TGBotConfigParser("wao-config.ini")
     waodata =waoconfig.load()
-    waoapi = WAOAPIParser(waoapi="housetime")
+    waoapi = WAOAPIParser(stream="housetime")
     waoapi.loadwaoapishowplan(count=2)
     print(str(waoapi.showplan))
-    waoapi = WAOAPIParser(waoapi="housetime")
+    waoapi = WAOAPIParser(stream="housetime")
     two_shows = waoapi.loadwaoapishowplan(count=2,upcoming=True)
     for show in two_shows:
         start_timestamp= show[waodata.get("waoapi-showplan","start")]

@@ -61,7 +61,7 @@ def nextshow(stream):
     :param stream: der Stream
     :return: String der nächsten Show
     """
-    waoapi = WAOAPIParser(waoapi=stream)
+    waoapi = WAOAPIParser(stream=stream)
     two_shows = waoapi.loadwaoapishowplan(count=2,upcoming=True)
     for show in two_shows:
         start_timestamp= show[waodata.get("waoapi-showplan","start")]
@@ -106,7 +106,7 @@ def getshowfromday(date, stream):
     :return: Sendeplan von einem ausgewählten Datum für den jeweiligen Stream als String
     """
     now = datetime.now()
-    waoapi = WAOAPIParser(waoapi=stream)
+    waoapi = WAOAPIParser(stream=stream)
     if date==None:
         site = 0
         result_date = datetime.now()-timedelta(days=1)

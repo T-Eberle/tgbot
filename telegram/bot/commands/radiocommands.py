@@ -1,25 +1,15 @@
 # -*- coding: utf-8 -*-
 __author__ = 'Thomas Eberle'
 
-import collections
 
-from telegram.basicapi.commands.stickercommands import StickerController
 from telegram.bot.commands import *
 from telegram.config.tgbotfileidparser import TGBotFileIDParser
 from telegram.config.waoapiparser import WAOAPIParser
 from telegram.tgredis import *
 from resources import emoji
+from telegram.bot.decorators.multiRadioCommand import multiRadioCommand
+from telegram.bot.decorators.singleRadioCommand import singleRadioCommand
 
-multipleradiocommands = ["listener", "dj", "now", "track", "next"]
-
-singleradiocommands = ["heute", "morgen","gestern", "montag", "dienstag", "mittwoch", "donnerstag", "freitag", "samstag",
-                       "sonntag"]
-
-unsorted_radiostreams = {"tb": "technobase", "ht": "housetime", "hb": "hardbase", "trb": "trancebase", "ct": "coretime",
-                         "clt": "clubtime"}
-radiostreams = collections.OrderedDict(sorted(unsorted_radiostreams.items()))
-
-allradiocommands = multipleradiocommands + singleradiocommands + list(radiostreams.values())
 waoParser = WAOAPIParser("housetime_onAir")
 
 fileconfig = TGBotFileIDParser()
@@ -29,180 +19,109 @@ filedata = fileconfig.load()
 class RadioCommands:
     def __init__(self):
         self.chat = None
+        self.radiostream = ""
 
-    def parseradiocommands(self, message, text):
-        """
-        Parser für Radiocommands
-        :param message: Die vom Nutzer verschickte Nachricht
-        :param text: Der vom Nutzer verschickte Text
-        """
-        self.chat = getstreamparameter(message)
-        logger.debug(text + " command recognized.")
-        for multipleradiocommand in multipleradiocommands:
-            if getcommand(text) == multipleradiocommand:
-                self.basicradiocommand(message, text, multipleradiocommand, False)
-        for singleradiocommand in singleradiocommands:
-            if getcommand(text) == singleradiocommand:
-                self.basicradiocommand(message, text, singleradiocommand, True)
-        for radiostream in list(radiostreams.values()):
-            if radiostream == getcommand(text):
-                StickerController.sendstickerwithid(message.chat_id(), radiostream+".webp")
 
-    def basicradiocommand(self, message, text, method_name, multiple_message):
-        """
-        Methodenrumpf für alle Radiocommands.
-        Da alle Radiobefehle Streams als Parameter benötigen, wird dieser hier direkt weitergegeben.
-        Außerdem wird hier zwischen Befehlen unterschieden,
-        die entweder nur eine oder mehrere Nachrichten verschicken können.
-        Ein Sendeplanbefehl muss beispielsweise für jeden Stream eine Nachricht verschicken,
-        wo es andererseits beim Listenerbefehl reicht wenn alle Streams in eine Nachricht gepackt werden.
-        :param message: Die verschickte Nachricht
-        :param text: Der verschickte Text
-        :param method_name: Name des Befehls und der Funktion
-        :param multiple_message: Booleanwert der auf wahrgestellt wird,
-        wenn jeweils eine Nachricht pro Stream geschickt werden soll
-        """
+
+    @multiRadioCommand
+    def gestern(self,message):
+        return getshowfromday(None,self.radiostream)
+
+    @multiRadioCommand
+    def montag(self,message):
+        return getshowfromday(0, self.radiostream)
+
+    @multiRadioCommand
+    def dienstag(self,message):
+        return getshowfromday(1, self.radiostream)
+
+    @multiRadioCommand
+    def mittwoch(self,message):
+        return getshowfromday(2, self.radiostream)
+
+    @multiRadioCommand
+    def donnerstag(self,message):
+        return getshowfromday(3, self.radiostream)
+
+    @multiRadioCommand
+    def freitag(self,message):
+        return getshowfromday(4, self.radiostream)
+
+    @multiRadioCommand
+    def samstag(self,message):
+        return getshowfromday(5, self.radiostream)
+
+    @multiRadioCommand
+    def sonntag(self,message):
+        return getshowfromday(6, self.radiostream)
+
+    @multiRadioCommand
+    def heute(self,message):
+        return getshowfromtoday(self.radiostream)
+
+    @multiRadioCommand
+    def morgen(self,message):
+        return getshowfromtomorrow(self.radiostream)
+
+    @singleRadioCommand
+    def next(self,message):
+        return nextshow(self.radiostream)
+
+    @singleRadioCommand
+    def track(self,message):
         try:
-            parameter = getparameter(text, self.chat).lower()
-            reply = ""
-            if "wao" in parameter or "all" in parameter:
-                if multiple_message:
-                    for stream in radiostreams.values():
-                        reply = getattr(self, method_name)(stream)
-                        MessageController.hide_Keyboard(message, message.chat_id(), reply + "#%s" % method_name)
-                        deleteconv(message)
-                else:
-                    for stream in radiostreams.values():
-                        reply += getattr(self, method_name)(stream)
-                    MessageController.hide_Keyboard(message, message.chat_id(), reply + "#%s" % method_name)
-                    deleteconv(message)
-            elif (not (any(radio in parameter.lower() for radio in list(radiostreams.values())) or any(
-                        radio in parameter.lower() for radio in list(radiostreams.keys()))))or parameter.lower()=="markup":
-                keyboard= [["Technobase","Housetime","Hardbase"],["Coretime","Clubtime","Trancebase"]]
-                MessageController.sendreply_one_keyboardmarkup(message,message.chat_id(),
-                                                "\U0000274CBitte wähle einen Radiostream aus.\n/"
-                                                               + method_name
-                                                ,keyboard)
-                addtoconv(message,"/"+method_name)
-            else:
-                if multiple_message:
-                    for radiostream in radiostreams.items():
-                        if radiostream[0] in parameter.lower() or radiostream[1] in parameter:
-                            reply = getattr(self, method_name)(radiostream[1])
-                            MessageController.hide_Keyboard(message, message.chat_id(), reply + "#%s" % method_name)
-                            deleteconv(message)
-                else:
-                    for radiostream in radiostreams.items():
-                        if radiostream[0] in parameter.lower() or radiostream[1] in parameter:
-                            reply += getattr(self, method_name)(radiostream[1])
-                    MessageController.hide_Keyboard(message, message.chat_id(), reply + "#%s" % method_name)
-                    deleteconv(message)
-        except TypeError as typo:
-            logger.exception(typo)
-            MessageController.hide_Keyboard(message, message.chat_id(), "Witzbold.")
-            deleteconv(message)
-
-    @staticmethod
-    def gestern(stream):
-        return getshowfromday(None,stream)
-
-    @staticmethod
-    def montag(stream):
-        return getshowfromday(0, stream)
-
-    @staticmethod
-    def dienstag(stream):
-        return getshowfromday(1, stream)
-
-    @staticmethod
-    def mittwoch(stream):
-        return getshowfromday(2, stream)
-
-    @staticmethod
-    def donnerstag(stream):
-        return getshowfromday(3, stream)
-
-    @staticmethod
-    def freitag(stream):
-        return getshowfromday(4, stream)
-
-    @staticmethod
-    def samstag(stream):
-        return getshowfromday(5, stream)
-
-    @staticmethod
-    def sonntag(stream):
-        return getshowfromday(6, stream)
-
-    @staticmethod
-    def heute(stream):
-        return getshowfromtoday(stream)
-
-    @staticmethod
-    def morgen(stream):
-        return getshowfromtomorrow(stream)
-
-    @staticmethod
-    def next(stream):
-        return nextshow(stream)
-
-    @staticmethod
-    def track(stream):
-        try:
-            artist = WAOAPIParser.nowartist(stream)
-            track =WAOAPIParser.nowtrack(stream)
-            release =WAOAPIParser.nowrelease(stream)
+            artist = WAOAPIParser.nowartist(self.radiostream)
+            track =WAOAPIParser.nowtrack(self.radiostream)
+            release =WAOAPIParser.nowrelease(self.radiostream)
             release_string =""
             if release!="0":
                 release_string =str("Check: http://www.technobase.fm/release/%s\n" % release)
-            return str("%sAktueller Track @ %s: %s - %s\n"% (emoji.musical_note,stream.capitalize(), artist, track))\
+            return str("%sAktueller Track @ %s: %s - %s\n"% (emoji.musical_note,self.radiostream.capitalize(), artist, track))\
                    + release_string
 
         except KeyError as error:
             logger.exception(error)
             return str('''%sKein DJ ON AIR @ %s!
-''' % (emoji.thumb_down,stream.capitalize()))
+''' % (emoji.thumb_down,self.radiostream.capitalize()))
 
-
-
-    @staticmethod
-    def dj(stream):
+    @singleRadioCommand
+    def dj(self,message):
         try:
-            dj = WAOAPIParser.now(stream,"dj")
-            djid = str(WAOAPIParser.now(stream,"djid"))
+            dj = WAOAPIParser.now(self.radiostream,"dj")
+            djid = str(WAOAPIParser.now(self.radiostream,"djid"))
             return str('''%sAktueller DJ @ %s: %s
-''' % (emoji.microphone,stream.capitalize(), getdjnamebyonair(dj, djid)))
+''' % (emoji.microphone,self.radiostream.capitalize(), getdjnamebyonair(dj, djid)))
         except KeyError:
             return str('''%sKein DJ ON AIR @ %s!
-''' % (emoji.thumb_down,stream.capitalize()))
+''' % (emoji.thumb_down,self.radiostream.capitalize()))
 
 
-    @staticmethod
-    def listener(stream):
-        listener = waoParser.gettrayelement(stream + "_onAir", "listener")
+    @singleRadioCommand
+    def listener(self,message):
+        listener = waoParser.gettrayelement(self.radiostream + "_onAir", "listener")
         return str('''%s*Aktuelle Listeneranzahl* @ _%s_: %s
-''' % (emoji.satellite,stream.capitalize(), listener))
+''' % (emoji.satellite,self.radiostream.capitalize(), listener))
 
-    @staticmethod
-    def now(stream):
+    @singleRadioCommand
+    def now(self,message):
         try:
-            WAOAPIParser.now(stream,"playlist")
+            WAOAPIParser.now(self.radiostream,"playlist")
             return str('''%sAktuelle Show-Info @ %s%s
 %sKein DJ ON AIR!
-''' % (emoji.info_button,stream.capitalize(),emoji.info_button,emoji.thumb_down))
+''' % (emoji.info_button,self.radiostream.capitalize(),emoji.info_button,emoji.thumb_down))
         except KeyError:
-            dj = WAOAPIParser.now(stream,"dj")
-            djid = str(WAOAPIParser.now(stream, "djid"))
-            show = WAOAPIParser.now(stream,"show")
-            style = WAOAPIParser.now(stream,"style")
-            start = WAOAPIParser.nowstart_string(stream)
-            end = WAOAPIParser.nowend_string(stream)
+            dj = WAOAPIParser.now(self.radiostream,"dj")
+            djid = str(WAOAPIParser.now(self.radiostream, "djid"))
+            show = WAOAPIParser.now(self.radiostream,"show")
+            style = WAOAPIParser.now(self.radiostream,"style")
+            start = WAOAPIParser.nowstart_string(self.radiostream)
+            end = WAOAPIParser.nowend_string(self.radiostream)
             if dj:
                 return str('''%sAktuelle Show-Info @ %s%s
 %sDJ: %s
 %sShowname: %s
 %sStyle: %s
 %sUhrzeit: %s bis %s
-''' % (emoji.info_button,stream.capitalize(),emoji.info_button,emoji.microphone,
+''' % (emoji.info_button,self.radiostream.capitalize(),emoji.info_button,emoji.microphone,
        getdjnamebyonair(dj, djid),emoji.loudspeaker, show,emoji.headphone, style,emoji.alarm_clock, start, end))
 

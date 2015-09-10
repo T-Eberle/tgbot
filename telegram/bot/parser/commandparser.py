@@ -3,16 +3,14 @@
 __author__ = 'Thomas'
 
 from telegram.bot.commands.radiocommands import *
-from telegram.bot.commands.registercommands import RegisterCommands, allRegcommands
-from telegram.tgredis import *
+import inspect
 
 
-def parsecommand(message):
-    text = message.text
-
-    if any("/" + radio in text.lower() for radio in allradiocommands) and commandallowed(message):
-        radcommands = RadioCommands()
-        radcommands.parseradiocommands(message, text)
-    elif any("/" + register in text.lower() for register in allRegcommands):
-        regcommands = RegisterCommands()
-        regcommands.parseregistercommands(message, text)
+def parsecommand(message,*args):
+    text= message.text
+    command = getcommand(text)
+    for obj in args:
+            logger.debug(command + " command recognized.")
+            for method in inspect.getmembers(obj):
+                  if getcommand(text).lower()==method[0]:
+                        getattr(obj,method[0])(message)

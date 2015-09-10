@@ -6,29 +6,24 @@ from telegram.bot.parser import textparser
 from telegram.bot.updater import *
 from telegram.tgredis import *
 from telegram.basicapi.model.message import Message
-from telegram.bot.commands.admincommands import AdminCommands, admincommands
+from telegram.bot.commands.admincommands import AdminCommands
 from telegram.bot.commands.datacommands import *
-from telegram.bot.commands.entertaincommands import macarena
+from telegram.bot.commands.entertaincommands import EntertainCommands
+from telegram.bot.commands.radiocommands import RadioCommands
+from telegram.bot.commands.registercommands import RegisterCommands
+from telegram.basicapi.decorator.permissions import func_isadmin
 
-config = TGBotConfigParser("config.ini")
-data = config.load()
+
 
 
 def ispermitted(message):
-    if isadmin(message) or ispermittedgroup(message):
+    if  ispermittedgroup(message):
+        return True
+    elif func_isadmin(message):
         return True
     else:
         return False
 
-
-def isadmin(message):
-    user = message.from_User
-    if str(user.chat_id) in data.get("basics", "superadmins"):
-        logger.debug("@" + user.username + "(" + str(user.chat_id) + ") ist ein SuperAdmin.")
-        return True
-    else:
-        logger.debug("@" + user.username + "(" + str(user.chat_id) + ") ist kein SuperAdmin")
-        return False
 
 
 def ispermittedgroup(message):
@@ -68,20 +63,7 @@ def parsemessage(message):
     if message.text is not None and ispermitted(message):
         logger.debug("Trying to get users.")
         updateuser(user)
-        if any("/" + admin in message.text.lower() for admin in admincommands) and isadmin(message):
-            admcommands = AdminCommands()
-            admcommands.parseadmincommands(message)
-        if "/keyboard" in message.text.lower():
-                keyboard(message)
-        elif re.match(r'/(\w)+', message.text):
-            if message.text.lower() == "/macarena":
-                macarena(message)
-            if message.text.lower() == "/hilfe":
-                helpme(message)
-            elif message.text.lower() == "/me":
-                me(message)
-            else:
-                commandparser.parsecommand(message)
-
+        if re.match(r'/(\w)+', message.text):
+                commandparser.parsecommand(message,RadioCommands(),RegisterCommands(),DataCommands(),EntertainCommands(),AdminCommands())
         else:
             textparser.parsetext(message)

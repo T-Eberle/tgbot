@@ -5,27 +5,11 @@ from telegram.basicapi.commands.messagecommands import MessageController
 import uwsgi
 from telegram.tgredis import setfilevalue, deleteentryfromfile
 from resources import emoji
-
-admincommands = ["restart", "reggroup", "unreggroup",
-                 # "unregisterall",
-                 "groupstream"]
-
+from telegram.basicapi.decorator.permissions import admin
 
 class AdminCommands:
-    def parseadmincommands(self, message):
-        """
-        Parst den Befehl und führt den korrekten aus.
-        :param message: Die gesendete Nachricht
-        """
-        text = message.text
-        logger.debug(text + " command recognized.")
-
-        for registercommand in admincommands:
-            if getcommand(text) == registercommand:
-                getattr(self, registercommand)(message)
-
-    @staticmethod
-    def restart(message):
+    @admin
+    def restart(self,message):
         """
         Startet den Bot neu.
         :param message: Die gesendete Nachricht
@@ -35,8 +19,8 @@ class AdminCommands:
                                     % (emoji.warning,emoji.warning))
         uwsgi.reload()
 
-    @staticmethod
-    def reggroup(message):
+    @admin
+    def reggroup(self,message):
         """
         Diese Methode registriert die Gruppe mit dem Bot, in der die Nachricht geschrieben wurde
         :param message: Die gesendete Nachricht
@@ -48,8 +32,8 @@ class AdminCommands:
         MessageController.sendreply(message, message.chat_id(),
                                     "Der Gruppenchat " + value["title"] + " wurde erfolgreich registriert.")
 
-    @staticmethod
-    def unreggroup(message):
+    @admin
+    def unreggroup(self,message):
         """
         Die angeschriebene Gruppen wird ausgetragen, die Registrierung gelöscht
         :param message: Die gesendete Nachricht
@@ -59,8 +43,8 @@ class AdminCommands:
         MessageController.sendreply(message, message.chat_id(),
                                     user.first_name + ", du hast die Gruppe aus den registrierten Gruppen gelöscht.")
 
-    @staticmethod
-    def groupstream(message):
+    @admin
+    def groupstream(self,message):
         """
         Zuteilung von Streams zu einer Gruppe
         :param message: Die gesendete Nachricht
