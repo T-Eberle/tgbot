@@ -51,6 +51,12 @@ def savetofile(num):
     logger.info("SAVING FILES.")
     filereader.savecachetofiles()
 
+@cron(10,-1,-1,-1,-1,target='spooler')
+def tracklist(num):
+    uwsgi.signal(13)
+    if not (int(config.get("basics", "sleep_start")) <= datetime.now().hour < int(config.get("basics", "sleep_end"))):
+        getTracklist()
+    uwsgi.signal(14)
 
 # TODO Timer für getimte Events: Check Ticket #81
 @cron(int(config.get("basics", "time_interval")), -1, -1, -1, -1, target='spooler')

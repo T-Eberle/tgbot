@@ -2,9 +2,10 @@
 __author__ = 'Tommy'
 
 from telegram.basicapi.commands.messagecommands import MessageController
+from telegram.basicapi.commands.filecommands import FileController
 from telegram.config.tgbotconfigparser import TGBotConfigParser
 from telegram.config.waoapiparser import WAOAPIParser
-from datetime import datetime
+from datetime import datetime,timedelta
 import collections
 from telegram.tglogging import *
 from telegram.tgredis import getfile, getfilevalue
@@ -17,9 +18,56 @@ waoParser = WAOAPIParser("housetime_onAir")
 primetime_start = int(data["primetime"]["primetime_start"])
 primetime_end = int(data["primetime"]["primetime_end"])
 
+waoconfig = TGBotConfigParser("wao-config.ini")
+waodata =waoconfig.load()
+
 unsorted_radiostreams = {"tb": "technobase", "ht": "housetime", "hb": "hardbase", "trb": "trancebase", "ct": "coretime",
                          "clt": "clubtime"}
 radiostreams = collections.OrderedDict(sorted(unsorted_radiostreams.items()))
+
+def getTracklist():
+    now = datetime.now()
+    keys = getfile("groups").keys()
+    for key in keys:
+        try:
+
+
+            value = getfilevalue("groups", key)
+            for radiostream in radiostreams.items():
+                complete_result = ""
+                streamfile=""
+                stream = value.get("stream")
+                if radiostream[0] in stream or radiostream[1] in stream:
+
+                    waoapi = WAOAPIParser(stream=radiostream[1])
+                    tracks = waoapi.loadwaoapitracklist(count=20, upcoming=True)
+
+                    stream_title = "\n\nTracklist für %s: \n" % radiostream[1].capitalize()
+                    result = ""
+                    for track in tracks:
+                        start_timestamp = track[waodata.get("waoapi-tracklist", "playtime")]
+                        start_date_string = WAOAPIParser.correctdate_timeformat(int(start_timestamp), format="%a %H:%M")
+                        start_date = WAOAPIParser.correcdate(start_timestamp)
+                        now = datetime.now()
+                        delta = timedelta(minutes=now.minute)
+                        now_rounded = now - delta
+                        if now_rounded - start_date <= timedelta(hours=1) and start_date < now_rounded:
+                            artist = track[waodata.get("waoapi-tracklist", "artist")]
+                            title = track[waodata.get("waoapi-tracklist", "title")]
+                            moderator = track[waodata.get("waoapi-tracklist","moderator")]
+
+                            result += start_date_string + ": " + artist + " - " + title + "\n"
+                    if result:
+                        complete_result += stream_title + result + "\n"
+                        streamfile+="_"+radiostream[0]+"_"+moderator
+                    if complete_result:
+                        FileController.sendStringasFile(int(key),"document","tracklist"+streamfile+".txt",complete_result)
+                    else:
+                        logger.warn("No Tracklist @ "+radiostream[1]+" available.")
+                        continue
+        except TypeError:
+            logger.warn("No stream set.")
+
 
 def checkprimetime():
     """

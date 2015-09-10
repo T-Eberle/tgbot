@@ -9,6 +9,7 @@ from telegram.tgredis import *
 from resources import emoji
 from telegram.bot.decorators.multiRadioCommand import multiRadioCommand
 from telegram.bot.decorators.singleRadioCommand import singleRadioCommand
+from datetime import datetime,timedelta
 
 waoParser = WAOAPIParser("housetime_onAir")
 
@@ -68,6 +69,10 @@ class RadioCommands:
         return nextshow(self.radiostream)
 
     @singleRadioCommand
+    def lastshow(self,message):
+        return lastshow(self.radiostream)
+
+    @singleRadioCommand
     def track(self,message):
         try:
             artist = WAOAPIParser.nowartist(self.radiostream)
@@ -125,3 +130,24 @@ class RadioCommands:
 ''' % (emoji.info_button,self.radiostream.capitalize(),emoji.info_button,emoji.microphone,
        getdjnamebyonair(dj, djid),emoji.loudspeaker, show,emoji.headphone, style,emoji.alarm_clock, start, end))
 
+    @singleRadioCommand
+    def tracklist(self,message):
+        waoapi = WAOAPIParser(stream=self.radiostream)
+        tracks = waoapi.loadwaoapitracklist(count=20, upcoming=True)
+
+        text = "\n\nTracklist für %s: \n" % self.radiostream.capitalize()
+        result = ""
+        for track in tracks:
+            start_timestamp = track[waodata.get("waoapi-tracklist", "playtime")]
+            start_date_string = WAOAPIParser.correctdate_timeformat(int(start_timestamp), format="%a %H:%M")
+            start_date = WAOAPIParser.correcdate(start_timestamp)
+            now = datetime.now()
+            now_rounded = now - timedelta(minutes=now.minute)
+            if now_rounded - start_date <= timedelta(hours=1) and start_date < now_rounded:
+                artist = track[waodata.get("waoapi-tracklist", "artist")]
+                title = track[waodata.get("waoapi-tracklist", "title")]
+
+                result += start_date_string + ": " + artist + " - " + title + "\n"
+        if not result:
+            return str('Keine Tracklist verfügbar für %s' % self.radiostream.capitalize())
+        return text + result
