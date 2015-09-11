@@ -11,30 +11,8 @@ from telegram.bot.commands.datacommands import *
 from telegram.bot.commands.entertaincommands import EntertainCommands
 from telegram.bot.commands.radiocommands import RadioCommands
 from telegram.bot.commands.registercommands import RegisterCommands
-from telegram.basicapi.decorator.permissions import func_isadmin
+from telegram.basicapi.decorator.permissions import *
 
-
-
-
-def ispermitted(message):
-    if  ispermittedgroup(message):
-        return True
-    elif func_isadmin(message):
-        return True
-    else:
-        return False
-
-
-
-def ispermittedgroup(message):
-    groups = getfile("groups")
-    logger.debug("Is this a permitted group? " + str(message.chat_id()))
-    logger.debug("Permitted Chat_Ids:" + str(groups.keys()))
-    if str(message.chat_id()) in groups.keys():
-        logger.debug("PERMITTED GROUP CHAT: " + str(message.chat_id()))
-        return True
-    else:
-        return False
 
 #TODO VERY DIRTY: Das muss noch geändert werden!!!!
 #Speichern der Conversations mit Redis?
@@ -56,11 +34,13 @@ def parsereplycommand(message):
 
     logger.info("OFFICIAL MESSAGE: "+message.text)
 
+
+@permitted
 def parsemessage(message):
     user = message.from_User
     updategroup(message)
     parsereplycommand(message)
-    if message.text is not None and ispermitted(message):
+    if message.text is not None:
         logger.debug("Trying to get users.")
         updateuser(user)
         if re.match(r'/(\w)+', message.text):

@@ -10,6 +10,7 @@ from telegram.config.waoapiparser import WAOAPIParser
 from telegram.config.tgbotconfigparser import TGBotConfigParser
 from datetime import datetime, timedelta
 from telegram.basicapi.decorator.tgcommands import sendreply#, sendtext
+from telegram.basicapi.decorator.permissions import botonly
 
 
 waoconfig = TGBotConfigParser("wao-config.ini")
@@ -17,6 +18,7 @@ waodata =waoconfig.load()
 
 class DataCommands:
 
+    @botonly
     @sendreply
     def me(self,message):
         """
@@ -45,14 +47,17 @@ class DataCommands:
                               + value.get("wao_id")+")\n"
             if value.get("stream"):
                 extrainfos += emoji.blue_diamond + " Streams: " + value.get("stream") + "\n"
-        chat_id=message.chat_id()
-        return (chat_id,
+        user = message.from_User
+        return (user.chat_id,
                                     emoji.info_button + "*Daten über dich*" + emoji.info_button + "\n" +
                                     emoji.blue_diamond + " _Vorname:_ " + user.first_name + "\n" +
                                     emoji.blue_diamond + " _Nachname:_ " + user.last_name + "\n" +
                                     emoji.blue_diamond + " _Username:_ @" + user.username + "\n" +
                                     emoji.blue_diamond + " _Chat ID:_ " + str(user.chat_id) + "\n" + extrainfos)
 
+
+    def start(self,message):
+        FileController.senddocument(message.chat_id(),"TG-Bot-Manual.pdf")
 
     def hilfe(self,message):
         """

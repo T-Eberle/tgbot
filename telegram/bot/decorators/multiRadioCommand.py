@@ -33,9 +33,9 @@ def multiRadioCommand(wrapped):
                     for stream in radiostreams.values():
                         obj.radiostream=stream
                         reply = wrapped(*args)
-                        MessageController.hide_Keyboard(message, message.chat_id(), reply + "#%s" % wrapped.__name__)
+                        MessageController.hide_Keyboard(message, reply[0], reply[1] + "#%s" % wrapped.__name__)
                         deleteconv(message)
-            elif (not (any(radio in parameter.lower() for radio in list(radiostreams.values())) or any(
+            elif not parameter or(not (any(radio in parameter.lower() for radio in list(radiostreams.values())) or any(
                         radio in parameter.lower() for radio in list(radiostreams.keys()))))or parameter.lower()=="markup":
                 keyboard= [["Technobase","Housetime","Hardbase"],["Coretime","Clubtime","Trancebase"]]
                 MessageController.sendreply_one_keyboardmarkup(message,message.chat_id(),
@@ -48,7 +48,7 @@ def multiRadioCommand(wrapped):
                     if radiostream[0] in parameter.lower() or radiostream[1] in parameter:
                         obj.radiostream=radiostream[1]
                         reply = wrapped(*args)
-                        MessageController.hide_Keyboard(message, message.chat_id(), reply + "#%s" % wrapped.__name__)
+                        MessageController.hide_Keyboard(message, reply[0], reply[1] + "#%s" % wrapped.__name__)
                         deleteconv(message)
         except TypeError as typo:
             logger.exception(typo)
