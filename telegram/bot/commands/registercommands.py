@@ -11,6 +11,7 @@ from telegram.basicapi.decorator.tgcommands import sendreply#,sendtext
 class RegisterCommands:
     # Befehl zum Registrieren des Nutzers
 
+    @sendreply
     def register(self,message):
         """
         Registriert den Telegrammnutzer mit dem von ihm eingegeben WAO-ID

@@ -45,5 +45,12 @@ class HTTPRequestController:
             file = complete_path
         logger.debug("PATH: "+str(path))
         logger.debug("FILE: "+str(filename))
-        files = {file_id: open(file,"rb")}
+        files = {file_id: (filename,open(file,"rb"))}
+        html = requests.post(url,data=values,files=files)
+
+    @staticmethod
+    def requestwithstringasfile(url, values,file_id,filename,filestring):
+        logger.debug("URL: " + str(url))
+        logger.debug("FILE: "+str(filename))
+        files = {file_id: (filename,filestring)}
         html = requests.post(url,data=values,files=files)

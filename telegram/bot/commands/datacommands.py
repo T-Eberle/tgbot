@@ -54,7 +54,7 @@ class DataCommands:
                                     emoji.blue_diamond + " _Chat ID:_ " + str(user.chat_id) + "\n" + extrainfos)
 
 
-    def helpme(self,message):
+    def hilfe(self,message):
         """
         Funktion, die dem Nutzer Hilfe zum Nutzen des Bots anbietet.
         :param message: Die vom Nutzer gesendete Nachricht

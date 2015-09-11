@@ -14,8 +14,14 @@ def sendreply(replymessage):
 
 def sendtext(textmessage):
     def _sendtext(*args):
-        tuple = textmessage
+        tuple = textmessage(*args)
         chat_id = int(tuple[0])
         MessageController.sendtext(chat_id, tuple[1])
 
     return _sendtext
+
+# def sendStringasDoc(filemessage):
+#     def wrapper(*args):
+#         tuple=filemessage(*args)
+#         chat_id=tuple[0]
+#         file_name=
