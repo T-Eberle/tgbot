@@ -96,6 +96,8 @@ class RadioCommands:
 ''' % (emoji.thumb_down,self.radiostream.capitalize()))
 
 
+
+
     @singleRadioCommand
     def listener(self,message):
         listener = waoParser.gettrayelement(self.radiostream + "_onAir", "listener")
@@ -124,4 +126,6 @@ class RadioCommands:
 %sUhrzeit: %s bis %s
 ''' % (emoji.info_button,self.radiostream.capitalize(),emoji.info_button,emoji.microphone,
        getdjnamebyonair(dj, djid),emoji.loudspeaker, show,emoji.headphone, style,emoji.alarm_clock, start, end))
+
+
 

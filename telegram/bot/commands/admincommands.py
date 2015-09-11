@@ -6,6 +6,7 @@ import uwsgi
 from telegram.tgredis import setfilevalue, deleteentryfromfile
 from resources import emoji
 from telegram.basicapi.decorator.permissions import admin
+from telegram.basicapi.decorator.tgcommands import sendreply
 
 class AdminCommands:
     @admin
@@ -20,6 +21,7 @@ class AdminCommands:
         uwsgi.reload()
 
     @admin
+    @sendreply
     def reggroup(self,message):
         """
         Diese Methode registriert die Gruppe mit dem Bot, in der die Nachricht geschrieben wurde
@@ -29,10 +31,11 @@ class AdminCommands:
         value = {"title": chat.title}
         logger.debug("VALUE: " + str(value))
         setfilevalue("groups", message.chat_id(), value)
-        MessageController.sendreply(message, message.chat_id(),
+        return (message.chat_id(),
                                     "Der Gruppenchat " + value["title"] + " wurde erfolgreich registriert.")
 
     @admin
+    @sendreply
     def unreggroup(self,message):
         """
         Die angeschriebene Gruppen wird ausgetragen, die Registrierung gelöscht
@@ -40,10 +43,11 @@ class AdminCommands:
         """
         user = message.from_User
         deleteentryfromfile("groups", message.chat_id())
-        MessageController.sendreply(message, message.chat_id(),
+        return (message.chat_id(),
                                     user.first_name + ", du hast die Gruppe aus den registrierten Gruppen gelöscht.")
 
     @admin
+    @sendreply
     def groupstream(self,message):
         """
         Zuteilung von Streams zu einer Gruppe
@@ -61,13 +65,13 @@ class AdminCommands:
                 values["stream"] = param
                 setfilevalue("groups", message.chat_id(), values)
 
-            MessageController.sendreply(message, message.chat_id(),
+            return (message.chat_id(),
                                         emoji.check_mark+"Stream der Gruppe wurde auf " + param + " gesetzt.")
         else:
             try:
                 del values["stream"]
                 setfilevalue("groups", message.chat_id(), values)
-                MessageController.sendreply(message, message.chat_id(),
+                return (message, message.chat_id(),
                                             "Streamparameter für " + values["title"] + "zurückgesetzt.")
             except KeyError as error:
                 logger.warn(str(error) + " - Eintrag in dem Dictionary nicht vorhanden.")
