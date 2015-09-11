@@ -51,7 +51,7 @@ def savetofile(num):
     logger.info("SAVING FILES.")
     filereader.savecachetofiles()
 
-@cron(10,-1,-1,-1,-1,target='spooler')
+@cron(5,-1,-1,-1,-1,target='spooler')
 def tracklist(num):
     uwsgi.signal(13)
     if not (int(config.get("basics", "sleep_start")) <= datetime.now().hour < int(config.get("basics", "sleep_end"))):

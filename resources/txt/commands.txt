@@ -2,6 +2,7 @@ hilfe - Anleitung zum WeAreOne Bot
 listener - Aktuelle Listeneranzahl
 now - Aktuelle Showdaten On Air
 next - Nächste Show On Air
+gestern - Sendeplan von Gestern
 heute - Sendeplan von Heute
 morgen - Sendeplan von Morgen
 montag - Sendeplan von Montag
@@ -13,4 +14,6 @@ samstag - Sendeplan von Samstag
 sonntag - Sendeplan von Sonntag
 dj - Aktueller DJ On Air
 track - Aktuell laufender Track
+tracklist - Tracklist der letzten Stunde bei einer Show
 me - Meine eigenen Chatdaten
+register - Registrierung

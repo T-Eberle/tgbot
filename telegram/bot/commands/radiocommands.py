@@ -141,10 +141,11 @@ class RadioCommands:
     @singleRadioCommand
     def tracklist(self,message):
         waoapi = WAOAPIParser(stream=self.radiostream)
-        tracks = waoapi.loadwaoapitracklist(count=20, upcoming=True)
+        tracks = waoapi.loadwaoapitracklist(count=30, upcoming=True)
         text = "\n\nTracklist für %s: \n" % self.radiostream.capitalize()
         result = ""
-        logger.debug("TRACKLIST: "+str(tracks))
+        if not tracks:
+            message.chat_id(),str('%sKeine Tracklist verfügbar für %s!%s\n' % (emoji.warning,self.radiostream.capitalize(),emoji.warning))
         for track in tracks:
             start_timestamp = track[waodata.get("waoapi-tracklist", "playtime")]
             start_date_string = WAOAPIParser.correctdate_timeformat(int(start_timestamp), format="%a %H:%M")
@@ -156,5 +157,5 @@ class RadioCommands:
                 title = track[waodata.get("waoapi-tracklist", "title")]
                 result += start_date_string + ": " + artist + " - " + title + "\n"
         if not result:
-            return message.chat_id(),str('Keine Tracklist verfügbar für %s' % self.radiostream.capitalize())
+            return message.chat_id(),str('%sKeine Tracklist verfügbar für %s!%s\n' % (emoji.warning,self.radiostream.capitalize(),emoji.warning))
         return message.chat_id(),text + result

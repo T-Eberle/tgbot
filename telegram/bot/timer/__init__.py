@@ -30,8 +30,6 @@ def getTracklist():
     keys = getfile("groups").keys()
     for key in keys:
         try:
-
-
             value = getfilevalue("groups", key)
             for radiostream in radiostreams.items():
                 complete_result = ""
