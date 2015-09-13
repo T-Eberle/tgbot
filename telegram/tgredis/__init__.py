@@ -104,20 +104,3 @@ def increasemessage(message):
 
     logger.debug("Response from Redis for key " + str(user.chat_id) + ": " + str(values))
 
-
-def commandallowed(message):
-    increasemessage(message)
-    user = message.from_User
-    limit = int(configdata["basics"]["commandlimit"])
-    value = int(limitserver.get(str(user.chat_id)))
-    if value > limit + 1:
-        logger.debug("User " + str(user.chat_id) + " hat sein Commandlimit von " + str(limit) + " erreicht.")
-        return False
-    elif value == limit + 1:
-        expire = limitserver.ttl(str(user.chat_id))
-        MessageController.sendreply(message, message.chat_id(),
-                                    '''%s @%s, für dich sind die Commands erstmal für %s Sekunden blockiert.'''
-                                    % (emoji.cross_mark,user.username, str(expire)))
-    else:
-        logger.debug("User " + str(user.chat_id) + " führt den  " + str(value) + ". Command aus.")
-        return True
