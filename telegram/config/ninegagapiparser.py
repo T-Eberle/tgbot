@@ -9,6 +9,7 @@ class NineGagApiParser:
     @staticmethod
     def method():
         result = requests.get("http://api-9gag.herokuapp.com/")
-        rand = random.randint(1,7)
+        size_result = len(result)
+        rand = random.randint(0,size_result - 1)
         jsondata = result.json()
         return "[" + jsondata[rand]["title"] + "]" + "(" + jsondata[rand]["image"] + ")"
