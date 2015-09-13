@@ -22,4 +22,4 @@ class VoiceController:
 
 
 if __name__=="__main__":
-    VoiceController.sendvoice(-27587386,"macarena.ogg")
+    VoiceController.sendvoice(-27587386,"alarm.ogg")

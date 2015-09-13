@@ -7,8 +7,10 @@ from telegram.basicapi.commands.stickercommands import StickerController
 from telegram.basicapi.commands.messagecommands import MessageController
 from telegram.basicapi.commands.voicecommands import VoiceController
 from telegram.basicapi.decorator.tgcommands import *
+from socket import *
+import random
 
-entertaincommands = ["genius", "me gusta", "halt stop", "halt, stop", "halt,stop"]
+entertaincommands = ["drunk", "alarm", "macarena", "fu"]
 
 config = TGBotFileIDParser()
 data = config.load()
@@ -16,17 +18,15 @@ data = config.load()
 
 class EntertainCommands:
 
-    def genius(self,message):
-        StickerController.sendstickerwithid(message.chat_id(), data.get("file_ids", "genius"))
+    def drunk(self,message):
+        a = random.randint(1,4)
+        StickerController.sendsticker(message.chat_id(), "paul_drunk%s.webp" %a)
 
-
-    def megusta(self,message):
-        StickerController.sendstickerwithid(message.chat_id(), data.get("file_ids", "megusta"))
-
-
-    def haltstop(self,message):
-        MessageController.sendreply(message, message.chat_id(), "JETZT REDE ICH!\n" +
-                                    "https://www.youtube.com/watch?v=C1fCJvgNDow")
+    def fu(self, message):
+        StickerController.sendsticker(message.chat_id(), "finger.webp")
 
     def macarena(self,message):
-        VoiceController.sendvoice(message.chat_id(), "macarena.ogg")
+        VoiceController.sendvoice(message.chat_id(), "macarena.mp3")
+
+    def alarm(self,message):
+        VoiceController.sendvoice(message.chat_id(), "alarm.mp3")

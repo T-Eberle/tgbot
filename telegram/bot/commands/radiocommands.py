@@ -8,7 +8,7 @@ from telegram.config.waoapiparser import WAOAPIParser
 from telegram.tgredis import *
 from resources import emoji
 from telegram.bot.decorators.multiRadioCommand import multiRadioCommand
-from telegram.bot.decorators.singleRadioCommand import singleRadioCommand
+from telegram.bot.decorators.singleradiocommand import singleRadioCommand
 from telegram.basicapi.decorator.permissions import botonly
 
 waoParser = WAOAPIParser("housetime_onAir")
