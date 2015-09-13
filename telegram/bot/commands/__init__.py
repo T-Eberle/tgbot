@@ -78,7 +78,7 @@ def lastshow(stream):
     """
     """
     waoapi = WAOAPIParser(Stream=stream)
-    two_shows = waoapi.loadwaoapishowplan(count=-1,upcoming=false)
+    two_shows = waoapi.loadwaoapishowplan(count=-1,upcoming=False)
     for show in two_shows:
         start_timestamp = show[waodata.get("waoapi-showplan","start")]
         start_date = WAOAPIParser.correcdate(start_timestamp)
@@ -128,17 +128,17 @@ def getshowfromday(date, stream):
         result_date = datetime.now()-timedelta(days=1)
     else:
         result_date = now
+        site =1
         while result_date.weekday()!= date:
             result_date += timedelta(days=1)
-        difference = 1-datetime.now().weekday()
-        site = date+difference
+            site+=1
     shows = waoapi.loadwaoapishowplan(site=site)
     reply = "%s*Shows am %s @ %s*%s\n" % (emoji.info_button,result_date.strftime("%A"),
                                         stream.capitalize(),emoji.info_button)
     showstring = ""
     for show in shows:
-        start_string = WAOAPIParser.correctdate_timeformat(show[waodata.get("waoapi-showplan","start")])
-        end_string = WAOAPIParser.correctdate_timeformat(show[waodata.get("waoapi-showplan","end")])
+        start_string = WAOAPIParser.correctdate_timeformat(int(show[waodata.get("waoapi-showplan","start")]))
+        end_string = WAOAPIParser.correctdate_timeformat(int(show[waodata.get("waoapi-showplan","end")]))
         showstring += createshowstring(show, start_string, end_string)
     if not showstring:
         reply += str('''%sKEINE SHOW VORHANDEN!''' % emoji.thumb_down)
