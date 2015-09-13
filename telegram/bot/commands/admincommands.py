@@ -7,6 +7,7 @@ from telegram.tgredis import setfilevalue, deleteentryfromfile
 from resources import emoji
 from telegram.basicapi.decorator.permissions import admin
 from telegram.basicapi.decorator.tgcommands import sendreply
+from telegram.basicapi.commands.filecommands import FileController
 
 class AdminCommands:
     @admin
@@ -45,6 +46,14 @@ class AdminCommands:
         deleteentryfromfile("groups", message.chat_id())
         return (message.chat_id(),
                                     user.first_name + ", du hast die Gruppe aus den registrierten Gruppen gelöscht.")
+
+
+    @admin
+    def error(self,message):
+        file = open("/home/tgbot/telegrambot_files/log/errorlog")
+        FileController.sendFile(message.chat_id(),"document","error.log",file)
+
+
 
     @admin
     @sendreply

@@ -39,13 +39,11 @@ def application(environ, start_response):
     uwsgi.signal(14)
     return b''
 
-@lock
 @signal(13)
 def loadfromfile(num):
     logger.info("LOAD FILES.")
     filereader.createcacheforfiles()
 
-@lock
 @signal(14)
 def savetofile(num):
     logger.info("SAVING FILES.")

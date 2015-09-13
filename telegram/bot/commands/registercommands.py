@@ -39,11 +39,16 @@ class RegisterCommands:
             values["last_name"] = user.last_name
         if param:
             for key, value in users.items():
-                if value.get("wao_id") == param:
+                if value.get("wao_id")==param and key == str(user.getchatid()):
+                    return (message.chat_id(),
+                                                  emoji.cross_mark +user.first_name+
+                                                  ", du hast dich schon mit dieser ID registriert!")
+                elif value.get("wao_id") == param:
                     return (message.chat_id(),
                                                   emoji.cross_mark +
                                                   "Die WAO-ID wurde schon auf folgenden User registriert: @" +
                                                   value.get("user_name"))
+
             values["wao_id"] = param
             setfilevalue("users", user.chat_id, values)
 

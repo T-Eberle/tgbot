@@ -21,3 +21,11 @@ class FileController:
         url = data.get("tgapi", "bot_link") + data.get("tgapi", "sendDocument_Method")
         HTTPRequestController.requestwithstringasfile(url,values,file_id,filename,filestring)
         pass
+
+    @staticmethod
+    def sendFile(chat_id,file_id,filename,file):
+        values = {"chat_id": chat_id}
+        url = data.get("tgapi", "bot_link") + data.get("tgapi", "sendDocument_Method")
+        HTTPRequestController.requestwithfile(url,values,file_id,filename,file)
+
+
