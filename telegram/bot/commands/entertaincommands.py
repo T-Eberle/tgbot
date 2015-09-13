@@ -2,15 +2,13 @@
 __author__ = 'Thomas Eberle'
 
 from telegram.config.tgbotfileidparser import TGBotFileIDParser
-from telegram.tglogging import logger
 from telegram.basicapi.commands.stickercommands import StickerController
-from telegram.basicapi.commands.messagecommands import MessageController
 from telegram.basicapi.commands.voicecommands import VoiceController
 from telegram.basicapi.decorator.tgcommands import *
-from socket import *
+from telegram.config.ninegagapiparser import NineGagApiParser
 import random
 
-entertaincommands = ["drunk", "alarm", "macarena", "fu"]
+entertaincommands = ["drunk", "alarm", "macarena", "fu", "gag"]
 
 config = TGBotFileIDParser()
 data = config.load()
@@ -30,3 +28,7 @@ class EntertainCommands:
 
     def alarm(self,message):
         VoiceController.sendvoice(message.chat_id(), "alarm.mp3")
+
+    @sendtext
+    def gag(self,message):
+        return message.chat_id(),NineGagApiParser.method()

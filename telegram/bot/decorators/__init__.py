@@ -1,7 +1,6 @@
 __author__ = 'Tommy'
 
 from telegram.config.jsonconfigreader import JSONConfigReader
-from uwsgidecorators import *
 from telegram.config.tgbotconfigparser import TGBotConfigParser
 from telegram.tglogging import logger
 from datetime import datetime

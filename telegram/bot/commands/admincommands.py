@@ -2,7 +2,7 @@
 __author__ = 'Thomas Eberle'
 from telegram.bot.commands import *
 from telegram.basicapi.commands.messagecommands import MessageController
-import uwsgi
+#import uwsgi
 from telegram.tgredis import setfilevalue, deleteentryfromfile
 from resources import emoji
 from telegram.basicapi.decorator.permissions import admin

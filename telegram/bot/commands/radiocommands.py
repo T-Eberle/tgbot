@@ -95,6 +95,11 @@ class RadioCommands:
             return message.chat_id(),str('''%sKein DJ ON AIR @ %s!
 ''' % (emoji.thumb_down,self.radiostream.capitalize()))
 
+    # @singleRadioCommand
+    # def 9gag(self, message):
+    #     try:
+    #         url = nineGagApiParser.
+
 
     @singleRadioCommand
     def dj(self,message):
