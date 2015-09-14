@@ -59,4 +59,4 @@ def singleradiocommand(wrapped):
                     logger.exception(typo)
                     MessageController.hide_keyboard(message, message.chat_id(), "Witzbold.")
                     deleteconv(message)
-        return wrapped
+        return _wrapped
