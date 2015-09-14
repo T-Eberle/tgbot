@@ -19,7 +19,7 @@ class EntertainCommands:
     @limited
     def drunk(self,message):
         a = random.randint(1,4)
-        StickerController.sendsticker(message.chat_id(), "paul_drunk%s.webp" %a)
+        StickerController.sendsticker(message.chat_id(), "drunk%s.webp" %a)
 
     @limited
     def fu(self, message):
