@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-__author__ = 'Thomas Eberle'
+__author__ = 'Thomas & Carsten'
 
 from telegram.config.tgbotfileidparser import TGBotFileIDParser
 from telegram.basicapi.commands.stickercommands import StickerController
@@ -9,7 +9,7 @@ from telegram.bot.decorators import limited
 from telegram.config.ninegagapiparser import NineGagApiParser
 import random
 
-entertaincommands = ["drunk", "alarm", "macarena", "fu", "gag"]
+entertaincommands = ["drunk", "alarm", "macarena", "fu", "gag", "pr0"]
 
 config = TGBotFileIDParser()
 data = config.load()
@@ -18,7 +18,7 @@ data = config.load()
 class EntertainCommands:
     @limited
     def drunk(self,message):
-        a = random.randint(1,4)
+        a = random.randint(1,5)
         StickerController.sendsticker(message.chat_id(), "drunk%s.webp" %a)
 
     @limited
@@ -36,4 +36,9 @@ class EntertainCommands:
     @limited
     @sendtext
     def gag(self,message):
-        return message.chat_id(),NineGagApiParser.method()
+        return message.chat_id(),NineGagApiParser.ninegag()
+
+    @limited
+    @sendtext
+    def pr0(self,message):
+        return message.chat_id(),NineGagApiParser.pr0gramm()
