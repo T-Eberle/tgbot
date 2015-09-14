@@ -60,7 +60,7 @@ class DataCommands:
         FileController.senddocument(message.chat_id(),"TG-Bot-Manual.pdf")
 
     @staticmethod
-    def hilfe(self,message):
+    def hilfe(message):
         """
         Funktion, die dem Nutzer Hilfe zum Nutzen des Bots anbietet.
         :param message: Die vom Nutzer gesendete Nachricht

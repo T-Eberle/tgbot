@@ -9,7 +9,7 @@ from telegram.bot.decorators import limited
 from telegram.config.ninegagapiparser import NineGagApiParser
 import random
 
-entertaincommands = ["drunk", "alarm", "macarena", "fu", "gag", "pr0"]
+entertaincommands = ["drunk", "alarm", "macarena", "fu", "gag", "pr0", "ateam"]
 
 config = TGBotFileIDParser()
 data = config.load()
@@ -32,6 +32,10 @@ class EntertainCommands:
     @limited
     def alarm(self,message):
         VoiceController.sendvoice(message.chat_id(), "alarm.mp3")
+
+    @limited
+    def ateam(self,message):
+        StickerController.sendsticker(message.chat_id(), "ateam.webp")
 
     @limited
     @sendtext
