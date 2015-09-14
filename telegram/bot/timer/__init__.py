@@ -6,9 +6,11 @@ from telegram.basicapi.commands.filecommands import FileController
 from telegram.config.tgbotconfigparser import TGBotConfigParser
 from telegram.config.waoapiparser import WAOAPIParser
 from datetime import datetime,timedelta
+from resources import emoji
 import collections
 from telegram.tglogging import *
 from telegram.tgredis import getfile, getfilevalue
+from telegram.bot.commands import getdjnamebyonair
 
 timeformat = "%A, %H:%M"
 config = TGBotConfigParser("config.ini")
@@ -112,3 +114,31 @@ def checkprimetime():
                 logger.debug("checkPrimetime: No times in Primetime available.")
         except TypeError:
             logger.warn("No stream set.")
+
+def checkuebergabe():
+    waoapi = WAOAPIParser()
+    groups = getfile("groups")
+    for key, group in groups.items():
+        parameter = group["stream"]
+        if parameter:
+            for radiostream in radiostreams.items():
+                if radiostream[0] in parameter.lower() or radiostream[1] in parameter:
+                    showplan = waoapi.loadwaoapishowplan(stream=radiostream[1],count=2,upcoming=True)
+                    start_date_1 = WAOAPIParser.correcdate(showplan[0][waodata.get("waoapi-showplan","start")])
+                    end_date_1 = WAOAPIParser.correcdate(showplan[0][waodata.get("waoapi-showplan","end")])
+                    start_date_2 = WAOAPIParser.correcdate(showplan[1][waodata.get("waoapi-showplan","start")])
+                    end_date_2 = WAOAPIParser.correcdate(showplan[1][waodata.get("waoapi-showplan","end")])
+
+                    if start_date_1 <= datetime.now()<end_date_1 and start_date_2==end_date_1 and end_date_1-datetime.now()<timedelta(hours=1):
+                        show_name_1 = showplan[0][waodata.get("waoapi-showplan","show")]
+                        dj_1 = getdjnamebyonair(showplan[0][waodata.get("waoapi-showplan","dj")],str(showplan[0][waodata.get("waoapi-showplan","djid")]))
+                        show_name_2 = showplan[1][waodata.get("waoapi-showplan","show")]
+                        dj_2 = getdjnamebyonair(showplan[1][waodata.get("waoapi-showplan","dj")],str(showplan[1][waodata.get("waoapi-showplan","djid")]))
+                        reply = '''%s*Übergabeprotokoll %s%s*
+%sAktueller DJ: _%s_ mit _%s_
+%sNächster DJ: _%s_ mit _%s_
+'''% (emoji.warning,radiostream[1].capitalize(),emoji.warning,emoji.cross_mark, dj_1,show_name_1,emoji.check_mark,dj_2,show_name_2)
+                        logger.debug(reply)
+                        MessageController.sendtext(int(key),reply)
+
+                    pass

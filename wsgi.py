@@ -52,6 +52,10 @@ def tracklist(num):
 def primetime(num):
     checkprimetime()
 
+@cron(40,-1,-1,-1,-1,target="spooler")
+@db
+def uebergabe(num):
+    checkuebergabe()
 
 @cron(0, -1, -1, -1, -1, target='spooler')
 def backup(num):
