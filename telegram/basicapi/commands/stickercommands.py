@@ -5,8 +5,7 @@ from telegram.basicapi.model.sticker import Sticker
 from telegram.basicapi.http.httprequestcontroller import HTTPRequestController
 from telegram.config.tgbotconfigparser import TGBotConfigParser
 from telegram.tglogging import logger
-from telegram.basicapi.commands import dosomethingWithFile
-import random
+from telegram.basicapi.commands import dosomethingwithfile
 
 config = TGBotConfigParser("config.ini")
 data = config.load()
@@ -25,9 +24,8 @@ class StickerController:
 
     @staticmethod
     def sendsticker(chat_id, sticker,complete_path=None):
-        dosomethingWithFile(method_name="sendSticker",file_id="sticker",
-        filename=sticker,path="resources.img"
-                            ,chat_id=chat_id,complete_path=complete_path)
+        dosomethingwithfile(method_name="sendSticker",file_id="sticker",
+                            filename=sticker,path="resources.img",chat_id=chat_id,complete_path=complete_path)
 
-if __name__=="__main__":
+if __name__ == "__main__":
         StickerController.sendsticker(-27587386,"finger.png")

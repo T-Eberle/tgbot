@@ -35,9 +35,9 @@ class Message(Base):
             self.chat = User(data=chat)
 
         if "reply_to_message" in data:
-            self.reply_to_message=data["reply_to_message"]
+            self.reply_to_message = data["reply_to_message"]
         else:
-            self.reply_to_message=None
+            self.reply_to_message = None
 
         # self.forward_date = data["forward_date"]
         if "text" in data:

@@ -18,7 +18,7 @@ wochentag = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag
 config = TGBotConfigParser("config.ini")
 data = config.load()
 waoconfig = TGBotConfigParser("wao-config.ini")
-waodata =waoconfig.load()
+waodata = waoconfig.load()
 
 
 def getparameter(text, alternative_text=None):
@@ -70,9 +70,10 @@ def nextshow(stream):
             reply = "\U00002139Nächste Show @ " + stream.capitalize() + "\U00002139\n"
             start = WAOAPIParser.correctdate_timeformat(start_timestamp)
             end = WAOAPIParser.correctdate_timeformat(show[waodata.get("waoapi-showplan","end")])
-            return reply+createshowstring(show,start,end)
+            return reply + createshowstring(show,start,end)
 
-    return emoji.thumb_down+"Keine Shows mehr heute @ "+stream.capitalize()
+    return emoji.thumb_down + "Keine Shows mehr heute @ " + stream.capitalize()
+
 
 def lastshow(stream):
     """
@@ -86,9 +87,10 @@ def lastshow(stream):
             reply = "\U00002139Nächste Show @ " + stream.capitalize() + "\U00002139\n"
             start = WAOAPIParser.correctdate_timeformat(start_timestamp)
             end = WAOAPIParser.correctdate_timeformat(show[waodata.get("waoapi-showplan","end")])
-            return reply+createshowstring(show,start,end)
+            return reply + createshowstring(show,start,end)
 
     return emoji.thumb_down + "Keine Shows mehr heute @ " + stream.capitalize()
+
 
 def getshowfromtoday(stream):
     """
@@ -99,8 +101,10 @@ def getshowfromtoday(stream):
     """
     return getshowfromday(datetime.now().weekday(), stream)
 
+
 def getshowfromyesterday(stream):
     return getshowfromday(None, stream)
+
 
 def getshowfromtomorrow(stream):
     """
@@ -123,18 +127,18 @@ def getshowfromday(date, stream):
     """
     now = datetime.now()
     waoapi = WAOAPIParser(stream=stream)
-    if date==None:
+    if date is None:
         site = 0
-        result_date = datetime.now()-timedelta(days=1)
+        result_date = datetime.now() - timedelta(days=1)
     else:
         result_date = now
-        site =1
-        while result_date.weekday()!= date:
+        site = 1
+        while result_date.weekday() != date:
             result_date += timedelta(days=1)
-            site+=1
+            site += 1
     shows = waoapi.loadwaoapishowplan(site=site)
     reply = "%s*Shows am %s @ %s*%s\n" % (emoji.info_button,result_date.strftime("%A"),
-                                        stream.capitalize(),emoji.info_button)
+                                          stream.capitalize(),emoji.info_button)
     showstring = ""
     for show in shows:
         start_string = WAOAPIParser.correctdate_timeformat(int(show[waodata.get("waoapi-showplan","start")]))

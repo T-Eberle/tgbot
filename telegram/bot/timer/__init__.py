@@ -19,21 +19,21 @@ primetime_start = int(data["primetime"]["primetime_start"])
 primetime_end = int(data["primetime"]["primetime_end"])
 
 waoconfig = TGBotConfigParser("wao-config.ini")
-waodata =waoconfig.load()
+waodata = waoconfig.load()
 
 unsorted_radiostreams = {"tb": "technobase", "ht": "housetime", "hb": "hardbase", "trb": "trancebase", "ct": "coretime",
                          "clt": "clubtime"}
 radiostreams = collections.OrderedDict(sorted(unsorted_radiostreams.items()))
 
-def getTracklist():
-    now = datetime.now()
+
+def gettracklist():
     keys = getfile("groups").keys()
     for key in keys:
         try:
             value = getfilevalue("groups", key)
             for radiostream in radiostreams.items():
                 complete_result = ""
-                streamfile=""
+                streamfile = ""
                 stream = value.get("stream")
                 if radiostream[0] in stream or radiostream[1] in stream:
 
@@ -57,11 +57,12 @@ def getTracklist():
                             result += start_date_string + ": " + artist + " - " + title + "\n"
                     if result:
                         complete_result += stream_title + result + "\n"
-                        streamfile+="_"+radiostream[0]+"_"+moderator
+                        streamfile += "_" + radiostream[0] + "_" + moderator
                     if complete_result:
-                        FileController.sendStringasFile(int(key),"document","tracklist"+streamfile+".txt",complete_result)
+                        FileController.sendStringasFile(int(key),"document","tracklist" + streamfile + ".txt",
+                                                        complete_result)
                     else:
-                        logger.warn("No Tracklist @ "+radiostream[1]+" available.")
+                        logger.warn("No Tracklist @ " + radiostream[1] + " available.")
                         continue
         except TypeError:
             logger.warn("No stream set.")

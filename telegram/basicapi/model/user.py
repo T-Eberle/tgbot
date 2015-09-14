@@ -1,6 +1,8 @@
 __author__ = 'Thomas Eberle'
+
 from telegram.basicapi.model.chatType import ChatType
 from telegram.tglogging import *
+
 
 class User(ChatType):
     def getchatid(self):
@@ -11,17 +13,17 @@ class User(ChatType):
         try:
             self.first_name = data["first_name"]
         except KeyError:
-            self.first_name=""
+            self.first_name = ""
             logger.debug("No first name available.")
         try:
-            self.last_name=""
+            self.last_name = ""
             self.last_name = data["last_name"]
         except KeyError:
             logger.debug("No last name available.")
         try:
             self.username = data["username"]
         except KeyError:
-            self.username=""
+            self.username = ""
             logger.debug("No username available.")
 
     def __init__(self, data=None, chat_id=None, first_name=None, last_name=None, username=None):

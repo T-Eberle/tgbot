@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 __author__ = 'Thomas Eberle'
+
 from telegram.bot.commands import *
 from telegram.basicapi.commands.messagecommands import MessageController
 import uwsgi
@@ -9,6 +10,7 @@ from telegram.basicapi.decorator.permissions import admin
 from telegram.basicapi.decorator.tgcommands import sendreply
 from telegram.basicapi.commands.filecommands import FileController
 
+
 class AdminCommands:
     @admin
     def restart(self,message):
@@ -17,7 +19,8 @@ class AdminCommands:
         :param message: Die gesendete Nachricht
         """
         logger.debug("Server will shutdown!")
-        MessageController.sendreply(message, message.chat_id(), "%sIch - der WeAreOne Bot - werde jetzt neu gestartet.%s"
+        MessageController.sendreply(message, message.chat_id(),
+                                    "%sIch - der WeAreOne Bot - werde jetzt neu gestartet.%s"
                                     % (emoji.warning,emoji.warning))
         uwsgi.reload()
 
@@ -33,7 +36,7 @@ class AdminCommands:
         logger.debug("VALUE: " + str(value))
         setfilevalue("groups", message.chat_id(), value)
         return (message.chat_id(),
-                                    "Der Gruppenchat " + value["title"] + " wurde erfolgreich registriert.")
+                "Der Gruppenchat " + value["title"] + " wurde erfolgreich registriert.")
 
     @admin
     @sendreply
@@ -45,15 +48,12 @@ class AdminCommands:
         user = message.from_User
         deleteentryfromfile("groups", message.chat_id())
         return (message.chat_id(),
-                                    user.first_name + ", du hast die Gruppe aus den registrierten Gruppen gelöscht.")
-
+                user.first_name + ", du hast die Gruppe aus den registrierten Gruppen gelöscht.")
 
     @admin
     def error(self,message):
         file = open("/home/tgbot/telegrambot_files/log/errorlog")
-        FileController.sendFile(message.chat_id(),"document","error.log",file)
-
-
+        FileController.sendfile(message.chat_id(),"document","error.log",file)
 
     @admin
     @sendreply
@@ -75,13 +75,13 @@ class AdminCommands:
                 setfilevalue("groups", message.chat_id(), values)
 
             return (message.chat_id(),
-                                        emoji.check_mark+"Stream der Gruppe wurde auf " + param + " gesetzt.")
+                    emoji.check_mark + "Stream der Gruppe wurde auf " + param + " gesetzt.")
         else:
             try:
                 del values["stream"]
                 setfilevalue("groups", message.chat_id(), values)
                 return (message, message.chat_id(),
-                                            "Streamparameter für " + values["title"] + "zurückgesetzt.")
+                        "Streamparameter für " + values["title"] + "zurückgesetzt.")
             except KeyError as error:
                 logger.warn(str(error) + " - Eintrag in dem Dictionary nicht vorhanden.")
             except TypeError as error:

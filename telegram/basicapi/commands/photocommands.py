@@ -2,7 +2,6 @@
 __author__ = 'Thomas Eberle'
 
 from telegram.config.tgbotconfigparser import TGBotConfigParser
-from telegram.basicapi.http.httprequestcontroller import HTTPRequestController
 from telegram.tglogging import logger
 
 config = TGBotConfigParser("config.ini")

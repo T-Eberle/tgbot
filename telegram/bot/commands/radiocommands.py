@@ -1,13 +1,12 @@
 # -*- coding: utf-8 -*-
 __author__ = 'Thomas Eberle'
 
-
 from telegram.bot.commands import *
 from telegram.config.tgbotfileidparser import TGBotFileIDParser
 from telegram.config.waoapiparser import WAOAPIParser
 from telegram.tgredis import *
 from resources import emoji
-from telegram.bot.decorators.multiRadioCommand import multiRadioCommand
+from telegram.bot.decorators.multiradiocommand import multiRadioCommand
 from telegram.bot.decorators.singleradiocommand import singleRadioCommand
 from telegram.basicapi.decorator.permissions import botonly
 
@@ -62,7 +61,6 @@ class RadioCommands:
     def sonntag(self,message):
         return message.chat_id(),getshowfromday(6, self.radiostream)
 
-
     @botonly
     @multiRadioCommand
     def heute(self,message):
@@ -82,14 +80,14 @@ class RadioCommands:
     def track(self,message):
         try:
             artist = WAOAPIParser.nowartist(self.radiostream)
-            track =WAOAPIParser.nowtrack(self.radiostream)
-            release =WAOAPIParser.nowrelease(self.radiostream)
-            release_string =""
-            if release!="0":
-                release_string =str("Check: http://www.technobase.fm/release/%s\n" % release)
-            return message.chat_id(),str("%sAktueller Track @ %s: %s - %s\n"% (emoji.musical_note,self.radiostream.capitalize(), artist, track))\
-                   + release_string
-
+            track = WAOAPIParser.nowtrack(self.radiostream)
+            release = WAOAPIParser.nowrelease(self.radiostream)
+            release_string = ""
+            if release != "0":
+                release_string = str("Check: http://www.technobase.fm/release/%s\n" % release)
+            return message.chat_id(),str("%sAktueller Track @ %s: %s - %s\n" % (emoji.musical_note,
+                                                                                self.radiostream.capitalize(),
+                                                                                artist, track)) + release_string
         except KeyError as error:
             logger.exception(error)
             return message.chat_id(),str('''%sKein DJ ON AIR @ %s!
@@ -99,7 +97,6 @@ class RadioCommands:
     # def 9gag(self, message):
     #     try:
     #         url = nineGagApiParser.
-
 
     @singleRadioCommand
     def dj(self,message):
@@ -111,7 +108,6 @@ class RadioCommands:
         except KeyError:
             return message.chat_id(),str('''%sKein DJ ON AIR @ %s!
 ''' % (emoji.thumb_down,self.radiostream.capitalize()))
-
 
     @singleRadioCommand
     def listener(self,message):
@@ -139,8 +135,8 @@ class RadioCommands:
 %sShowname: %s
 %sStyle: %s
 %sUhrzeit: %s bis %s
-''' % (emoji.info_button,self.radiostream.capitalize(),emoji.info_button,emoji.microphone,
-       getdjnamebyonair(dj, djid),emoji.loudspeaker, show,emoji.headphone, style,emoji.alarm_clock, start, end)))
+''' % (emoji.info_button,self.radiostream.capitalize(),emoji.info_button,emoji.microphone,getdjnamebyonair(dj, djid),
+       emoji.loudspeaker, show,emoji.headphone, style,emoji.alarm_clock, start, end)))
 
     @botonly
     @singleRadioCommand
@@ -150,7 +146,9 @@ class RadioCommands:
         text = "\n\nTracklist für %s: \n" % self.radiostream.capitalize()
         result = ""
         if not tracks:
-            message.chat_id(),str('%sKeine Tracklist verfügbar für %s!%s\n' % (emoji.warning,self.radiostream.capitalize(),emoji.warning))
+            message.chat_id(),str('%sKeine Tracklist verfügbar für %s!%s\n' % (emoji.warning,
+                                                                               self.radiostream.capitalize(),
+                                                                               emoji.warning))
         for track in tracks:
             start_timestamp = track[waodata.get("waoapi-tracklist", "playtime")]
             start_date_string = WAOAPIParser.correctdate_timeformat(int(start_timestamp), format="%a %H:%M")
@@ -162,5 +160,7 @@ class RadioCommands:
                 title = track[waodata.get("waoapi-tracklist", "title")]
                 result += start_date_string + ": " + artist + " - " + title + "\n"
         if not result:
-            return message.chat_id(),str('%sKeine Tracklist verfügbar für %s!%s\n' % (emoji.warning,self.radiostream.capitalize(),emoji.warning))
+            return message.chat_id(),str('%sKeine Tracklist verfügbar für %s!%s\n' % (emoji.warning,
+                                                                                      self.radiostream.capitalize(),
+                                                                                      emoji.warning))
         return message.chat_id(),text + result

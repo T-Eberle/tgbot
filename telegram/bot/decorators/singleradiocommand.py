@@ -11,7 +11,8 @@ unsorted_radiostreams = {"tb": "technobase", "ht": "housetime", "hb": "hardbase"
                          "clt": "clubtime"}
 radiostreams = collections.OrderedDict(sorted(unsorted_radiostreams.items()))
 
-def singleRadioCommand(wrapped):
+
+def singleradiocommand(wrapped):
         """
         Methodenrumpf für alle Radiocommands.
         Da alle Radiobefehle Streams als Parameter benötigen, wird dieser hier direkt weitergegeben.
@@ -21,9 +22,9 @@ def singleRadioCommand(wrapped):
         wo es andererseits beim Listenerbefehl reicht wenn alle Streams in eine Nachricht gepackt werden.
         """
         def _wrapped(*args):
-            logger.debug("ARGS: "+str(args))
+            logger.debug("ARGS: " + str(args))
             obj = args[0]
-            message =args[1]
+            message = args[1]
             text = message.text
             chat = getstreamparameter(message)
             parameter = getparameter(text,chat).lower()
@@ -34,26 +35,28 @@ def singleRadioCommand(wrapped):
                             obj.radiostream = stream
                             values = wrapped(*args)
                             reply += values[1]
-                        MessageController.hide_Keyboard(message,values[0], reply + "#%s" % wrapped.__name__)
+                        MessageController.hide_keyboard(message,values[0], reply + "#%s" % wrapped.__name__)
                         deleteconv(message)
-                elif not parameter or (not (any(radio in parameter.lower() for radio in list(radiostreams.values())) or any(
-                            radio in parameter.lower() for radio in list(radiostreams.keys()))))or parameter.lower()=="markup":
-                    keyboard= [["Technobase","Housetime","Hardbase"],["Coretime","Clubtime","Trancebase"]]
+                elif not parameter or (not (any(radio in parameter.lower() for radio
+                                                in list(radiostreams.values())) or any(radio in parameter.lower()
+                                                                                       for radio
+                                                                                       in list(radiostreams.keys()))))\
+                        or parameter.lower() == "markup":
+                    keyboard = [["Technobase","Housetime","Hardbase"],["Coretime","Clubtime","Trancebase"]]
                     MessageController.sendreply_one_keyboardmarkup(message,message.chat_id(),
-                                                    "\U0000274CBitte wähle einen Radiostream aus.\n/"
-                                                                   + wrapped.__name__
-                                                    ,keyboard)
-                    addtoconv(message,"/"+wrapped.__name__)
+                                                                   "\U0000274CBitte wähle einen Radiostream aus.\n/" +
+                                                                   wrapped.__name__,keyboard)
+                    addtoconv(message,"/" + wrapped.__name__)
                 else:
                     for radiostream in radiostreams.items():
                         if radiostream[0] in parameter.lower() or radiostream[1] in parameter:
-                            obj.radiostream=radiostream[1]
+                            obj.radiostream = radiostream[1]
                             values = wrapped(*args)
                             reply += values[1]
-                    MessageController.hide_Keyboard(message, message.chat_id(), reply + "#%s" % wrapped.__name__)
+                    MessageController.hide_keyboard(message, message.chat_id(), reply + "#%s" % wrapped.__name__)
                     deleteconv(message)
             except TypeError as typo:
                     logger.exception(typo)
-                    MessageController.hide_Keyboard(message, message.chat_id(), "Witzbold.")
+                    MessageController.hide_keyboard(message, message.chat_id(), "Witzbold.")
                     deleteconv(message)
-        return _wrapped
+        return wrapped

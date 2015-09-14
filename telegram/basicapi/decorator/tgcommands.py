@@ -1,7 +1,6 @@
 __author__ = 'Tommy'
 
 from telegram.basicapi.commands.messagecommands import MessageController
-from telegram.basicapi.decorator.permissions import func_ispermitteduser
 
 
 def sendreply(replymessage):
@@ -26,5 +25,3 @@ def sendtext(textmessage):
 #         tuple=filemessage(*args)
 #         chat_id=tuple[0]
 #         file_name=
-
-

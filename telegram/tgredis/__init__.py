@@ -23,19 +23,21 @@ configdata = config.load()
 
 def addtoconv(message,value):
     user = message.from_User
-    new_value=""
+    new_value = ""
     conv = getconv(message)
-    if conv!="None":
-        new_value += conv+" ; "
+    if conv != "None":
+        new_value += conv + " ; "
     new_value += value
     pipe = convserver.pipeline()
     pipe.set(user.chat_id,new_value)
     pipe.expire(user.chat_id,120)
     pipe.execute()
 
+
 def getconv(message):
     user = message.from_User
     return str(convserver.get(user.chat_id))
+
 
 def deleteconv(message):
     user = message.from_User
@@ -103,4 +105,3 @@ def increasemessage(message):
         limitserver.expire(str(user.chat_id), expire)
 
     logger.debug("Response from Redis for key " + str(user.chat_id) + ": " + str(values))
-
