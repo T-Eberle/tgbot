@@ -71,7 +71,6 @@ class RadioCommands:
     def morgen(self,message):
         return message.chat_id(),getshowfromtomorrow(self.radiostream)
 
-    @botonly
     @singleradiocommand
     def next(self,message):
         return message.chat_id(),nextshow(self.radiostream)
@@ -92,11 +91,6 @@ class RadioCommands:
             logger.exception(error)
             return message.chat_id(),str('''%sKein DJ ON AIR @ %s!
 ''' % (emoji.thumb_down,self.radiostream.capitalize()))
-
-    # @singleRadioCommand
-    # def 9gag(self, message):
-    #     try:
-    #         url = nineGagApiParser.
 
     @singleradiocommand
     def dj(self,message):
