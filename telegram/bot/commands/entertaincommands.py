@@ -26,20 +26,28 @@ class EntertainCommands:
         self.radiostream = ""
 
     @limited
-    def drunk(self,message):
-        StickerController.sendsticker(message.chat_id(), "drunk%s.webp" % random.randint(1,5))
-
-    @limited
-    def fu(self, message):
-        StickerController.sendsticker(message.chat_id(), "finger.webp")
-
-    @limited
     def macarena(self,message):
         VoiceController.sendvoice(message.chat_id(), "macarena.mp3")
 
     @limited
     def alarm(self,message):
         VoiceController.sendvoice(message.chat_id(), "alarm.mp3")
+
+    @limited
+    def haha(self,message):
+        VoiceController.sendvoice(message.chat_id(), "haha.mp3")
+
+    @limited
+    def geil(self,message):
+        VoiceController.sendvoice(message.chat_id(), "wardasgeil.mp3")
+
+    @limited
+    def drunk(self,message):
+        StickerController.sendsticker(message.chat_id(), "drunk%s.webp" % random.randint(1,5))
+
+    @limited
+    def fu(self, message):
+        StickerController.sendsticker(message.chat_id(), "finger.webp")
 
     @limited
     def ateam(self,message):
