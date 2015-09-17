@@ -14,7 +14,7 @@ from telegram.config.waoapiparser import WAOAPIParser
 
 from telegram.tgredis import *
 
-entertaincommands = ["drunk", "alarm", "macarena", "fu", "gag", "pr0", "ateam", "rallyemaster", "huly"]
+entertaincommands = ["drunk", "alarm", "macarena", "fu", "gag", "pr0", "ateam", "rallyemaster", "huly", "geil", "haha"]
 huly_list = ["FAULER SACK DU"]
 
 config = TGBotFileIDParser()
