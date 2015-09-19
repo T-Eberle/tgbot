@@ -11,6 +11,7 @@ from telegram.bot.commands.entertaincommands import EntertainCommands
 from telegram.bot.commands.radiocommands import RadioCommands
 from telegram.bot.commands.registercommands import RegisterCommands
 from telegram.basicapi.decorator.permissions import *
+from telegram.basicapi.commands import hide_keyboard
 
 
 #TODO VERY DIRTY: Das muss noch geändert werden!!!!
@@ -26,7 +27,7 @@ def parsereplycommand(message):
             message.text = match.group() + " " + parameter
     elif conv != "None" and message.text == "/cancel":
         deleteconv(message)
-        MessageController.hide_keyboard(message,message.chat_id(),"Du willst mit mir die Konversation abbrechen? "
+        hide_keyboard(message,message.chat_id(),"Du willst mit mir die Konversation abbrechen? "
                                                                   "Alles klar....")
     elif conv != "None" and match_text:
         deleteconv(message)

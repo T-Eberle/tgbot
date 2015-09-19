@@ -4,11 +4,11 @@ __author__ = 'Thomas Eberle'
 from telegram.tglogging import *
 from telegram.tgredis import getfilevalue
 from resources import emoji
-from telegram.basicapi.commands.filecommands import FileController
+from telegram.basicapi.commands import senddocument
 from telegram.config.waoapiparser import WAOAPIParser
 from telegram.config.tgbotconfigparser import TGBotConfigParser
 from datetime import datetime
-from telegram.basicapi.decorator.tgcommands import sendreply
+from telegram.basicapi.decorator.tgcommands import reply
 from telegram.basicapi.decorator.permissions import botonly
 
 
@@ -18,7 +18,7 @@ waodata = waoconfig.load()
 
 class DataCommands:
     @botonly
-    @sendreply
+    @reply
     def me(self,message):
         """
         Gibt als String Daten von dem Nutzer zurück, unter Anderem:
@@ -57,7 +57,7 @@ class DataCommands:
 
     @staticmethod
     def start(self,message):
-        FileController.senddocument(message.chat_id(),"TG-Bot-Manual.pdf")
+        senddocument(message.chat_id(),"TG-Bot-Manual.pdf")
 
     @staticmethod
     def hilfe(message):
@@ -65,22 +65,4 @@ class DataCommands:
         Funktion, die dem Nutzer Hilfe zum Nutzen des Bots anbietet.
         :param message: Die vom Nutzer gesendete Nachricht
         """
-        FileController.senddocument(message.chat_id(),"TG-Bot-Manual.pdf")
-
-    @sendreply
-    def keyboard(self,message):
-        waoapiparser = WAOAPIParser(stream="housetime")
-        shows = waoapiparser.loadwaoapishowplan(site=2,count=2,upcoming=True)
-        if len(shows) == 2:
-            show_1 = shows[0]
-            show_2 = shows[1]
-            now = datetime.now().date()
-            start_1 = WAOAPIParser.correcdate(show_1[waodata.get("waoapi-showplan","start")])
-            end_1 = WAOAPIParser.correcdate(show_1[waodata.get("waoapi-showplan","end")])
-            start_2 = WAOAPIParser.correcdate(show_2[waodata.get("waoapi-showplan","start")])
-            if start_1.date() - now == 0 and end_1 == start_2:
-               return(message.chat_id(),'''%sÜbergabeprotokoll%s.
-    Size: %s''' % (emoji.warning,emoji.warning,str(show_1[waodata.get("waoapi-showplan","show")])))
-            else:
-                 return(message.chat_id(),'''%sÜbergabeprotokoll%s.
-                 Gibt's nicht.''' % (emoji.warning,emoji.warning,))
+        senddocument(message.chat_id(),"TG-Bot-Manual.pdf")

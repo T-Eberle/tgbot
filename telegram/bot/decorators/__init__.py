@@ -4,6 +4,7 @@ __author__ = 'Tommy'
 from telegram.config.jsonconfigreader import JSONConfigReader
 from datetime import datetime
 from telegram.tgredis import *
+from telegram.basicapi.commands import sendreply
 
 
 configParser = TGBotConfigParser("config.ini")
@@ -25,7 +26,7 @@ def limited(func):
             return
         elif value == limit + 1:
             expire = limitserver.ttl(str(user.chat_id))
-            MessageController.sendreply(message, message.chat_id(),
+            sendreply(message, message.chat_id(),
                                         '''%s @%s, für dich sind die Commands erstmal für %s Sekunden blockiert.'''
                                         % (emoji.cross_mark,user.username, str(expire)))
             return

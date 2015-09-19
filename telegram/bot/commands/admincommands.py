@@ -2,13 +2,13 @@
 __author__ = 'Thomas Eberle'
 
 from telegram.bot.commands import *
-from telegram.basicapi.commands.messagecommands import MessageController
+from telegram.basicapi.commands import sendreply
 import uwsgi
 from telegram.tgredis import setfilevalue, deleteentryfromfile
 from resources import emoji
 from telegram.basicapi.decorator.permissions import admin
-from telegram.basicapi.decorator.tgcommands import sendreply
-from telegram.basicapi.commands.filecommands import FileController
+from telegram.basicapi.decorator.tgcommands import reply
+from telegram.basicapi.commands import sendfile
 
 
 class AdminCommands:
@@ -19,13 +19,13 @@ class AdminCommands:
         :param message: Die gesendete Nachricht
         """
         logger.debug("Server will shutdown!")
-        MessageController.sendreply(message, message.chat_id(),
+        sendreply(message, message.chat_id(),
                                     "%sIch - der WeAreOne Bot - werde jetzt neu gestartet.%s"
                                     % (emoji.warning,emoji.warning))
         uwsgi.reload()
 
     @admin
-    @sendreply
+    @reply
     def reggroup(self,message):
         """
         Diese Methode registriert die Gruppe mit dem Bot, in der die Nachricht geschrieben wurde
@@ -39,7 +39,7 @@ class AdminCommands:
                 "Der Gruppenchat " + value["title"] + " wurde erfolgreich registriert.")
 
     @admin
-    @sendreply
+    @reply
     def unreggroup(self,message):
         """
         Die angeschriebene Gruppen wird ausgetragen, die Registrierung gelöscht
@@ -53,10 +53,10 @@ class AdminCommands:
     @admin
     def error(self,message):
         file = open("/home/tgbot/telegrambot_files/log/errorlog")
-        FileController.sendfile(message.chat_id(),"document","error.log",file)
+        sendfile(message.chat_id(),"document","error.log",file)
 
     @admin
-    @sendreply
+    @reply
     def groupstream(self,message):
         """
         Zuteilung von Streams zu einer Gruppe

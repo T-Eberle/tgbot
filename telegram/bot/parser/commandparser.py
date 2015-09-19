@@ -10,7 +10,7 @@ def parsecommand(message,*args):
     text = message.text
     command = getcommand(text)
     for obj in args:
-            logger.debug(command + " command recognized.")
             for method in inspect.getmembers(obj):
                 if getcommand(text).lower() == method[0]:
+                    logger.info(command + " command recognized.")
                     getattr(obj,method[0])(message)

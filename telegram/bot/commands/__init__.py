@@ -234,7 +234,10 @@ def getstreamparameter(message):
     user = message.from_User
     uservalues = getfilevalue("users", user.chat_id)
     groupvalues = getfilevalue("groups", message.chat_id())
-    if uservalues:
+    if groupvalues:
+        logger.debug("GROUP VALUE USED")
+        return groupvalues.get("stream")
+    elif uservalues:
         if uservalues.get("stream"):
             logger.debug("USER VALUE USED")
             return uservalues.get("stream")
@@ -243,9 +246,6 @@ def getstreamparameter(message):
                 return groupvalues.get("stream")
             else:
                 return ""
-    elif groupvalues:
-        logger.debug("GROUP VALUE USED")
-        return groupvalues.get("stream")
     else:
         return ""
 

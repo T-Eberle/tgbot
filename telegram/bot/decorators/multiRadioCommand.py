@@ -2,7 +2,7 @@
 __author__ = 'Tommy'
 
 import collections
-from telegram.basicapi.commands.messagecommands import MessageController
+from telegram.basicapi.commands import sendreply_one_keyboardmarkup,hide_keyboard
 from telegram.bot.commands import getstreamparameter,getparameter
 from telegram.tgredis import deleteconv,addtoconv
 from telegram.tglogging import logger
@@ -33,14 +33,14 @@ def multiradiocommand(wrapped):
                     for stream in radiostreams.values():
                         obj.radiostream = stream
                         reply = wrapped(*args)
-                        MessageController.hide_keyboard(message, reply[0], reply[1] + "#%s" % wrapped.__name__)
+                        hide_keyboard(message, reply[0], reply[1] + "#%s" % wrapped.__name__)
                         deleteconv(message)
             elif not parameter or(not (any(radio in parameter.lower() for radio
                                            in list(radiostreams.values())) or any(radio in parameter.lower() for radio
                                                                                   in list(radiostreams.keys()))))\
                     or parameter.lower() == "markup":
                 keyboard = [["Technobase","Housetime","Hardbase"],["Coretime","Clubtime","Trancebase"]]
-                MessageController.sendreply_one_keyboardmarkup(message,message.chat_id(),
+                sendreply_one_keyboardmarkup(message,message.chat_id(),
                                                                "\U0000274CBitte wähle einen Radiostream aus.\n/" +
                                                                wrapped.__name__,keyboard)
                 addtoconv(message,"/" + wrapped.__name__)
@@ -49,10 +49,10 @@ def multiradiocommand(wrapped):
                     if radiostream[0] in parameter.lower() or radiostream[1] in parameter:
                         obj.radiostream = radiostream[1]
                         reply = wrapped(*args)
-                        MessageController.hide_keyboard(message, reply[0], reply[1] + "#%s" % wrapped.__name__)
+                        hide_keyboard(message, reply[0], reply[1] + "#%s" % wrapped.__name__)
                         deleteconv(message)
         except TypeError as typo:
             logger.exception(typo)
-            MessageController.hide_keyboard(message, message.chat_id(), "Witzbold.")
+            hide_keyboard(message, message.chat_id(), "Witzbold.")
             deleteconv(message)
     return _wrapped

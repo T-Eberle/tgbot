@@ -4,7 +4,7 @@ __author__ = 'Tommy'
 from telegram.tglogging import logger
 from telegram.config.tgbotconfigparser import TGBotConfigParser
 from telegram.tgredis import getfile
-from telegram.basicapi.commands.messagecommands import MessageController
+from telegram.basicapi.commands import sendreply
 from resources import emoji
 
 config = TGBotConfigParser("config.ini")
@@ -80,7 +80,7 @@ def botonly(botfunc):
         user = message.from_User
         user_id = user.chat_id
         if message.chat_id() != user_id:
-            MessageController.sendreply(message,message.chat_id(),emoji.warning +
+            sendreply(message,message.chat_id(),emoji.warning +
                                         user.first_name +
                                         ", diesen Befehl kannst du nur im Chat des Bots ausführen! @waobot" +
                                         emoji.warning)

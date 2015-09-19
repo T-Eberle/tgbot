@@ -4,7 +4,7 @@ __author__ = 'Tommy'
 from telegram.bot.commands import getparameter,getstreamparameter
 import re
 from telegram.tgredis import addtoconv, deleteconv
-from telegram.basicapi.commands.messagecommands import MessageController
+from telegram.basicapi.commands import sendreply_one_keyboardmarkup,hide_keyboard
 from telegram.tglogging import logger
 
 radiostreams = {"tb": "technobase", "ht": "housetime", "hb": "hardbase", "trb": "trancebase", "ct": "coretime",
@@ -21,7 +21,7 @@ def onestreamcommand(func):
         result = regex.search(parameter)
         if not parameter and not result:
                 keyboard = [["Technobase","Housetime","Hardbase"],["Coretime","Clubtime","Trancebase"]]
-                MessageController.sendreply_one_keyboardmarkup(message,message.chat_id(),
+                sendreply_one_keyboardmarkup(message,message.chat_id(),
                                                                "\U0000274CBitte wähle einen Radiostream aus.\n/" +
                                                                func.__name__,keyboard)
                 addtoconv(message,"/" + func.__name__)
@@ -33,6 +33,6 @@ def onestreamcommand(func):
             else:
                 obj.radiostream = result.group(0)
             reply = func(*args)[1]
-            MessageController.hide_keyboard(message, message.chat_id(), reply + "#%s" % func.__name__)
+            hide_keyboard(message, message.chat_id(), reply + "#%s" % func.__name__)
             deleteconv(message)
     return _wrapper

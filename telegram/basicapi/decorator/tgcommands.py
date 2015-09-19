@@ -1,23 +1,23 @@
 __author__ = 'Tommy'
 
-from telegram.basicapi.commands.messagecommands import MessageController
+from telegram.basicapi.commands import sendreply, sendtext
 
 
-def sendreply(replymessage):
+def reply(replymessage):
     def wrapper(*args):
         values = replymessage(*args)
         message = args[1]
         chat_id = int(values[0])
-        MessageController.sendreply(message, chat_id, values[1])
+        sendreply(message, chat_id, values[1])
 
     return wrapper
 
 
-def sendtext(textmessage):
+def text(textmessage):
     def _sendtext(*args):
         tuple = textmessage(*args)
         chat_id = int(tuple[0])
-        MessageController.sendtext(chat_id, tuple[1])
+        sendtext(chat_id, tuple[1])
 
     return _sendtext
 

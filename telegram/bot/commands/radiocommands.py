@@ -6,7 +6,6 @@ from telegram.config.tgbotfileidparser import TGBotFileIDParser
 from telegram.config.waoapiparser import WAOAPIParser
 from telegram.tgredis import *
 from resources import emoji
-from telegram.bot.decorators.multiradiocommand import multiradiocommand
 from telegram.bot.decorators.singleradiocommand import singleradiocommand
 from telegram.bot.decorators.onestreamcommand import onestreamcommand
 from telegram.basicapi.decorator.permissions import botonly
@@ -17,7 +16,7 @@ fileconfig = TGBotFileIDParser()
 filedata = fileconfig.load()
 
 
-class RadioCommand:
+class RadioCommands:
     def __init__(self):
         self.chat = None
         self.radiostream = ""

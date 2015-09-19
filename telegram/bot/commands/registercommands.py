@@ -4,14 +4,14 @@ __author__ = 'Thomas Eberle'
 from telegram.bot.commands import *
 from telegram.tgredis import getfile, deleteentryfromfile, setfilevalue
 from resources import emoji
-from telegram.basicapi.decorator.tgcommands import sendreply
+from telegram.basicapi.decorator.tgcommands import reply
 
 
 # Klasse für Registrierbefehle
 class RegisterCommands:
     # Befehl zum Registrieren des Nutzers
 
-    @sendreply
+    @reply
     def register(self,message):
         """
         Registriert den Telegrammnutzer mit dem von ihm eingegeben WAO-ID
@@ -51,7 +51,7 @@ class RegisterCommands:
                     "http://www.technobase.fm/member/" + param)
 
     # Befehl zum Löschen eines Nutzers aus der Datenbank
-    @sendreply
+    @reply
     def unregister(self,message):
         user = message.from_User
         deleteentryfromfile("users", user.chat_id)
@@ -59,7 +59,7 @@ class RegisterCommands:
                 ", du hast dich erfolgreich ausgetragen. Und tschüss.")
 
     # Befehl zum Setzen eines oder mehrerer Streams für den jeweiligen Nutzer.
-    @sendreply
+    @reply
     def stream(self,message):
         text = message.text
         param = getparameter(text, None)

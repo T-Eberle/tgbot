@@ -3,9 +3,9 @@ __author__ = 'Thomas & Carsten'
 
 import random
 from telegram.bot.commands import *
-from telegram.basicapi.commands.stickercommands import StickerController
-from telegram.basicapi.commands.voicecommands import VoiceController
-from telegram.basicapi.decorator.tgcommands import *
+from telegram.basicapi.commands import sendsticker
+from telegram.basicapi.commands import sendvoice
+from telegram.basicapi.decorator.tgcommands import text
 from telegram.bot.decorators import limited
 from telegram.config.ninegagapiparser import NineGagApiParser
 from telegram.config.tgbotfileidparser import TGBotFileIDParser
@@ -27,36 +27,36 @@ class EntertainCommands:
 
     @limited
     def macarena(self,message):
-        VoiceController.sendvoice(message.chat_id(), "macarena.mp3")
+        sendvoice(message.chat_id(), "macarena.mp3")
 
     @limited
     def alarm(self,message):
-        VoiceController.sendvoice(message.chat_id(), "alarm.mp3")
+        sendvoice(message.chat_id(), "alarm.mp3")
 
     @limited
     def haha(self,message):
-        VoiceController.sendvoice(message.chat_id(), "haha.mp3")
+        sendvoice(message.chat_id(), "haha.mp3")
 
     @limited
     def geil(self,message):
-        VoiceController.sendvoice(message.chat_id(), "wardasgeil.mp3")
+        sendvoice(message.chat_id(), "wardasgeil.mp3")
 
     @limited
     def drunk(self,message):
-        StickerController.sendsticker(message.chat_id(), "drunk%s.webp" % random.randint(1,5))
+        sendsticker(message.chat_id(), "drunk%s.webp" % random.randint(1,5))
 
     @limited
     def fu(self, message):
-        StickerController.sendsticker(message.chat_id(), "finger.webp")
+        sendsticker(message.chat_id(), "finger.webp")
 
     @limited
     def ateam(self,message):
-        StickerController.sendsticker(message.chat_id(), "ateam.webp")
+        sendsticker(message.chat_id(), "ateam.webp")
 
     @limited
+    @text
     def rallyemaster(self,message):
-        MessageController.sendtext(message.chat_id(), "Zitat Rallyemaster1990: \"Wieder mal geile Show mach weiter so\""
-                                                      "")
+        return message.chat_id(), "Zitat Rallyemaster1990: \"Wieder mal geile Show mach weiter so\""
 
     @onestreamcommand
     def huly(self,message):
@@ -71,14 +71,13 @@ class EntertainCommands:
             size_result = len(huly_list)
             rand = random.randint(0, size_result - 1)
             return message.chat_id(),str("Zitat Thomas Huly: \"" + huly_list[rand] + "\"")
-#        return ausgabe
 
     @limited
-    @sendtext
+    @text
     def gag(self,message):
         return message.chat_id(),NineGagApiParser.ninegag()
 
     @limited
-    @sendtext
+    @text
     def pr0(self,message):
         return message.chat_id(),NineGagApiParser.pr0gramm()

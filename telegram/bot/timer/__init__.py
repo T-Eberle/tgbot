@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 __author__ = 'Tommy'
 
-from telegram.basicapi.commands.messagecommands import MessageController
-from telegram.basicapi.commands.filecommands import FileController
+from telegram.basicapi.commands import sendtext, sendstringasfile
 from telegram.config.tgbotconfigparser import TGBotConfigParser
 from telegram.config.waoapiparser import WAOAPIParser
 from datetime import datetime,timedelta
@@ -15,7 +14,6 @@ from telegram.bot.commands import getdjnamebyonair
 timeformat = "%A, %H:%M"
 config = TGBotConfigParser("config.ini")
 data = config.load()
-controller = MessageController()
 waoParser = WAOAPIParser("housetime_onAir")
 primetime_start = int(data["primetime"]["primetime_start"])
 primetime_end = int(data["primetime"]["primetime_end"])
@@ -61,7 +59,7 @@ def gettracklist():
                         complete_result += stream_title + result + "\n"
                         streamfile += "_" + radiostream[0] + "_" + moderator
                     if complete_result:
-                        FileController.sendStringasFile(int(key),"document","tracklist" + streamfile + ".txt",
+                        sendstringasfile(int(key),"document","tracklist" + streamfile + ".txt",
                                                         complete_result)
                     else:
                         logger.warn("No Tracklist @ " + radiostream[1] + " available.")
@@ -109,7 +107,7 @@ def checkprimetime():
                         result += "\U000026A0DJ WANTED @ " + radiostream[
                             1].capitalize() + " für folgende Zeiten\U000026A0\n" + djwanted
             if result:
-                controller.sendtext(key, result)
+                sendtext(key, result)
             else:
                 logger.debug("checkPrimetime: No times in Primetime available.")
         except TypeError:
@@ -142,6 +140,6 @@ def checkuebergabe():
 %sNächster DJ: %s mit _%s_
 '''% (emoji.warning,radiostream[1].capitalize(),emoji.warning,emoji.cross_mark, dj_1,show_name_1,emoji.check_mark,dj_2,show_name_2)
                         logger.debug(reply)
-                        MessageController.sendtext(int(key),reply)
+                        sendtext(int(key),reply)
 
                     pass
