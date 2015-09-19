@@ -115,6 +115,7 @@ def checkprimetime():
         except TypeError:
             logger.warn("No stream set.")
 
+
 def checkuebergabe():
     waoapi = WAOAPIParser()
     groups = getfile("groups")
@@ -127,13 +128,15 @@ def checkuebergabe():
                     start_date_1 = WAOAPIParser.correcdate(showplan[0][waodata.get("waoapi-showplan","start")])
                     end_date_1 = WAOAPIParser.correcdate(showplan[0][waodata.get("waoapi-showplan","end")])
                     start_date_2 = WAOAPIParser.correcdate(showplan[1][waodata.get("waoapi-showplan","start")])
-                    end_date_2 = WAOAPIParser.correcdate(showplan[1][waodata.get("waoapi-showplan","end")])
 
-                    if start_date_1 <= datetime.now()<end_date_1 and start_date_2==end_date_1 and end_date_1-datetime.now()<timedelta(hours=1):
+                    if start_date_1 <= datetime.now() < end_date_1 and start_date_2 == end_date_1 \
+                            and end_date_1 - datetime.now() < timedelta(hours=1):
                         show_name_1 = showplan[0][waodata.get("waoapi-showplan","show")]
-                        dj_1 = getdjnamebyonair(showplan[0][waodata.get("waoapi-showplan","dj")],str(showplan[0][waodata.get("waoapi-showplan","djid")]))
+                        dj_1 = getdjnamebyonair(showplan[0][waodata.get("waoapi-showplan","dj")],
+                                                str(showplan[0][waodata.get("waoapi-showplan","djid")]))
                         show_name_2 = showplan[1][waodata.get("waoapi-showplan","show")]
-                        dj_2 = getdjnamebyonair(showplan[1][waodata.get("waoapi-showplan","dj")],str(showplan[1][waodata.get("waoapi-showplan","djid")]))
+                        dj_2 = getdjnamebyonair(showplan[1][waodata.get("waoapi-showplan","dj")],
+                                                str(showplan[1][waodata.get("waoapi-showplan","djid")]))
                         reply = '''%s*Übergabeprotokoll %s%s*
 %sAktueller DJ: %s mit _%s_
 %sNächster DJ: %s mit _%s_
