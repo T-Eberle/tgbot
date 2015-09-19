@@ -62,17 +62,18 @@ def nextshow(stream):
     :return: String der nächsten Show
     """
     waoapi = WAOAPIParser(stream=stream)
-    two_shows = waoapi.loadwaoapishowplan(count=2,upcoming=True)
-    for show in two_shows:
-        start_timestamp = show[waodata.get("waoapi-showplan","start")]
-        start_date = WAOAPIParser.correcdate(start_timestamp)
-        if datetime.now() < start_date:
-            reply = "\U00002139Nächste Show @ " + stream.capitalize() + "\U00002139\n"
-            start = WAOAPIParser.correctdate_timeformat(start_timestamp)
-            end = WAOAPIParser.correctdate_timeformat(show[waodata.get("waoapi-showplan","end")])
-            return reply + createshowstring(show,start,end)
-
-    return emoji.thumb_down + "Keine Shows mehr heute @ " + stream.capitalize()
+    two_shows = waoapi.loadwaoapishowplan(stream=stream,count=2,upcoming=True)
+    if two_shows:
+        for show in two_shows:
+            start_timestamp = show[waodata.get("waoapi-showplan","start")]
+            start_date = WAOAPIParser.correcdate(start_timestamp)
+            if datetime.now() < start_date:
+                reply = "\U00002139Nächste Show @ " + stream.capitalize() + "\U00002139\n"
+                start = WAOAPIParser.correctdate_timeformat(start_timestamp)
+                end = WAOAPIParser.correctdate_timeformat(show[waodata.get("waoapi-showplan","end")])
+                return reply + createshowstring(show,start,end)
+    else:
+        return emoji.thumb_down + "Keine Shows mehr heute @ " + stream.capitalize()
 
 
 def lastshow(stream):
