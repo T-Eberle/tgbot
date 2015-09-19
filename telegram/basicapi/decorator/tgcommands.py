@@ -5,9 +5,10 @@ from telegram.basicapi.commands.messagecommands import MessageController
 
 def sendreply(replymessage):
     def wrapper(*args):
+        values = replymessage(*args)
         message = args[1]
-        chat_id = int(replymessage(*args)[0])
-        MessageController.sendreply(message, chat_id, replymessage(*args)[1])
+        chat_id = int(values[0])
+        MessageController.sendreply(message, chat_id, values[1])
 
     return wrapper
 

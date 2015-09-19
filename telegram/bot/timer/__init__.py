@@ -135,8 +135,8 @@ def checkuebergabe():
                         show_name_2 = showplan[1][waodata.get("waoapi-showplan","show")]
                         dj_2 = getdjnamebyonair(showplan[1][waodata.get("waoapi-showplan","dj")],str(showplan[1][waodata.get("waoapi-showplan","djid")]))
                         reply = '''%s*Übergabeprotokoll %s%s*
-%sAktueller DJ: _%s_ mit _%s_
-%sNächster DJ: _%s_ mit _%s_
+%sAktueller DJ: %s mit _%s_
+%sNächster DJ: %s mit _%s_
 '''% (emoji.warning,radiostream[1].capitalize(),emoji.warning,emoji.cross_mark, dj_1,show_name_1,emoji.check_mark,dj_2,show_name_2)
                         logger.debug(reply)
                         MessageController.sendtext(int(key),reply)
