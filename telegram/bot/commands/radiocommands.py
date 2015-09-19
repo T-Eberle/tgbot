@@ -8,6 +8,7 @@ from telegram.tgredis import *
 from resources import emoji
 from telegram.bot.decorators.multiradiocommand import multiradiocommand
 from telegram.bot.decorators.singleradiocommand import singleradiocommand
+from telegram.bot.decorators.onestreamcommand import onestreamcommand
 from telegram.basicapi.decorator.permissions import botonly
 
 waoParser = WAOAPIParser("housetime_onAir")
@@ -16,62 +17,61 @@ fileconfig = TGBotFileIDParser()
 filedata = fileconfig.load()
 
 
-class RadioCommands:
+class RadioCommand:
     def __init__(self):
         self.chat = None
         self.radiostream = ""
 
     @botonly
-    @multiradiocommand
+    @onestreamcommand
     def gestern(self,message):
         return message.chat_id(),getshowfromday(None,self.radiostream)
 
     @botonly
-    @multiradiocommand
+    @onestreamcommand
     def montag(self,message):
         return message.chat_id(),getshowfromday(0, self.radiostream)
 
     @botonly
-    @multiradiocommand
+    @onestreamcommand
     def dienstag(self,message):
         return message.chat_id(),getshowfromday(1, self.radiostream)
 
     @botonly
-    @multiradiocommand
+    @onestreamcommand
     def mittwoch(self,message):
         return message.chat_id(),getshowfromday(2, self.radiostream)
 
     @botonly
-    @multiradiocommand
+    @onestreamcommand
     def donnerstag(self,message):
         return message.chat_id(),getshowfromday(3, self.radiostream)
 
     @botonly
-    @multiradiocommand
+    @onestreamcommand
     def freitag(self,message):
         return message.chat_id(),getshowfromday(4, self.radiostream)
 
     @botonly
-    @multiradiocommand
+    @onestreamcommand
     def samstag(self,message):
         return message.chat_id(),getshowfromday(5, self.radiostream)
 
     @botonly
-    @multiradiocommand
+    @onestreamcommand
     def sonntag(self,message):
         return message.chat_id(),getshowfromday(6, self.radiostream)
 
     @botonly
-    @multiradiocommand
+    @onestreamcommand
     def heute(self,message):
         return message.chat_id(),getshowfromtoday(self.radiostream)
 
     @botonly
-    @multiradiocommand
+    @onestreamcommand
     def morgen(self,message):
         return message.chat_id(),getshowfromtomorrow(self.radiostream)
 
-    @botonly
     @singleradiocommand
     def next(self,message):
         return message.chat_id(),nextshow(self.radiostream)
@@ -139,7 +139,7 @@ class RadioCommands:
        emoji.loudspeaker, show,emoji.headphone, style,emoji.alarm_clock, start, end)))
 
     @botonly
-    @singleradiocommand
+    @onestreamcommand
     def tracklist(self,message):
         waoapi = WAOAPIParser(stream=self.radiostream)
         tracks = waoapi.loadwaoapitracklist(count=30, upcoming=True)
