@@ -3,16 +3,19 @@ __author__ = 'Carsten'
 
 import requests
 import random
-
+import re
+from telegram.tglogging import logger
 
 class NineGagApiParser:
+
     @staticmethod
-    def ninegag():
-        result = requests.get("http://api-9gag.herokuapp.com/")
+    def ninegag(type=""):
+        result = requests.get("http://infinigag.eu01.aws.af.cm/"+type)
         jsondata = result.json()
-        size_result = len(jsondata)
+        size_result = len(jsondata["data"])
         rand = random.randint(0,size_result - 1)
-        return "[" + jsondata[rand]["title"] + "]" + "(" + jsondata[rand]["image"] + ")"
+        result = jsondata["data"][rand]["caption"], jsondata["data"][rand]["images"]["large"]
+        return result
 
     @staticmethod
     def pr0gramm():
@@ -26,7 +29,5 @@ class NineGagApiParser:
             else:
                 i += 1
         rand = random.randint(0,size_result - 1)
-        return "http://img.pr0gramm.com/" + jsondata["items"][rand]["image"]
-
-if __name__ == "__main__":
-    NineGagApiParser.pr0gramm()
+        result = "http://img.pr0gramm.com/" + jsondata["items"][rand]["image"]
+        return result

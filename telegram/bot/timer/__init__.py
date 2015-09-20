@@ -10,6 +10,7 @@ import collections
 from telegram.tglogging import *
 from telegram.tgredis import getfile, getfilevalue
 from telegram.bot.commands import getdjnamebyonair
+from telegram.basicapi.decorator.permissions import correctgrouptype
 
 timeformat = "%A, %H:%M"
 config = TGBotConfigParser("config.ini")
@@ -77,41 +78,42 @@ def checkprimetime():
     now = datetime.now()
     keys = getfile("groups").keys()
     for key in keys:
-        try:
-            result = ""
-            value = getfilevalue("groups", key)
-            for radiostream in radiostreams.items():
-                if radiostream[0] in value.get("stream") or radiostream[1] in value.get("stream"):
-                    showplan = waoParser.loadtray(radiostream[1] + "_shows")
+        if correctgrouptype(key,"intern","dj"):
+            try:
+                result = ""
+                value = getfilevalue("groups", key)
+                for radiostream in radiostreams.items():
+                    if radiostream[0] in value.get("stream") or radiostream[1] in value.get("stream"):
+                        showplan = waoParser.loadtray(radiostream[1] + "_shows")
 
-                    today = now.date()
-                    times = []
-                    for show in showplan:
-                        start = datetime.fromtimestamp(int(show["start "]))
-                        end = datetime.fromtimestamp(int(show["end"] - int(show["start "])))
-                        if today == start.date():
-                            end_hour = end.hour
-                            if end.hour == 0:
-                                end_hour = 24
-                            for showtime in range(start.hour, end_hour):
-                                times.append(showtime)
+                        today = now.date()
+                        times = []
+                        for show in showplan:
+                            start = datetime.fromtimestamp(int(show["start "]))
+                            end = datetime.fromtimestamp(int(show["end"] - int(show["start "])))
+                            if today == start.date():
+                                end_hour = end.hour
+                                if end.hour == 0:
+                                    end_hour = 24
+                                for showtime in range(start.hour, end_hour):
+                                    times.append(showtime)
 
-                    logger.debug("Primetimestart: " + str(primetime_start) + ", Primetimeend: " + str(
-                        primetime_end) + ", Times: " + str(times))
-                    djwanted = ""
-                    for showtime in range(primetime_start, primetime_end):
+                        logger.debug("Primetimestart: " + str(primetime_start) + ", Primetimeend: " + str(
+                            primetime_end) + ", Times: " + str(times))
+                        djwanted = ""
+                        for showtime in range(primetime_start, primetime_end):
 
-                        if not (showtime in times) and now.hour <= showtime:
-                            djwanted += "\U000027A1" + str(showtime) + ":00 - " + str(showtime + 1) + ":00 \n"
-                    if djwanted:
-                        result += "\U000026A0DJ WANTED @ " + radiostream[
-                            1].capitalize() + " für folgende Zeiten\U000026A0\n" + djwanted
-            if result:
-                sendtext(key, result)
-            else:
-                logger.debug("checkPrimetime: No times in Primetime available.")
-        except TypeError:
-            logger.warn("No stream set.")
+                            if not (showtime in times) and now.hour <= showtime:
+                                djwanted += "\U000027A1" + str(showtime) + ":00 - " + str(showtime + 1) + ":00 \n"
+                        if djwanted:
+                            result += "\U000026A0DJ WANTED @ " + radiostream[
+                                1].capitalize() + " für folgende Zeiten\U000026A0\n" + djwanted
+                if result:
+                    sendtext(key, result)
+                else:
+                    logger.debug("checkPrimetime: No times in Primetime available.")
+            except TypeError:
+                logger.warn("No stream set.")
 
 
 def checkuebergabe():
@@ -119,27 +121,28 @@ def checkuebergabe():
     groups = getfile("groups")
     for key, group in groups.items():
         parameter = group["stream"]
-        if parameter:
-            for radiostream in radiostreams.items():
-                if radiostream[0] in parameter.lower() or radiostream[1] in parameter:
-                    showplan = waoapi.loadwaoapishowplan(stream=radiostream[1],count=2,upcoming=True)
-                    start_date_1 = WAOAPIParser.correcdate(showplan[0][waodata.get("waoapi-showplan","start")])
-                    end_date_1 = WAOAPIParser.correcdate(showplan[0][waodata.get("waoapi-showplan","end")])
-                    start_date_2 = WAOAPIParser.correcdate(showplan[1][waodata.get("waoapi-showplan","start")])
+        if correctgrouptype(key,"intern"):
+            if parameter:
+                for radiostream in radiostreams.items():
+                    if radiostream[0] in parameter.lower() or radiostream[1] in parameter:
+                        showplan = waoapi.loadwaoapishowplan(stream=radiostream[1],count=2,upcoming=True)
+                        start_date_1 = WAOAPIParser.correcdate(showplan[0][waodata.get("waoapi-showplan","start")])
+                        end_date_1 = WAOAPIParser.correcdate(showplan[0][waodata.get("waoapi-showplan","end")])
+                        start_date_2 = WAOAPIParser.correcdate(showplan[1][waodata.get("waoapi-showplan","start")])
 
-                    if start_date_1 <= datetime.now() < end_date_1 and start_date_2 == end_date_1 \
-                            and end_date_1 - datetime.now() < timedelta(hours=1):
-                        show_name_1 = showplan[0][waodata.get("waoapi-showplan","show")]
-                        dj_1 = getdjnamebyonair(showplan[0][waodata.get("waoapi-showplan","dj")],
-                                                str(showplan[0][waodata.get("waoapi-showplan","djid")]))
-                        show_name_2 = showplan[1][waodata.get("waoapi-showplan","show")]
-                        dj_2 = getdjnamebyonair(showplan[1][waodata.get("waoapi-showplan","dj")],
-                                                str(showplan[1][waodata.get("waoapi-showplan","djid")]))
-                        reply = '''%s*Übergabeprotokoll %s%s*
-%sAktueller DJ: %s mit _%s_
-%sNächster DJ: %s mit _%s_
-'''% (emoji.warning,radiostream[1].capitalize(),emoji.warning,emoji.cross_mark, dj_1,show_name_1,emoji.check_mark,dj_2,show_name_2)
-                        logger.debug(reply)
-                        sendtext(int(key),reply)
+                        if start_date_1 <= datetime.now() < end_date_1 and start_date_2 == end_date_1 \
+                                and end_date_1 - datetime.now() < timedelta(hours=1):
+                            show_name_1 = showplan[0][waodata.get("waoapi-showplan","show")]
+                            dj_1 = getdjnamebyonair(showplan[0][waodata.get("waoapi-showplan","dj")],
+                                                    str(showplan[0][waodata.get("waoapi-showplan","djid")]))
+                            show_name_2 = showplan[1][waodata.get("waoapi-showplan","show")]
+                            dj_2 = getdjnamebyonair(showplan[1][waodata.get("waoapi-showplan","dj")],
+                                                    str(showplan[1][waodata.get("waoapi-showplan","djid")]))
+                            reply = '''%s*Übergabeprotokoll %s%s*
+    %sAktueller DJ: %s mit _%s_
+    %sNächster DJ: %s mit _%s_
+    '''% (emoji.warning,radiostream[1].capitalize(),emoji.warning,emoji.cross_mark, dj_1,show_name_1,emoji.check_mark,dj_2,show_name_2)
+                            logger.debug(reply)
+                            sendtext(int(key),reply)
 
-                    pass
+                        pass

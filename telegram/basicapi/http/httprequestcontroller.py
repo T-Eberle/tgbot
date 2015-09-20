@@ -14,44 +14,19 @@ class HTTPRequestController:
     @staticmethod
     def requestwithvaluesxwwwurlencoded(url, values):
         req = requests.post(url,params=values)
-        # data = urlencode(values)
-        # data = data.encode("utf-8")
-        #
-        # request = Request(url)
-        # request.add_header("Content-Type", "application/x-www-form-urlencoded;charset=utf-8")
         logger.debug("URL: " + str(req.url))
-        # response = urlopen(request.get_full_url(), data)
-        # html = response.read()
         return req.raise_for_status()
 
     @staticmethod
-    def requestwithimg(url, values,filename):
-        logger.debug("URL: " + str(url))
-        file = pkg_resources.resource_filename("resources.img", filename)
-        logger.debug("FILE: " + str(file))
-        files = {"sticker": open(file,"rb")}
-        html = requests.post(url,data=values,files=files)
-
-    @staticmethod
-    def requestwithdoc(url, values,file_id,filename,path="resources.documents",complete_path=None):
-        logger.debug("URL: " + str(url))
-        if not complete_path:
-            file = pkg_resources.resource_filename(path, filename)
+    def requestwithfile(url, values,file_id,file,filename=None):
+        if not filename:
+            files = {file_id: file}
         else:
-            file = complete_path
-        logger.debug("PATH: " + str(path))
-        logger.debug("FILE: " + str(filename))
-        files = {file_id: (filename,open(file,"rb"))}
-        html = requests.post(url,data=values,files=files)
+            files = {file_id: (filename, file)}
+        html = requests.post(url,params=values,files=files)
+        logger.debug("URL: " + str(html.text))
 
     @staticmethod
-    def requestwithstringasfile(url, values,file_id,filename,filestring):
-        logger.debug("URL: " + str(url))
-        logger.debug("FILE: " + str(filename))
-        files = {file_id: (filename,filestring)}
-        html = requests.post(url,data=values,files=files)
-
-    @staticmethod
-    def requestwithfile(url, values,file_id,filename,file):
-        files = {file_id: (filename, file)}
-        html = requests.post(url,data=values,files=files)
+    def requestwithdata(url,values,data):
+        html = requests.post(url,params=values,data=data)
+        logger.debug("URL: " + str(html.text))

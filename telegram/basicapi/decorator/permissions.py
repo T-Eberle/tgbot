@@ -3,13 +3,37 @@ __author__ = 'Tommy'
 
 from telegram.tglogging import logger
 from telegram.config.tgbotconfigparser import TGBotConfigParser
-from telegram.tgredis import getfile
+from telegram.tgredis import getfile,getfilevalue
 from telegram.basicapi.commands import sendreply
 from resources import emoji
 
 config = TGBotConfigParser("config.ini")
 data = config.load()
 
+
+def grouptype(*params):
+    def _grouptype(func):
+        def _wrapped(*args):
+            message = args[1]
+            if correctgrouptype(message.chat_id(),*params):
+                func(*args)
+                return
+        return _wrapped
+    return _grouptype
+
+
+def correctgrouptype(chat_id,*params):
+    values = getfilevalue("groups",chat_id)
+    if not values:
+        return True
+    else:
+        type = values.get("type")
+        if not type:
+            return True
+        for param in params:
+            if param in type:
+                return True
+    return False
 
 def func_ispermitteduser(message):
     users = getfile("users")

@@ -10,6 +10,7 @@ from telegram.config.tgbotconfigparser import TGBotConfigParser
 from datetime import datetime
 from telegram.basicapi.decorator.tgcommands import reply
 from telegram.basicapi.decorator.permissions import botonly
+import pkg_resources
 
 
 waoconfig = TGBotConfigParser("wao-config.ini")
@@ -55,14 +56,16 @@ class DataCommands:
                 emoji.blue_diamond + " _Username:_ @" + user.username + "\n" +
                 emoji.blue_diamond + " _Chat ID:_ " + str(user.chat_id) + "\n" + extrainfos)
 
-    @staticmethod
-    def start(self,message):
-        senddocument(message.chat_id(),"TG-Bot-Manual.pdf")
 
-    @staticmethod
-    def hilfe(message):
+    def start(self,message):
+        file = pkg_resources.resource_filename("resources.documents","TG-Bot-Manual.pdf")
+        senddocument(message.chat_id(),"WeAreOne Bot-Manual.pdf",file)
+
+
+    def hilfe(self,message):
         """
         Funktion, die dem Nutzer Hilfe zum Nutzen des Bots anbietet.
         :param message: Die vom Nutzer gesendete Nachricht
         """
-        senddocument(message.chat_id(),"TG-Bot-Manual.pdf")
+        file = pkg_resources.resource_filename("resources.documents","TG-Bot-Manual.pdf")
+        senddocument(message.chat_id(),"WeAreOne Bot-Manual.pdf",file)
