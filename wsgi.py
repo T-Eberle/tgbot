@@ -40,7 +40,6 @@ def application(environ, start_response):
 
 
 @cron(10,-1,-1,-1,-1,target='spooler')
-@sleeping
 @db
 def tracklist(num):
     gettracklist()

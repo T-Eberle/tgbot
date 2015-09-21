@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d6bb94ef-54db-42cc-96c1-a589afb07d71" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/telegram/basicapi/commands/__init__.py" afterPath="$PROJECT_DIR$/telegram/basicapi/commands/__init__.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/wsgi.py" afterPath="$PROJECT_DIR$/wsgi.py" />
     </list>
     <ignored path="Butler Elroy.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -27,7 +27,7 @@
       <file leaf-file-name="__init__.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/telegram/bot/timer/__init__.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.048814505">
+            <state vertical-scroll-proportion="-0.66480446">
               <caret line="29" column="4" selection-start-line="29" selection-start-column="4" selection-end-line="29" selection-end-column="4" />
               <folding>
                 <element signature="e#46#111#0" expanded="true" />
@@ -40,7 +40,7 @@
         <entry file="file://$PROJECT_DIR$/wsgi.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="45" column="10" selection-start-line="45" selection-start-column="10" selection-end-line="45" selection-end-column="10" />
+              <caret line="44" column="14" selection-start-line="44" selection-start-column="14" selection-end-line="44" selection-end-column="14" />
               <folding />
             </state>
           </provider>
@@ -188,7 +188,6 @@
         <option value="$PROJECT_DIR$/telegram/bot/decorators/multiRadioCommand.py" />
         <option value="$PROJECT_DIR$/telegram/bot/decorators/singleRadioCommand.py" />
         <option value="$PROJECT_DIR$/resources/txt/commands.txt" />
-        <option value="$PROJECT_DIR$/wsgi.py" />
         <option value="$PROJECT_DIR$/telegram/bot/commands/__init__.py" />
         <option value="$PROJECT_DIR$/telegram/bot/commands/registercommands.py" />
         <option value="$PROJECT_DIR$/telegram/basicapi/commands/messagecommands.py" />
@@ -213,6 +212,7 @@
         <option value="$PROJECT_DIR$/telegram/bot/timer/__init__.py" />
         <option value="$PROJECT_DIR$/telegram/bot/commands/entertaincommands.py" />
         <option value="$PROJECT_DIR$/telegram/basicapi/commands/__init__.py" />
+        <option value="$PROJECT_DIR$/wsgi.py" />
       </list>
     </option>
   </component>
@@ -998,7 +998,13 @@
       <option name="project" value="LOCAL" />
       <updated>1442765583086</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="sendtext korrigiert.">
+      <created>1442829188148</created>
+      <option name="number" value="00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1442829188148</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="TodoView">
@@ -1016,6 +1022,7 @@
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.22370088" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.14080834" sideWeight="0.49" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33333334" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.14080834" sideWeight="0.51" order="13" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3293011" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
@@ -1024,7 +1031,6 @@
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3293011" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33333334" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="RemoteSynchronizer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
@@ -1093,7 +1099,8 @@
     <MESSAGE value="Merge branch 'master' of ssh://redmine.tb-group.fm/web-projects/telegram-bots into tommy&#10;&#10;Conflicts:&#10;&#9;telegram/bot/decorators/onestreamcommand.py&#10;" />
     <MESSAGE value="Basicapi Commands gemerged in __init__-Datei. Keine Klassen mehr, alle Methoden sind statisch&#10;" />
     <MESSAGE value="#106 decorators und gruppentypen eingefügt." />
-    <option name="LAST_COMMIT_MESSAGE" value="#106 decorators und gruppentypen eingefügt." />
+    <MESSAGE value="sendtext korrigiert." />
+    <option name="LAST_COMMIT_MESSAGE" value="sendtext korrigiert." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1136,7 +1143,7 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="55" column="8" selection-start-line="55" selection-start-column="8" selection-end-line="55" selection-end-column="8" />
           <folding>
-            <element signature="e#54#89#0" expanded="true" />
+            <element signature="e#54#89#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1395,7 +1402,7 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="23" selection-start-line="0" selection-start-column="23" selection-end-line="0" selection-end-column="23" />
           <folding>
-            <element signature="e#54#89#0" expanded="true" />
+            <element signature="e#54#89#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1405,7 +1412,7 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="9" column="0" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
           <folding>
-            <element signature="e#48#63#0" expanded="true" />
+            <element signature="e#48#63#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1487,14 +1494,14 @@
     <entry file="file://$PROJECT_DIR$/wsgi.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="45" column="10" selection-start-line="45" selection-start-column="10" selection-end-line="45" selection-end-column="10" />
+          <caret line="44" column="14" selection-start-line="44" selection-start-column="14" selection-end-line="44" selection-end-column="14" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/telegram/bot/timer/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.048814505">
+        <state vertical-scroll-proportion="-0.66480446">
           <caret line="29" column="4" selection-start-line="29" selection-start-column="4" selection-end-line="29" selection-end-column="4" />
           <folding>
             <element signature="e#46#111#0" expanded="true" />
