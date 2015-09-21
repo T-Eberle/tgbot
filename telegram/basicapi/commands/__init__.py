@@ -45,9 +45,7 @@ def sendmessage(oldvalues={},**kwargs):
 
 def sendtext(chat_id, text):
     logger.debug("Text sent! -> " + text)
-    req = sendmessage(chat_id=chat_id,text=text)
-    if req == 400:
-        sendmessage(chat_id=chat_id,text=text)
+    sendmessage(chat_id=chat_id,text=text,oldvalues={})
 
 
 def sendreply_markup(values,**kwargs):
