@@ -3,7 +3,7 @@ __author__ = 'Thomas & Carsten'
 
 import random
 from telegram.bot.commands import *
-from telegram.basicapi.commands import sendsticker, sendvoice,sendaudio,sendphotofromurl
+from telegram.basicapi.commands import sendsticker, sendvoice,sendaudio,sendphotofromurl,sendphoto
 from telegram.basicapi.decorator.tgcommands import text
 from telegram.bot.decorators import limited
 from telegram.basicapi.decorator.permissions import grouptype
@@ -13,9 +13,6 @@ from telegram.bot.decorators.onestreamcommand import onestreamcommand
 from telegram.config.waoapiparser import WAOAPIParser
 import pkg_resources
 from telegram.tgredis import *
-import requests
-import tempfile
-import shutil
 
 huly_list = ["FAULER SACK DU"]
 
@@ -68,6 +65,13 @@ class EntertainCommands:
     def ateam(self,message):
         file = pkg_resources.resource_filename("resources.img", "ateam.webp")
         sendsticker(message.chat_id(),"Ateam", file)
+
+    @grouptype("fun")
+    @limited
+    def wat(self,message):
+        file = pkg_resources.resource_filename("resources.img","wat.gif")
+        sendphoto(message.chat_id(),None,open(file,"rb"),"WAT?")
+
 
     @grouptype("fun")
     @limited

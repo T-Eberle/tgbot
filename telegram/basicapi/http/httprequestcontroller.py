@@ -24,7 +24,9 @@ class HTTPRequestController:
         else:
             files = {file_id: (filename, file)}
         html = requests.post(url,params=values,files=files)
-        logger.debug("URL: " + str(html.text))
+        logger.debug("Text: " + str(html.text))
+        logger.debug("STATUS:"+str(html.status_code))
+        return html.status_code
 
     @staticmethod
     def requestwithdata(url,values,data):

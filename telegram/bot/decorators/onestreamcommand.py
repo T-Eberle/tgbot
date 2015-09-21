@@ -4,9 +4,10 @@ __author__ = 'Tommy'
 from telegram.bot.commands import getparameter,getstreamparameter
 import re
 from telegram.tgredis import addtoconv, deleteconv
-from telegram.basicapi.commands import sendreply_one_keyboardmarkup,hide_keyboard
+from telegram.basicapi.commands import sendreply_one_keyboardmarkup,hide_keyboard,sendphoto_hidekeyboard
 from telegram.tglogging import logger
-
+import pkg_resources
+from PIL import Image
 radiostreams = {"tb": "technobase", "ht": "housetime", "hb": "hardbase", "trb": "trancebase", "ct": "coretime",
                          "clt": "clubtime"}
 
@@ -33,6 +34,11 @@ def onestreamcommand(func):
             else:
                 obj.radiostream = result.group(0)
             reply = func(*args)[1]
-            hide_keyboard(message, message.chat_id(), reply + "#%s" % func.__name__)
+            photo = pkg_resources.resource_filename("resources.img", obj.radiostream+".png")
+            logger.debug("PHOTO: "+str(photo))
+            status = sendphoto_hidekeyboard(message,message.chat_id(),None,open(photo,"rb"),caption=reply)
+            logger.debug("ONESTREAMCOMMAND STATUS: "+str(status))
+            if status == 400:
+                hide_keyboard(message,message.chat_id(),reply)
             deleteconv(message)
     return _wrapper

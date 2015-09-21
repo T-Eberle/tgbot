@@ -9,6 +9,7 @@ import json
 import re
 import requests
 import tempfile
+from PIL import Image
 
 suffix = re.compile(r"^(.*/)*(?P<suffix>\w+)$")
 
@@ -36,7 +37,7 @@ def sendrequestwithfile(method_name,file_id,file,filename=None,oldvalues={},
         values[str(key)] = kwargs[key]
     url = data.get("tgapi", "bot_link") + data.get("tgapi", method_name + "_Method")
     values["parse_mode"] = "Markdown"
-    HTTPRequestController.requestwithfile(url,values,file_id,file,filename)
+    return HTTPRequestController.requestwithfile(url,values,file_id,file,filename)
 
 
 def sendmessage(oldvalues={},**kwargs):
@@ -99,8 +100,8 @@ def sendstringasfile(chat_id,file_id,filename,filestring):
     sendrequestwithfile("sendDocument",file_id,filestring,filename=filename,chat_id=chat_id)
 
 
-def sendphoto(chat_id, photoname,photo,caption=None):
-    sendrequestwithfile("sendPhoto","photo",photo,filename=photoname,chat_id=chat_id,caption=caption)
+def sendphoto(chat_id, photoname,photo,caption=None,**kwargs):
+    return sendrequestwithfile("sendPhoto","photo",photo,filename=photoname,chat_id=chat_id,caption=caption,**kwargs)
 
 
 def sendphotofromurl(chat_id,photoname,url,caption=None):
@@ -120,6 +121,12 @@ def sendphotofromurl(chat_id,photoname,url,caption=None):
             else:
                 sendphoto(chat_id,photoname,temp,caption=caption)
             temp.close()
+
+
+def sendphoto_hidekeyboard(message,chat_id, photoname,photo,caption=None):
+        markup_values = {"hide_keyboard":True,"selective":True}
+        return sendphoto(chat_id, photoname,photo,caption=caption,
+                  reply_markup=json.dumps(markup_values))
 
 
 def sendChatAction(chat_id,chataction):

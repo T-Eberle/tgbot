@@ -11,7 +11,7 @@ from resources import emoji
 
 regex = re.compile(r'/(?P<command>\w+)(\s(?P<parameter>.+))?')
 oldtimeformat = "%A, %d.%m.%y %H:%M"
-timeformat = "%H:%M"
+timeformat = "%H"
 daytimeformat = "%a %H:%M"
 wochentag = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag", "Sonntag"]
 
@@ -211,12 +211,11 @@ def createshowstring(show, start, ende):
     if not showname:
         return str('''%sShow by %s
 %sZeit: %s - %s
-''' % (emoji.microphone, name, emoji.alarm_clock, str(start), str(ende)))
+''' % (emoji.headphone, name, emoji.alarm_clock, str(start), str(ende)))
 
     else:
-        return str('''%sShow: \"%s\" by %s
-%sZeit: %s - %s
-''' % (emoji.microphone,showname, name,emoji.alarm_clock, str(start), str(ende)))
+        return str('''%s%s - %s: \"%s\" - %s
+''' % (emoji.headphone, str(start), str(ende),showname, name))
 
 
 def getstreamparameter(message):
