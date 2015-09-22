@@ -82,16 +82,20 @@ class EntertainCommands:
     @grouptype("fun")
     @onestreamcommand
     def huly(self,message):
-        if WAOAPIParser.now("HouseTime","dj"):
-            waoapi = WAOAPIParser()
-            huly_list.append("%s runterschmeiss" % getdjnamebyonair(waoapi.now("Housetime", "dj"),
-                                                                    str(waoapi.now("Housetime","djid"))))
-            size_result = len(huly_list)
-            rand = random.randint(0,size_result - 1)
-            return message.chat_id(), str("Zitat Thomas Huly: \"" + huly_list[rand] + "\"")
-        else:
-            size_result = len(huly_list)
-            rand = random.randint(0, size_result - 1)
+        size_result = len(huly_list)
+        rand = random.randint(0, size_result - 1)
+        try:
+            if WAOAPIParser.now(self.radiostream,"dj"):
+                waoapi = WAOAPIParser()
+                huly_list.append("%s runterschmeiss" % getdjnamebyonair(waoapi.now(self.radiostream, "dj"),
+                                                                        str(waoapi.now(self.radiostream,"djid"))))
+                size_result = len(huly_list)
+                rand = random.randint(0,size_result - 1)
+                return message.chat_id(), str("Zitat Thomas Huly: \"" + huly_list[rand] + "\"")
+            else:
+                return message.chat_id(),str("Zitat Thomas Huly: \"" + huly_list[rand] + "\"")
+        except KeyError as error:
+            logger.exception(error)
             return message.chat_id(),str("Zitat Thomas Huly: \"" + huly_list[rand] + "\"")
 
     @grouptype("fun")

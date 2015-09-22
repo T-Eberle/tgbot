@@ -21,16 +21,47 @@ configdata = config.load()
 
 
 def addtoconv(message,value):
+    pass
+    # user = message.from_User
+    # new_value = ""
+    # conv = getconv(message)
+    # if conv != "None":
+    #     new_value += conv + " ; "
+    # new_value += value
+    # pipe = convserver.pipeline()
+    # pipe.set(user.chat_id,new_value)
+    # pipe.expire(user.chat_id,120)
+    # pipe.execute()
+
+
+def setconvcommand(message,value):
     user = message.from_User
-    new_value = ""
-    conv = getconv(message)
-    if conv != "None":
-        new_value += conv + " ; "
-    new_value += value
     pipe = convserver.pipeline()
-    pipe.set(user.chat_id,new_value)
+    pipe.hset(user.chat_id,"command",value)
     pipe.expire(user.chat_id,120)
     pipe.execute()
+
+
+def getconvcommand(message):
+    user = message.from_User
+    result = convserver.hget(user.chat_id,"command")
+    if result:
+        return result.decode("utf-8")
+    else:
+        return result
+
+
+def setconvkey(message,key,value):
+    user = message.from_User
+    pipe = convserver.pipeline()
+    pipe.hset(user.chat_id,key,value)
+    pipe.expire(user.chat_id,120)
+    pipe.execute()
+
+
+def getconvkey(message,key):
+    user = message.from_User
+    return str(convserver.hget(user.chat_id,key))
 
 
 def getconv(message):
