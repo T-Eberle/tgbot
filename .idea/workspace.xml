@@ -2,12 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d6bb94ef-54db-42cc-96c1-a589afb07d71" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/telegram/bot/parser/__init__.py" afterPath="$PROJECT_DIR$/telegram/bot/parser/__init__.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/telegram/tgredis/__init__.py" afterPath="$PROJECT_DIR$/telegram/tgredis/__init__.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/telegram/bot/parser/commandparser.py" afterPath="$PROJECT_DIR$/telegram/bot/parser/commandparser.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/telegram/bot/commands/entertaincommands.py" afterPath="$PROJECT_DIR$/telegram/bot/commands/entertaincommands.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/telegram/bot/decorators/onestreamcommand.py" afterPath="$PROJECT_DIR$/telegram/bot/decorators/onestreamcommand.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/telegram/bot/decorators/singleradiocommand.py" afterPath="$PROJECT_DIR$/telegram/bot/decorators/singleradiocommand.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/telegram/bot/timer/__init__.py" afterPath="$PROJECT_DIR$/telegram/bot/timer/__init__.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="Butler Elroy.iws" />
@@ -113,24 +108,24 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="message.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/telegram/basicapi/model/message.py">
+      <file leaf-file-name="__init__.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/telegram/bot/parser/__init__.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="57" column="13" selection-start-line="57" selection-start-column="13" selection-end-line="57" selection-end-column="13" />
-              <folding />
+              <caret line="19" column="21" selection-start-line="19" selection-start-column="21" selection-end-line="19" selection-end-column="21" />
+              <folding>
+                <element signature="e#47#92#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file leaf-file-name="__init__.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/telegram/bot/parser/__init__.py">
+        <entry file="file://$PROJECT_DIR$/telegram/bot/timer/__init__.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.35893854">
-              <caret line="19" column="21" selection-start-line="19" selection-start-column="21" selection-end-line="19" selection-end-column="21" />
-              <folding>
-                <element signature="e#47#92#0" expanded="true" />
-              </folding>
+            <state vertical-scroll-proportion="0.5690377">
+              <caret line="105" column="69" selection-start-line="105" selection-start-column="69" selection-end-line="105" selection-end-column="69" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -210,7 +205,6 @@
         <option value="$PROJECT_DIR$/telegram/bot/commands/radiocommands.py" />
         <option value="$PROJECT_DIR$/telegram/config/ninegagapiparser.py" />
         <option value="$PROJECT_DIR$/telegram/basicapi/decorator/permissions.py" />
-        <option value="$PROJECT_DIR$/telegram/bot/timer/__init__.py" />
         <option value="$PROJECT_DIR$/wsgi.py" />
         <option value="$PROJECT_DIR$/telegram/config/waoapiparser.py" />
         <option value="$PROJECT_DIR$/telegram/bot/commands/__init__.py" />
@@ -222,6 +216,7 @@
         <option value="$PROJECT_DIR$/telegram/tgredis/__init__.py" />
         <option value="$PROJECT_DIR$/telegram/bot/commands/entertaincommands.py" />
         <option value="$PROJECT_DIR$/telegram/bot/parser/__init__.py" />
+        <option value="$PROJECT_DIR$/telegram/bot/timer/__init__.py" />
       </list>
     </option>
   </component>
@@ -380,6 +375,28 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="timer" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Butler Elroy" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="telegram-bots" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="telegram" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bot" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="parser" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -484,8 +501,8 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
       <pane id="Scratches" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -943,7 +960,13 @@
       <option name="project" value="LOCAL" />
       <updated>1442846825288</updated>
     </task>
-    <option name="localTasksCounter" value="31" />
+    <task id="LOCAL-00031" summary="Conversations mit Redis aktualisiert und verbessert, ab sofort sind größere Conversations möglich!&#10;Huly Korrigiert.&#10;Wartungsmodus eingefügt (siehe telegram/bot/parser/__init__.py">
+      <created>1442924578930</created>
+      <option name="number" value="00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1442924578930</updated>
+    </task>
+    <option name="localTasksCounter" value="32" />
     <servers />
   </component>
   <component name="TodoView">
@@ -963,7 +986,6 @@
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.14080834" sideWeight="0.49" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.14080834" sideWeight="0.51" order="13" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32380953" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3293011" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.18389262" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -977,6 +999,7 @@
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39731544" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.36021507" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32380953" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
     </layout>
@@ -1015,7 +1038,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Major changes. Almost done for release" />
     <MESSAGE value="Letzte Beta Tests durch... Hoffe da sind keine Fehler mehr drin." />
     <MESSAGE value="Diverse Unschönheiten korrigiert, minimales Refactoring durchgeführt.#82&#10;&#10;Morgen-Befehl eingeführt.&#10;&#10;Spooler Eingeführt.#80, #81" />
     <MESSAGE value="Diverse Unschönheiten korrigiert, Files werden in den Cache gespeichert.&#10;Hilfe-Befehl eingeführt.&#10;&#10;Spooler Eingeführt.#80, #81" />
@@ -1040,7 +1062,8 @@
     <MESSAGE value="sendtext korrigiert." />
     <MESSAGE value="sleeping aus dem tracklist-cronbefehl entfernt" />
     <MESSAGE value="Sendeplanbefehle &quot;verschönert&quot;" />
-    <option name="LAST_COMMIT_MESSAGE" value="Sendeplanbefehle &quot;verschönert&quot;" />
+    <MESSAGE value="Conversations mit Redis aktualisiert und verbessert, ab sofort sind größere Conversations möglich!&#10;Huly Korrigiert.&#10;Wartungsmodus eingefügt (siehe telegram/bot/parser/__init__.py" />
+    <option name="LAST_COMMIT_MESSAGE" value="Conversations mit Redis aktualisiert und verbessert, ab sofort sind größere Conversations möglich!&#10;Huly Korrigiert.&#10;Wartungsmodus eingefügt (siehe telegram/bot/parser/__init__.py" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1056,6 +1079,14 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/telegram/bot/parser/commandparser.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="16" column="68" selection-start-line="16" selection-start-column="68" selection-end-line="16" selection-end-column="68" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/telegram/basicapi/commands/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1262,21 +1293,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/telegram/bot/timer/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="29" column="4" selection-start-line="29" selection-start-column="4" selection-end-line="29" selection-end-column="4" />
-          <folding>
-            <element signature="e#46#111#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/telegram/bot/commands/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="217" column="22" selection-start-line="217" selection-start-column="22" selection-end-line="217" selection-end-column="22" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1306,7 +1326,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="44" column="14" selection-start-line="44" selection-start-column="14" selection-end-line="44" selection-end-column="14" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1314,7 +1333,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="27" column="51" selection-start-line="27" selection-start-column="51" selection-end-line="27" selection-end-column="51" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1322,7 +1340,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="6" column="31" selection-start-line="6" selection-start-column="31" selection-end-line="6" selection-end-column="31" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1340,7 +1357,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="81" column="4" selection-start-line="81" selection-start-column="4" selection-end-line="81" selection-end-column="4" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1432,11 +1448,19 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/telegram/bot/parser/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.35893854">
+        <state vertical-scroll-proportion="0.0">
           <caret line="19" column="21" selection-start-line="19" selection-start-column="21" selection-end-line="19" selection-end-column="21" />
           <folding>
             <element signature="e#47#92#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/telegram/bot/timer/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.5690377">
+          <caret line="105" column="69" selection-start-line="105" selection-start-column="69" selection-end-line="105" selection-end-column="69" />
+          <folding />
         </state>
       </provider>
     </entry>

@@ -103,7 +103,7 @@ def checkprimetime():
                         djwanted = ""
                         for showtime in range(primetime_start, primetime_end):
 
-                            if not (showtime in times) and now.hour <= showtime:
+                            if not (showtime in times) and now.hour < showtime:
                                 djwanted += "\U000027A1" + str(showtime) + ":00 - " + str(showtime + 1) + ":00 \n"
                         if djwanted:
                             result += "\U000026A0DJ WANTED @ " + radiostream[
