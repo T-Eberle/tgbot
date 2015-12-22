@@ -1,19 +1,21 @@
 # -*- coding: utf-8 -*-
 __author__ = 'Tommy'
 
-from telegram.bot.commands import getparameter,getstreamparameter
 import re
-from telegram.tgredis import addtoconv, deleteconv,setconvkey,setconvcommand,getconvcommand
+
+import pkg_resources
+
+from telegram.bot.commands import getparameter,getstreamparameter
+from telegram.tgredis import deleteconv, setconvcommand,getconvcommand
 from telegram.basicapi.commands import sendreply_one_keyboardmarkup,hide_keyboard,sendphoto_hidekeyboard
 from telegram.tglogging import logger
-import pkg_resources
-from PIL import Image
+
 radiostreams = {"tb": "technobase", "ht": "housetime", "hb": "hardbase", "trb": "trancebase", "ct": "coretime",
-                         "clt": "clubtime"}
+                         "clt": "clubtime","tt": "teatime"}
 
 def onestreamcommand(func):
     def _wrapper(*args):
-        regex = re.compile(r'(\b(ht|ct|clt|tb|hb|coretime|housetime|technobase|trancebase|clubtime|hardbase)\b)')
+        regex = re.compile(r'(\b(ht|ct|clt|tb|hb|tt|teatime|coretime|housetime|technobase|trancebase|clubtime|hardbase)\b)')
         obj = args[0]
         message = args[1]
         if getconvcommand(message)==func.__name__ and regex.search(message.text.lower()):
@@ -32,18 +34,21 @@ def onestreamcommand(func):
                                                                func.__name__,keyboard)
                 setconvcommand(message,func.__name__)
         else:
-            logger.debug("RESULT REGEX: "+str(result.group(0)))
-            if result.group(0) in radiostreams.keys():
-                logger.debug("ITS A KEY!")
-                obj.radiostream = radiostreams.get(result.group(0)).lower()
+            if result:
+                logger.debug("RESULT REGEX: "+str(result.group(0)))
+                if result.group(0) in radiostreams.keys():
+                    logger.debug("ITS A KEY!")
+                    obj.radiostream = radiostreams.get(result.group(0)).lower()
+                else:
+                    obj.radiostream = result.group(0).lower()
+                reply = func(*args)[1]
+                photo = pkg_resources.resource_filename("resources.img", obj.radiostream+".png")
+                logger.debug("PHOTO: "+str(photo))
+                status = sendphoto_hidekeyboard(message,message.chat_id(),None,open(photo,"rb"),caption=reply)
+                logger.debug("ONESTREAMCOMMAND STATUS: "+str(status))
+                if status == 400:
+                    hide_keyboard(message,message.chat_id(),reply)
+                deleteconv(message)
             else:
-                obj.radiostream = result.group(0).lower()
-            reply = func(*args)[1]
-            photo = pkg_resources.resource_filename("resources.img", obj.radiostream+".png")
-            logger.debug("PHOTO: "+str(photo))
-            status = sendphoto_hidekeyboard(message,message.chat_id(),None,open(photo,"rb"),caption=reply)
-            logger.debug("ONESTREAMCOMMAND STATUS: "+str(status))
-            if status == 400:
-                hide_keyboard(message,message.chat_id(),reply)
-            deleteconv(message)
+                return
     return _wrapper

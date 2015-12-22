@@ -10,8 +10,6 @@ from telegram.bot.commands.datacommands import *
 from telegram.bot.commands.entertaincommands import EntertainCommands
 from telegram.bot.commands.radiocommands import RadioCommands
 from telegram.bot.commands.registercommands import RegisterCommands
-from telegram.basicapi.decorator.permissions import *
-from telegram.basicapi.commands import hide_keyboard
 from resources import emoji
 
 args = [RadioCommands(),RegisterCommands(),DataCommands(),
@@ -19,7 +17,7 @@ args = [RadioCommands(),RegisterCommands(),DataCommands(),
 
 wartungsmodus = False
 
-@permitted
+
 def parsemessage(message):
     user = message.from_User
     updategroup(message)

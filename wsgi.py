@@ -4,15 +4,13 @@ import locale
 import json
 
 from uwsgidecorators import *
-from os import listdir
-from os.path import isfile, join
-from telegram.bot.timer import *
-from telegram.config.jsonconfigreader import JSONConfigReader
-from telegram import activatebot
+import telegram
+from telegram.bot.timer import checkprimetime,checkuebergabe,gettracklist
 from datetime import timedelta
 from telegram.bot.decorators import *
-import uwsgi
+import os
 import shutil
+from telegram.basicapi.wsgi import TGBotWSGI
 
 configParser = TGBotConfigParser("config.ini")
 config = configParser.load()
@@ -22,21 +20,9 @@ sys.path.append(path)
 locale.setlocale(locale.LC_ALL, "de_DE.UTF8")
 
 
-def application(environ, start_response):
-    createcache()
-    start_response('200 OK', [('Content-Type', 'text/html')])
-
-    try:
-        request_body_size = int(environ.get('CONTENT_LENGTH', 0))
-    except ValueError:
-        request_body_size = 0
-
-    if request_body_size != 0:
-        request_body = environ['wsgi.input'].read(request_body_size)
-        obj = json.loads(request_body.decode('utf-8'))
-        activatebot(obj)
-    savecache()
-    return b''
+def application(environ,start_response):
+    wsgi = TGBotWSGI(["users", "groups"])
+    wsgi.application(environ,start_response)
 
 
 @cron(10,-1,-1,-1,-1,target='spooler')
@@ -45,7 +31,7 @@ def tracklist(num):
     gettracklist()
 
 
-@cron(int(config.get("basics", "time_interval")), -1, -1, -1, -1, target='spooler')
+@cron(30, -1, -1, -1, -1, target='spooler')
 @sleeping
 @db
 def primetime(num):
@@ -65,7 +51,7 @@ def backup(num):
                 curpath = os.path.join(dirpath,file)
                 backup = os.path.join(backup_path,str(datetime.now().strftime("%y%m%d%H%M")) + file)
                 shutil.copy(curpath,backup)
-                logger.debug("Backup " + file + " created.")
+                logger.debug("Backup for file " + file + " created.")
             for file in filenames:
                 curpath = os.path.join(dirpath, file)
                 file_modified = datetime.fromtimestamp(os.path.getmtime(curpath))

@@ -2,11 +2,12 @@
 __author__ = 'Tommy'
 
 import collections
+import re
+
 from telegram.basicapi.commands import sendreply_one_keyboardmarkup,hide_keyboard
 from telegram.bot.commands import getstreamparameter,getparameter
 from telegram.tgredis import deleteconv,setconvcommand,getconvcommand
 from telegram.tglogging import logger
-import re
 from resources import emoji
 
 unsorted_radiostreams = {"tb": "technobase", "ht": "housetime", "hb": "hardbase", "trb": "trancebase", "ct": "coretime",

@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 __author__ = 'Tommy'
 
-from telegram.config.jsonconfigreader import JSONConfigReader
 from datetime import datetime
+
+from telegram.config.jsonconfigreader import JSONConfigReader
 from telegram.tgredis import *
 from telegram.basicapi.commands import sendreply
-
 
 configParser = TGBotConfigParser("config.ini")
 config = configParser.load()

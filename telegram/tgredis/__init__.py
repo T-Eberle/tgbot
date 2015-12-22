@@ -7,7 +7,6 @@ import redis
 
 from telegram.config.tgbotconfigparser import TGBotConfigParser
 from telegram.tglogging import logger
-from resources import emoji
 
 limitdb = 0
 convdb = 1

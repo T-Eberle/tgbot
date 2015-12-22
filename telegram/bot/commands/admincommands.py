@@ -2,13 +2,12 @@
 __author__ = 'Thomas Eberle'
 
 from telegram.bot.commands import *
-from telegram.basicapi.commands import sendreply
+from telegram.basicapi.commands import sendreply,senddocument,sendtext
 import uwsgi
 from telegram.tgredis import setfilevalue, deleteentryfromfile
 from resources import emoji
 from telegram.basicapi.decorator.permissions import admin
-from telegram.basicapi.decorator.tgcommands import reply
-from telegram.basicapi.commands import senddocument
+from telegram.basicapi.decorator.tgcommands import reply,text
 
 
 class AdminCommands:
@@ -118,3 +117,12 @@ class AdminCommands:
                 logger.warn(str(error) + " - Eintrag in dem Dictionary nicht vorhanden.")
             except TypeError as error:
                 logger.warn(str(error) + " - Eintrag in dem Dictionary nicht vorhanden.")
+
+    @admin
+    @text
+    def testchannel(self,message):
+        param = getparameter(message.text,None)
+        json = sendtext(param,"Testing Channel...")
+        logger.debug("JSON: "+str(json))
+
+        return message.chat_id(),"ID: "+ str(json["result"]["chat"]["id"])

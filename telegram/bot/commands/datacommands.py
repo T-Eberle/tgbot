@@ -1,17 +1,15 @@
 # -*- coding: utf-8 -*-
 __author__ = 'Thomas Eberle'
 
+import pkg_resources
+
 from telegram.tglogging import *
 from telegram.tgredis import getfilevalue
 from resources import emoji
 from telegram.basicapi.commands import senddocument
-from telegram.config.waoapiparser import WAOAPIParser
 from telegram.config.tgbotconfigparser import TGBotConfigParser
-from datetime import datetime
 from telegram.basicapi.decorator.tgcommands import reply
 from telegram.basicapi.decorator.permissions import botonly
-import pkg_resources
-
 
 waoconfig = TGBotConfigParser("wao-config.ini")
 waodata = waoconfig.load()

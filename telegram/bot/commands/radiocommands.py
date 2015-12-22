@@ -9,7 +9,6 @@ from resources import emoji
 from telegram.bot.decorators.singleradiocommand import singleradiocommand
 from telegram.bot.decorators.onestreamcommand import onestreamcommand
 from telegram.basicapi.decorator.permissions import botonly
-from telegram.basicapi.decorator.permissions import grouptype
 
 waoParser = WAOAPIParser("housetime_onAir")
 
@@ -63,22 +62,18 @@ class RadioCommands:
     def sonntag(self,message):
         return message.chat_id(),getshowfromday(6, self.radiostream)
 
-    @botonly
     @onestreamcommand
     def heute(self,message):
         return message.chat_id(),getshowfromtoday(self.radiostream)
 
-    @botonly
     @onestreamcommand
     def morgen(self,message):
         return message.chat_id(),getshowfromtomorrow(self.radiostream)
 
-    @grouptype("intern")
     @singleradiocommand
     def next(self,message):
         return message.chat_id(),nextshow(self.radiostream)
 
-    @grouptype("intern")
     @singleradiocommand
     def track(self,message):
         try:
@@ -96,7 +91,6 @@ class RadioCommands:
             return message.chat_id(),str('''%sKein DJ ON AIR @ %s!
 ''' % (emoji.thumb_down,self.radiostream.capitalize()))
 
-    @grouptype("intern")
     @singleradiocommand
     def dj(self,message):
         try:
@@ -108,14 +102,12 @@ class RadioCommands:
             return message.chat_id(),str('''%sKein DJ ON AIR @ %s!
 ''' % (emoji.thumb_down,self.radiostream.capitalize()))
 
-    @grouptype("intern")
     @singleradiocommand
     def listener(self,message):
         listener = waoParser.gettrayelement(self.radiostream + "_onAir", "listener")
         return (message.chat_id(),str('''%s*Aktuelle Listeneranzahl* @ _%s_: %s
 ''' % (emoji.satellite,self.radiostream.capitalize(), listener)))
 
-    @grouptype("intern")
     @singleradiocommand
     def now(self,message):
         try:
