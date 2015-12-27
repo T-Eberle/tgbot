@@ -3,7 +3,7 @@ __author__ = 'Tommy'
 from telegram.config.tgbotconfigparser import TGBotConfigParser
 from telegram.config.jsonconfigreader import JSONConfigReader
 from telegram.tgredis import TGRedis
-import telegram
+from telegram.basicapi import activatebot
 import json
 from telegram.tglogging import logger
 
@@ -15,12 +15,14 @@ class TGBotWSGI:
     def getFiles(self):
         return self.files
 
-    def __init__(self,files,redis_limitserver=0,redis_convserver=1,redis_fileserver=2):
+    def __init__(self,files,wartungsmodus,commandclasses,redis_limitserver=0,redis_convserver=1,redis_fileserver=2,configfile="config.ini"):
         self.redis_convserver = redis_convserver
         self.redis_fileserver = redis_fileserver
         self.redis_limitserver = redis_limitserver
-        self.tgredis= TGRedis(redis_limitserver,redis_convserver,redis_fileserver)
+        self.tgredis = TGRedis(redis_limitserver,redis_convserver,redis_fileserver,configfile=configfile)
         self.setFiles(files)
+        self.wartungsmodus = wartungsmodus
+        self.commandclasses = commandclasses
 
     def application(self,environ, start_response):
         logger.debug("ENVIRON: "+str(environ))
@@ -40,7 +42,7 @@ class TGBotWSGI:
         if request_body_size != 0:
             request_body = environ['wsgi.input'].read(request_body_size)
             obj = json.loads(request_body.decode('utf-8'))
-            telegram.activatebot(obj)
+            activatebot(obj,self.wartungsmodus,self.commandclasses)
         self.filereader.savecachetofiles()
 
         return b''

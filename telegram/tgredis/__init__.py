@@ -14,20 +14,21 @@ class TGRedis:
     convserver = redis.StrictRedis(host="localhost", port="6379", db=1,decode_responses=True)
     fileserver = redis.StrictRedis(host="localhost", port="6379", db=2)
     convserver.set_response_callback("HGET",str)
-    config = TGBotConfigParser("basicconfig.ini")
+    config = TGBotConfigParser("config.ini")
     configdata = config.load()
 
-    def __init__(self,configfile="basicconfig.ini",limitdb=0,convdb=1,filedb=2):
+    def __init__(self,limitdb=0,convdb=1,filedb=2,configfile="config.ini"):
         if limitdb == convdb or limitdb == filedb or convdb==filedb:
             return
         self.limitdb = limitdb
         self.convdb = convdb
         self.filedb = filedb
+        self.configfile = configfile
         TGRedis.limitserver = redis.StrictRedis(host="localhost", port="6379", db=limitdb)
         TGRedis.convserver = redis.StrictRedis(host="localhost", port="6379", db=convdb,decode_responses=True)
         TGRedis.fileserver = redis.StrictRedis(host="localhost", port="6379", db=filedb)
         TGRedis.convserver.set_response_callback("HGET",str)
-        TGRedis.config = TGBotConfigParser("basicconfig.ini")
+        TGRedis.config = TGBotConfigParser(self.configfile)
         TGRedis.configdata = TGRedis.config.load()
 
 
@@ -43,9 +44,9 @@ class TGRedis:
         pipe.execute()
 
     @staticmethod
-    def getconvcommand(self,message):
+    def getconvcommand(message):
         user = message.from_User
-        result = self.convserver.hget(user.chat_id,"command")
+        result = TGRedis.convserver.hget(user.chat_id,"command")
         if result:
             return str(result)
         else:
