@@ -3,18 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="bbc5117c-eac8-411e-ab56-e103b0c33eed" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/telegram/basicapi/model/audio.py" afterPath="$PROJECT_DIR$/telegram/basicapi/model/audio.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/telegram/basicapi/model/base.py" afterPath="$PROJECT_DIR$/telegram/basicapi/model/base.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/telegram/basicapi/model/chat.py" afterPath="$PROJECT_DIR$/telegram/basicapi/model/chat.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/telegram/basicapi/model/chatType.py" afterPath="$PROJECT_DIR$/telegram/basicapi/model/chatType.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/telegram/basicapi/model/contact.py" afterPath="$PROJECT_DIR$/telegram/basicapi/model/contact.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/telegram/basicapi/model/document.py" afterPath="$PROJECT_DIR$/telegram/basicapi/model/document.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/telegram/basicapi/model/location.py" afterPath="$PROJECT_DIR$/telegram/basicapi/model/location.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/telegram/basicapi/model/message.py" afterPath="$PROJECT_DIR$/telegram/basicapi/model/message.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/telegram/basicapi/model/sticker.py" afterPath="$PROJECT_DIR$/telegram/basicapi/model/sticker.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/telegram/basicapi/model/user.py" afterPath="$PROJECT_DIR$/telegram/basicapi/model/user.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/telegram/basicapi/model/video.py" afterPath="$PROJECT_DIR$/telegram/basicapi/model/video.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/telegram/tgredis/__init__.py" afterPath="$PROJECT_DIR$/telegram/tgredis/__init__.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/config/basicconfig.ini" afterPath="$PROJECT_DIR$/resources/config/basicconfig.ini" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/telegram/config/tgbotconfigparser.py" afterPath="$PROJECT_DIR$/telegram/config/tgbotconfigparser.py" />
     </list>
     <ignored path="tgbot_basicapi.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -35,31 +25,21 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="chat.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/telegram/basicapi/model/chat.py">
+      <file leaf-file-name="basicconfig.ini" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/resources/config/basicconfig.ini">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="0" column="23" selection-start-line="0" selection-start-column="23" selection-end-line="0" selection-end-column="23" />
+              <caret line="0" column="47" selection-start-line="0" selection-start-column="47" selection-end-line="0" selection-end-column="47" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="contact.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/telegram/basicapi/model/contact.py">
+      <file leaf-file-name="__init__.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/resources/config/__init__.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="0" column="23" selection-start-line="0" selection-start-column="23" selection-end-line="0" selection-end-column="23" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="chatType.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/telegram/basicapi/model/chatType.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="0" column="23" selection-start-line="0" selection-start-column="23" selection-end-line="0" selection-end-column="23" />
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -71,6 +51,18 @@
             <state vertical-scroll-proportion="0.0">
               <caret line="0" column="23" selection-start-line="0" selection-start-column="23" selection-end-line="0" selection-end-column="23" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="__init__.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/telegram/tgredis/__init__.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="6" column="0" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
+              <folding>
+                <marker date="1451218429124" expanded="true" signature="649:1178" placeholder="..." />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -95,7 +87,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="video.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="video.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/telegram/basicapi/model/video.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
@@ -105,28 +97,32 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="document.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/telegram/basicapi/model/document.py">
+      <file leaf-file-name="tgbotconfigparser.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/telegram/config/tgbotconfigparser.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.62606233">
+              <caret line="26" column="26" selection-start-line="26" selection-start-column="26" selection-end-line="26" selection-end-column="26" />
+              <folding>
+                <element signature="e#54#73#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="__init__.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/telegram/basicapi/commands/__init__.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="0" column="23" selection-start-line="0" selection-start-column="23" selection-end-line="0" selection-end-column="23" />
-              <folding />
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding>
+                <element signature="e#30#41#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file leaf-file-name="location.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/telegram/basicapi/model/location.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="0" column="23" selection-start-line="0" selection-start-column="23" selection-end-line="0" selection-end-column="23" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="base.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/telegram/basicapi/model/base.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
               <caret line="0" column="23" selection-start-line="0" selection-start-column="23" selection-end-line="0" selection-end-column="23" />
@@ -143,7 +139,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/telegram/tgredis/__init__.py" />
         <option value="$PROJECT_DIR$/telegram/basicapi/wsgi/__init__.py" />
         <option value="$PROJECT_DIR$/telegram/config/jsonconfigreader.py" />
         <option value="$PROJECT_DIR$/telegram/basicapi/model/audio.py" />
@@ -157,14 +152,16 @@
         <option value="$PROJECT_DIR$/telegram/basicapi/model/sticker.py" />
         <option value="$PROJECT_DIR$/telegram/basicapi/model/user.py" />
         <option value="$PROJECT_DIR$/telegram/basicapi/model/video.py" />
+        <option value="$PROJECT_DIR$/resources/config/basicconfig.ini" />
+        <option value="$PROJECT_DIR$/telegram/tgredis/__init__.py" />
+        <option value="$PROJECT_DIR$/telegram/config/tgbotconfigparser.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-8" />
-    <option name="y" value="-8" />
-    <option name="width" value="1616" />
-    <option name="height" value="876" />
+    <option name="x" value="-7" />
+    <option name="width" value="1612" />
+    <option name="height" value="867" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <OptionsSetting value="true" id="Add" />
@@ -269,68 +266,6 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="telegram" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="basicapi" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="tgbot_basicapi" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="tgbot_basicapi" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="telegram" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="basicapi" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="wsgi" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="tgbot_basicapi" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="tgbot_basicapi" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="telegram" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="basicapi" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="model" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="tgbot_basicapi" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="tgbot_basicapi" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
               <option name="myItemId" value="resources" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -346,8 +281,9 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.splitter.proportion" value="0.2" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -504,14 +440,26 @@
       <option name="project" value="LOCAL" />
       <updated>1451213701867</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Encoding declared.">
+      <created>1451216809225</created>
+      <option name="number" value="00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1451216809225</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Filenotfounderror behoben">
+      <created>1451217029720</created>
+      <option name="number" value="00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1451217029720</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1616" height="876" extended-state="6" />
+    <frame x="-7" y="0" width="1612" height="867" extended-state="0" />
     <editor active="false" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.504436" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.50571793" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
@@ -538,10 +486,14 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Merge remote-tracking branch 'remotes/master/master' into basicapi&#10;&#10;Conflicts:&#10;&#9;.idea/.name&#10;&#9;.idea/modules.xml&#10;&#9;.idea/vcs.xml&#10;&#9;.idea/workspace.xml&#10;&#9;resources/__init__.py&#10;&#9;resources/config/__init__.py&#10;&#9;telegram/__init__.py&#10;" />
     <MESSAGE value="Import-Errors korrigiert.&#10;" />
-    <option name="LAST_COMMIT_MESSAGE" value="Import-Errors korrigiert.&#10;" />
+    <MESSAGE value="Encoding declared." />
+    <MESSAGE value="Filenotfounderror behoben" />
+    <option name="LAST_COMMIT_MESSAGE" value="Filenotfounderror behoben" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager />
+    <breakpoint-manager>
+      <option name="time" value="1" />
+    </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
@@ -566,7 +518,7 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#22#85#0" expanded="true" />
+            <element signature="e#22#85#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -576,25 +528,7 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="100" column="28" selection-start-line="100" selection-start-column="28" selection-end-line="100" selection-end-column="28" />
           <folding>
-            <marker date="1451213962899" expanded="true" signature="649:1178" placeholder="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/config/basicconfig.ini">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/telegram/tgredis/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="102" column="28" selection-start-line="102" selection-start-column="28" selection-end-line="102" selection-end-column="28" />
-          <folding>
-            <marker date="1451213962899" expanded="true" signature="649:1178" placeholder="..." />
+            <marker date="1451218429124" expanded="true" signature="649:1178" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -612,7 +546,7 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="36" column="52" selection-start-line="36" selection-start-column="52" selection-end-line="36" selection-end-column="52" />
           <folding>
-            <element signature="e#22#85#0" expanded="true" />
+            <element signature="e#22#85#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -621,9 +555,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="63" column="17" selection-start-line="63" selection-start-column="17" selection-end-line="63" selection-end-column="17" />
-          <folding>
-            <element signature="e#46#82#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -728,6 +660,52 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="23" selection-start-line="0" selection-start-column="23" selection-end-line="0" selection-end-column="23" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/telegram/basicapi/commands/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#30#41#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/config/basicconfig.ini">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="47" selection-start-line="0" selection-start-column="47" selection-end-line="0" selection-end-column="47" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/config/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/telegram/tgredis/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="6" column="0" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
+          <folding>
+            <marker date="1451218429124" expanded="true" signature="649:1178" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/telegram/config/tgbotconfigparser.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.62606233">
+          <caret line="26" column="26" selection-start-line="26" selection-start-column="26" selection-end-line="26" selection-end-column="26" />
+          <folding>
+            <element signature="e#54#73#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
