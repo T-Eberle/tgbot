@@ -1,0 +1,5 @@
+uwsgidecorators >= 1.1.0
+requests >= 2.7.0
+pytz >= 2015.4
+feedparser >= 5.2.1
+redis >= 2.10.3
