@@ -1,5 +1,5 @@
 # Telegrambot
-![Build Status](https://travis-ci.org/T-Eberle/tgbot.svg?branch=basicapi)
+[![Build Status](https://travis-ci.org/T-Eberle/tgbot.svg?branch=basicapi)](https://travis-ci.org/T-Eberle/tgbot)
 
 Programmiert in Python, aufgebaut auf einem UWSGI-Server. Dokumentation folgt.
 Folgende Funktionen besitzt dieses Tool:
