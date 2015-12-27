@@ -2,8 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="bbc5117c-eac8-411e-ab56-e103b0c33eed" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/example/config.ini" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/telegram/basicapi/parser/__init__.py" afterPath="$PROJECT_DIR$/telegram/basicapi/parser/__init__.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/telegram/basicapi/parser/commandparser.py" afterPath="$PROJECT_DIR$/telegram/basicapi/parser/commandparser.py" />
     </list>
     <ignored path="tgbot_basicapi.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -24,16 +25,6 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="basicconfig.ini" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/resources/config/basicconfig.ini">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="0" column="47" selection-start-line="0" selection-start-column="47" selection-end-line="0" selection-end-column="47" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="__init__.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/resources/__init__.py">
           <provider selected="true" editor-type-id="text-editor">
@@ -60,7 +51,7 @@
         <entry file="file://$PROJECT_DIR$/telegram/basicapi/parser/commandparser.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="11" column="0" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
+              <caret line="8" column="56" selection-start-line="8" selection-start-column="55" selection-end-line="8" selection-end-column="56" />
               <folding>
                 <element signature="e#69#78#0" expanded="true" />
               </folding>
@@ -80,10 +71,20 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="config.ini" pinned="false" current-in-tab="true">
+      <file leaf-file-name="textparser.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/telegram/basicapi/parser/textparser.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="config.ini" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/example/config.ini">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.19020979">
+            <state vertical-scroll-proportion="0.0">
               <caret line="8" column="49" selection-start-line="8" selection-start-column="49" selection-end-line="8" selection-end-column="49" />
               <folding />
             </state>
@@ -168,9 +169,9 @@
         <option value="$PROJECT_DIR$/telegram/tgredis/__init__.py" />
         <option value="$PROJECT_DIR$/telegram/basicapi/wsgi/__init__.py" />
         <option value="$PROJECT_DIR$/telegram/basicapi/__init__.py" />
-        <option value="$PROJECT_DIR$/telegram/basicapi/parser/commandparser.py" />
         <option value="$PROJECT_DIR$/telegram/basicapi/parser/__init__.py" />
         <option value="$PROJECT_DIR$/example/config.ini" />
+        <option value="$PROJECT_DIR$/telegram/basicapi/parser/commandparser.py" />
       </list>
     </option>
   </component>
@@ -220,6 +221,60 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="tgbot_basicapi" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="tgbot_basicapi" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="tgbot_basicapi" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="telegram" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="tgbot_basicapi" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="tgbot_basicapi" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="telegram" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="basicapi" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="tgbot_basicapi" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="tgbot_basicapi" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="telegram" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="basicapi" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="parser" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -458,14 +513,20 @@
       <option name="project" value="LOCAL" />
       <updated>1451247105777</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="config.ini example added">
+      <created>1451247937488</created>
+      <option name="number" value="00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1451247937488</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1616" height="876" extended-state="6" />
+    <frame x="-8" y="-8" width="1616" height="876" extended-state="7" />
     <editor active="false" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.26806083" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.26806083" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
@@ -518,7 +579,8 @@
     <MESSAGE value="ImportError behoben" />
     <MESSAGE value="setup.py hinzugefügt." />
     <MESSAGE value="Modularer Aufbau fertiggestellt,  basicapi von Bot getrennt." />
-    <option name="LAST_COMMIT_MESSAGE" value="Modularer Aufbau fertiggestellt,  basicapi von Bot getrennt." />
+    <MESSAGE value="config.ini example added" />
+    <option name="LAST_COMMIT_MESSAGE" value="config.ini example added" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -556,7 +618,7 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="6" column="0" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
           <folding>
-            <element signature="e#54#64#0" expanded="true" />
+            <element signature="e#54#64#0" expanded="false" />
             <marker date="1451235180345" expanded="true" signature="639:1205" placeholder="..." />
           </folding>
         </state>
@@ -591,7 +653,7 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="26" column="26" selection-start-line="26" selection-start-column="26" selection-end-line="26" selection-end-column="26" />
           <folding>
-            <element signature="e#54#73#0" expanded="true" />
+            <element signature="e#54#73#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -609,7 +671,7 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#30#41#0" expanded="true" />
+            <element signature="e#30#41#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -645,7 +707,7 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="100" column="28" selection-start-line="100" selection-start-column="28" selection-end-line="100" selection-end-column="28" />
           <folding>
-            <element signature="e#54#64#0" expanded="true" />
+            <element signature="e#54#64#0" expanded="false" />
             <marker date="1451235180345" expanded="true" signature="639:1205" placeholder="..." />
           </folding>
         </state>
@@ -759,7 +821,7 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#30#41#0" expanded="true" />
+            <element signature="e#30#41#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -769,7 +831,7 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="26" column="26" selection-start-line="26" selection-start-column="26" selection-end-line="26" selection-end-column="26" />
           <folding>
-            <element signature="e#54#73#0" expanded="true" />
+            <element signature="e#54#73#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -787,7 +849,7 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="39" column="32" selection-start-line="39" selection-start-column="32" selection-end-line="39" selection-end-column="32" />
           <folding>
-            <element signature="e#54#64#0" expanded="true" />
+            <element signature="e#54#64#0" expanded="false" />
             <marker date="1451235180345" expanded="true" signature="639:1205" placeholder="..." />
           </folding>
         </state>
@@ -859,13 +921,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/telegram/basicapi/parser/commandparser.py">
+    <entry file="file://$PROJECT_DIR$/example/config.ini">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="11" column="0" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
-          <folding>
-            <element signature="e#69#78#0" expanded="true" />
-          </folding>
+          <caret line="8" column="49" selection-start-line="8" selection-start-column="49" selection-end-line="8" selection-end-column="49" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -879,10 +939,20 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/example/config.ini">
+    <entry file="file://$PROJECT_DIR$/telegram/basicapi/parser/commandparser.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.19020979">
-          <caret line="8" column="49" selection-start-line="8" selection-start-column="49" selection-end-line="8" selection-end-column="49" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="8" column="56" selection-start-line="8" selection-start-column="55" selection-end-line="8" selection-end-column="56" />
+          <folding>
+            <element signature="e#69#78#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/telegram/basicapi/parser/textparser.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>

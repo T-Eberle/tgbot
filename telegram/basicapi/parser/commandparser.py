@@ -6,10 +6,18 @@ import re
 from telegram.tglogging import logger
 from telegram.tgredis import TGRedis
 import inspect
-
 regex = re.compile(r'/(?P<command>\w+)(\s(?P<parameter>.+))?')
 
-
+def getcommand(text):
+    """
+    Holt sich den Befehl aus dem angegebenen Text heraus
+    :param text: Der angegebene Text
+    :return: Der Commandwert
+    """
+    m = regex.match(text)
+    value = m.group("command")
+    value.lower()
+    return value
 
 
 def parsecommand(message,args):

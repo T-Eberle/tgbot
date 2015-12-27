@@ -23,17 +23,6 @@ def isadmin(message):
             logger.debug("@" + user.username + "(" + str(user.chat_id) + ") ist kein SuperAdmin")
             return False
 
-def getcommand(text):
-    """
-    Holt sich den Befehl aus dem angegebenen Text heraus
-    :param text: Der angegebene Text
-    :return: Der Commandwert
-    """
-    m = regex.match(text)
-    value = m.group("command")
-    value.lower()
-    return value
-
 def parsemessage(message,wartungsmodus,args):
     user = message.from_User
     # parsereplycommand(message)
