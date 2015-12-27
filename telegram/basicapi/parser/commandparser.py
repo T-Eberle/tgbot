@@ -7,6 +7,10 @@ from telegram.tglogging import logger
 from telegram.tgredis import TGRedis
 import inspect
 
+regex = re.compile(r'/(?P<command>\w+)(\s(?P<parameter>.+))?')
+
+
+
 
 def parsecommand(message,args):
 

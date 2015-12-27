@@ -7,11 +7,32 @@ from resources import emoji
 from telegram.basicapi.commands import sendreply
 from telegram.basicapi.parser import commandparser
 from telegram.basicapi.parser import textparser
-from telegram.bot.decorators.permissions import func_isadmin
 from telegram.tgredis import *
 
 wartungsmodus = False
+regex = re.compile(r'/(?P<command>\w+)(\s(?P<parameter>.+))?')
+config = TGBotConfigParser("config.ini")
+data = config.load()
 
+def isadmin(message):
+        user = message.from_User
+        if str(user.chat_id) in data.get("basics", "superadmins"):
+            logger.debug("@" + user.username + "(" + str(user.chat_id) + ") ist ein SuperAdmin.")
+            return True
+        else:
+            logger.debug("@" + user.username + "(" + str(user.chat_id) + ") ist kein SuperAdmin")
+            return False
+
+def getcommand(text):
+    """
+    Holt sich den Befehl aus dem angegebenen Text heraus
+    :param text: Der angegebene Text
+    :return: Der Commandwert
+    """
+    m = regex.match(text)
+    value = m.group("command")
+    value.lower()
+    return value
 
 def parsemessage(message,wartungsmodus,args):
     user = message.from_User
@@ -19,7 +40,7 @@ def parsemessage(message,wartungsmodus,args):
     if message.text is not None:
         logger.debug("Trying to get users.")
         #WARTUNGSMODUS
-        if wartungsmodus and not func_isadmin(message):
+        if wartungsmodus and not isadmin(message):
             sendreply(message,message.chat_id(),emoji.warning+"ICH WERDE GERADE GEWARTET!")
             return
         #WARTUNGSMODUS ENDE
