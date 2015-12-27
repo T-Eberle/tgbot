@@ -8,7 +8,6 @@ from telegram.tglogging import logger
 
 class NineGagApiParser:
 
-    # http://xkcd.com/info.0.json
     @staticmethod
     def ninegag(type=""):
         result = requests.get("http://infinigag.eu01.aws.af.cm/"+type)

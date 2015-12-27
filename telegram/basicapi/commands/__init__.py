@@ -13,41 +13,49 @@ from telegram.basicapi.model.message import Message
 
 suffix = re.compile(r"^(.*/)*(?P<suffix>\w+)$")
 
-config = TGBotConfigParser("basicconfig.ini")
+basicconfig = TGBotConfigParser("basicconfig.ini")
+basicdata = basicconfig.load()
+
+config = TGBotConfigParser("config.ini")
 data = config.load()
 
 
-def sendrequest(method_name,oldvalues={},**kwargs):
+def sendrequest(method_name,oldvalues={},markdown=True,**kwargs):
     values = oldvalues
     for key in kwargs:
         values[str(key)] = kwargs[key]
-    url = data.get("tgapi", "bot_link") + data.get("tgapi", method_name + "_Method")
-    # values["parse_mode"] = "Markdown"
-    jsonfile =  HTTPRequestController.requestwithvaluesxwwwurlencoded(url, values)
-    if jsonfile["ok"]==True:
-        return jsonfile
+    url = basicdata.get("tgapi", "bot_link")+data.get("basics","bot_id")+"/"+basicdata.get("tgapi", method_name + "_Method")
+    if markdown:
+        values["parse_mode"] = "Markdown"
+        jsonfile =  HTTPRequestController.requestwithvaluesxwwwurlencoded(url, values)
+        if jsonfile["ok"] and markdown:
+            return jsonfile
+        else:
+            del values["parse_mode"]
+            return HTTPRequestController.requestwithvaluesxwwwurlencoded(url, values)
     else:
-        del values["parse_mode"]
         return HTTPRequestController.requestwithvaluesxwwwurlencoded(url, values)
-
 
 def sendrequestwithfile(method_name,file_id,file,filename=None,oldvalues={},
                         **kwargs):
     values = oldvalues
     for key in kwargs:
         values[str(key)] = kwargs[key]
-    url = data.get("tgapi", "bot_link") + data.get("tgapi", method_name + "_Method")
+    url = basicdata.get("tgapi", "bot_link")+data.get("basics","bot_id")+"/"+basicdata.get("tgapi", method_name + "_Method")
     values["parse_mode"] = "Markdown"
-    HTTPRequestController.requestwithfile(url,values,file_id,file,filename)
+    return HTTPRequestController.requestwithfile(url,values,file_id,file,filename)
 
 
-def sendmessage(oldvalues={},**kwargs):
-    return sendrequest("sendMessage",oldvalues=oldvalues,**kwargs)
+def sendmessage(oldvalues={},markdown=True,**kwargs):
+    return sendrequest("sendMessage",oldvalues=oldvalues,markdown=markdown,**kwargs)
 
-
-def sendtext(chat_id, text):
+def sendtextwithoutmarkup(chat_id, text):
     logger.debug("Text sent! -> " + text)
     return sendmessage(chat_id=chat_id,text=text,oldvalues={})
+
+def sendtext(chat_id, text, markdown = True):
+    logger.debug("Text sent! -> " + text)
+    return sendmessage(chat_id=chat_id,text=text,oldvalues={},markdown=markdown)
 
 
 def sendreply_markup(values,**kwargs):

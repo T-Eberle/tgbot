@@ -27,7 +27,7 @@ class HTTPRequestController:
         html = requests.post(url,params=values,files=files)
         logger.debug("Text: " + str(html.text))
         logger.debug("STATUS:"+str(html.status_code))
-        return html.status_code
+        return html.json()
 
     @staticmethod
     def requestwithdata(url,values,data):

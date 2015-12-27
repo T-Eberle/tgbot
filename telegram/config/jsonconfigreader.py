@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 __author__ = 'Tommy'
 
-from telegram.tgredis import *
+from telegram.tgredis import TGRedis
 from telegram.tglogging import *
 import json
+import ast
 
 
 class JSONConfigReader:
@@ -16,12 +17,12 @@ class JSONConfigReader:
         Lädt alle angegebenen Dateien vom JSON-Dateiordner in Redis.
         """
         for filename in self.filenames:
-            if getfile(filename):
+            if TGRedis.getfile(filename):
                 logger.debug("Getting file " + filename + " from cache.")
-                filedict = getfile(filename)
+                filedict = TGRedis.getfile(filename)
                 dump = json.dumps(filedict)
                 jsondata = json.loads(dump)
-                setfile(filename,jsondata)
+                TGRedis.setfile(filename,jsondata)
                 logger.debug("Getting file " + filename + " was successful.")
             else:
                 jsondata = {}
@@ -48,20 +49,21 @@ class JSONConfigReader:
                         f.write("{}")
                     jsondata = {}
                 finally:
-                    setfile(filename, jsondata)
+                    TGRedis.setfile(filename, jsondata)
 
     def savecachetofiles(self):
         """
         Speichert den Wert aus Redis in die Dateien.
         Danach wird die komplette Datei-Datenbank von Redis gelöscht.
         """
+        logger.debug("FILENAMES: "+str(self.filenames))
         for filename in self.filenames:
             data = self.config["json_files"]["json_path"] + "/" + filename + ".json"
             self.dump(data, filename)
 
     @staticmethod
     def dump(data, filename):
-        file = getfile(filename)
+        file = TGRedis.getfile(filename)
         if file:
             with open(data, 'w') as f:
                 f.write(json.dumps(file))
