@@ -14,10 +14,10 @@ class TGRedis:
     convserver = redis.StrictRedis(host="localhost", port="6379", db=1,decode_responses=True)
     fileserver = redis.StrictRedis(host="localhost", port="6379", db=2)
     convserver.set_response_callback("HGET",str)
-    config = TGBotConfigParser("config.ini")
+    config = TGBotConfigParser("basicconfig.ini")
     configdata = config.load()
 
-    def __init__(self,limitdb=0,convdb=1,filedb=2):
+    def __init__(self,configfile="basicconfig.ini",limitdb=0,convdb=1,filedb=2):
         if limitdb == convdb or limitdb == filedb or convdb==filedb:
             return
         self.limitdb = limitdb
@@ -27,6 +27,8 @@ class TGRedis:
         TGRedis.convserver = redis.StrictRedis(host="localhost", port="6379", db=convdb,decode_responses=True)
         TGRedis.fileserver = redis.StrictRedis(host="localhost", port="6379", db=filedb)
         TGRedis.convserver.set_response_callback("HGET",str)
+        TGRedis.config = TGBotConfigParser("basicconfig.ini")
+        TGRedis.configdata = TGRedis.config.load()
 
 
     def addtoconv(self,message,value):

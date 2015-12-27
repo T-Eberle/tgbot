@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 __author__ = 'Thomas Eberle'
 
 from telegram.basicapi.model.user import User

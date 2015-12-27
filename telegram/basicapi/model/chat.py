@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 __author__ = 'Tommy'
 
 from telegram.basicapi.model.base import Base
@@ -25,7 +26,7 @@ class Chat(Base):
 
 
     # id 	Integer 	Unique identifier for this chat, not exceeding 1e13 by absolute value
-    # type 	String 	Type of chat, can be either “private”, or “group”, or “channel”
+    # type 	String 	Type of chat, can be either ï¿½privateï¿½, or ï¿½groupï¿½, or ï¿½channelï¿½
     # title 	String 	Optional. Title, for channels and group chats
     # username 	String 	Optional. Username, for private chats and channels if available
     # first_name 	String 	Optional. First name of the other party in a private chat
