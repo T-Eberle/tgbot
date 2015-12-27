@@ -5,7 +5,6 @@ from telegram.config.jsonconfigreader import JSONConfigReader
 from telegram.tgredis import TGRedis
 import telegram
 import json
-import uwsgi
 from telegram.tglogging import logger
 
 class TGBotWSGI:
