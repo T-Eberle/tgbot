@@ -11,7 +11,12 @@ class TGBotConfigParser:
         self.config = configparser.ConfigParser()
         self.config._interpolation = configparser.ExtendedInterpolation()
         configdata = pkg_resources.resource_filename("resources.config", filename)
-        self.config.read_file(open(configdata, encoding="latin-1"), source=filename)
+        try:
+            self.config.read_file(open(configdata, encoding="latin-1"), source=filename)
+        except FileNotFoundError:
+            self.filename = "basicconfig.ini"
+            configdata = pkg_resources.resource_filename("resources.config", self.filename)
+            self.config.read_file(open(configdata, encoding="latin-1"), source=filename)
 
     def load(self):
         self.config = configparser.ConfigParser()
