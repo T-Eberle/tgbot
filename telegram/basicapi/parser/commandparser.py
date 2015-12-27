@@ -4,7 +4,6 @@ __author__ = 'Thomas'
 
 import re
 from telegram.tglogging import logger
-from telegram.bot.commands import getcommand
 from telegram.tgredis import TGRedis
 import inspect
 
