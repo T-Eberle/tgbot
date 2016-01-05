@@ -106,6 +106,8 @@ class WAOAPIParser:
             return
         elif not self.stream and stream:
             self.stream = stream
+        elif stream:
+            self.stream = stream
         url = config.get("waoapi", "url") + config.get("waoapi",method) + \
               config.get("waoapi-site",self.stream) + "/" + str(site)
         logger.info(url)

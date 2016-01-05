@@ -15,7 +15,7 @@ class TGBotWSGI:
     def getFiles(self):
         return self.files
 
-    def __init__(self,files,wartungsmodus,commandclasses,redis_limitserver=0,redis_convserver=1,redis_fileserver=2,configfile="config.ini"):
+    def __init__(self,files,wartungsmodus,commandclasses,inlineclasses=None,redis_limitserver=0,redis_convserver=1,redis_fileserver=2,configfile="config.ini"):
         self.redis_convserver = redis_convserver
         self.redis_fileserver = redis_fileserver
         self.redis_limitserver = redis_limitserver
@@ -23,6 +23,7 @@ class TGBotWSGI:
         self.setFiles(files)
         self.wartungsmodus = wartungsmodus
         self.commandclasses = commandclasses
+        self.inlineclasses = inlineclasses
 
     def application(self,environ, start_response):
         logger.debug("ENVIRON: "+str(environ))
@@ -42,7 +43,7 @@ class TGBotWSGI:
         if request_body_size != 0:
             request_body = environ['wsgi.input'].read(request_body_size)
             obj = json.loads(request_body.decode('utf-8'))
-            activatebot(obj,self.wartungsmodus,self.commandclasses)
+            activatebot(obj,self.wartungsmodus,self.commandclasses,self.inlineclasses)
         self.filereader.savecachetofiles()
 
         return b''

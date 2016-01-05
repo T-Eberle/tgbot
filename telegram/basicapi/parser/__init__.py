@@ -6,7 +6,7 @@ import re
 from resources import emoji
 from telegram.basicapi.commands import sendreply
 from telegram.basicapi.parser import commandparser
-from telegram.basicapi.parser import textparser
+from telegram.basicapi.parser import textparser,inlineparser
 from telegram.tgredis import *
 
 wartungsmodus = False
@@ -27,7 +27,6 @@ def parsemessage(message,wartungsmodus,args):
     user = message.from_User
     # parsereplycommand(message)
     if message.text is not None:
-        logger.debug("Trying to get users.")
         #WARTUNGSMODUS
         if wartungsmodus and not isadmin(message):
             sendreply(message,message.chat_id(),emoji.warning+"ICH WERDE GERADE GEWARTET!")
@@ -39,3 +38,9 @@ def parsemessage(message,wartungsmodus,args):
                 commandparser.parsecommand(message,args)
         else:
             textparser.parsetext(message)
+
+
+def parseinline(inline,args):
+    # parsereplycommand(message)
+    if inline.query is not None:
+            inlineparser.parseinline(inline,args)

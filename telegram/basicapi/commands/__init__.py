@@ -45,6 +45,8 @@ def sendrequestwithfile(method_name,file_id,file,filename=None,oldvalues={},
     values["parse_mode"] = "Markdown"
     return HTTPRequestController.requestwithfile(url,values,file_id,file,filename)
 
+def answerInline(inline_query_id,results,oldValues={}):
+    sendrequest("answerInlineQuery",oldvalues=oldValues,inline_query_id=inline_query_id,results=json.dumps(results))
 
 def sendmessage(oldvalues={},markdown=True,**kwargs):
     return sendrequest("sendMessage",oldvalues=oldvalues,markdown=markdown,**kwargs)
