@@ -8,6 +8,7 @@ from telegram.basicapi.model.chat import Chat
 
 
 class Message(Base):
+
     def chat_id(self):
         return self.chat.chat_id
 
