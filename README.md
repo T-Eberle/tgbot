@@ -57,8 +57,9 @@ You are able to save several data in .json files. To define new files you simply
 To save performance when e.g. loading files, a cache server is implemented. Every time a command has been recognized, all the created files will be loaded into the cache of this server, if the cache is empty. If it is not empty, every time a command has been recognized the cache will be used to make the bot more performant.
 
 ### Limit Server
-To prevent spam there is a limit cache server
-
+To prevent spam there is a limit cache server. In the config.ini you are able to set the amount and time of a limit:
+- Amount: How many commands are allowed until you start to restrict the use of the bot?
+- Time: What period are we looking at? When will the restriction be resetted?
 
 ### Conversation Server
 Furthermore a conversation cache server has also been added to add support for longer command conversations. If you , for example, start with a command, the bot then can answer back with a second question. You will then answer back etc. All these commands will be explained in the next sub-chapter.
