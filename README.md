@@ -30,7 +30,7 @@ More instructions will follow.
 #Features
 ## Commands and Inline Commands
 
-This Bot support both the normal commands and the newly added inline commands. To add new commands you simply create methods inside either a Command- or InlineCommandClass, which are added to the several lists
+This Bot support both the normal commands and the newly added inline commands. To add new commands you simply create methods inside either a Command- or InlineCommandClass. The name of the method is the command itself. To add more command- inlinecommandclasses to your bot you simply add the to the lists which you give the class TGBotWSGI when you initialise the bot. For more information check the example.
 ## Configuration
 ### UWSGI
 ### Bot
