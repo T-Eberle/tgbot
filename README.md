@@ -31,10 +31,25 @@ More instructions will follow.
 ## Commands and Inline Commands
 
 This Bot support both the normal commands and the newly added inline commands. To add new commands you simply create methods inside either a Command- or InlineCommandClass. The name of the method is the command itself. To add more command- inlinecommandclasses to your bot you simply add the to the lists which you give the class TGBotWSGI when you initialise the bot. For more information check the example.
+
 ## Configuration
+
+All configurations are managed by *.ini - files. 
+
 ### UWSGI
+
 ### Bot
+
+For correctly configuring the bot, you need a file /resources/config/config.ini inside your bot project. All needed attributes will be explained here in future and will also be shown in the example.
+
 ## Logging
+
+The Bot supports a complete logger and can be accessed in telegram/tglogging/init.py .
+
+## Files
+
+You are able to save several data in .json files. To define new files you simply define a folder for all your json filesm in the bot-configuration and define json-file-names in a list when implementing the class *TGBotWSGI*.
+
 ## Redis
 
 More Documentation will follow.
