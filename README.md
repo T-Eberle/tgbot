@@ -21,6 +21,7 @@ An example implementation of this bot will be soon available in the example fold
 
 1. At least Python 3.X
 2. Install this package with pip install xxxx
+3. Install regis with pip install redis
 3. Install uwsgi with pip install uwsgi
 
 *Warning*: It's recommended that you install all packages used for your bot on a virtual environment to not mess up your OS. All infos about Virtual Environments can be read on http://docs.python-guide.org/en/latest/dev/virtualenvs/. With virtual environments you can keep all the used requirements only for this project / bot.
@@ -51,6 +52,10 @@ The Bot supports a complete logger and can be accessed in telegram/tglogging/ini
 You are able to save several data in .json files. To define new files you simply define a folder for all your json filesm in the bot-configuration and define json-file-names in a list when implementing the class *TGBotWSGI*.
 
 ## Redis
+To save performance when e.g. loading files, a cache server is implemented. Every time a command has been recognized, all the created files will be loaded into the cache of this server, if the cache is empty. If it is not empty, every time a command has been recognized the cache will be used to make the bot more performant.
+
+Furthermore a conversation cache server has also been added to add support for longer command conversations. If you , for example, start with a command, the bot then can answer back with a second question. You will then answer back etc. All these commands will be explained in the next sub-chapter.
+
 
 More Documentation will follow.
 
