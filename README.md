@@ -52,8 +52,15 @@ The Bot supports a complete logger and can be accessed in telegram/tglogging/ini
 You are able to save several data in .json files. To define new files you simply define a folder for all your json filesm in the bot-configuration and define json-file-names in a list when implementing the class *TGBotWSGI*.
 
 ## Redis
+
+###File Server
 To save performance when e.g. loading files, a cache server is implemented. Every time a command has been recognized, all the created files will be loaded into the cache of this server, if the cache is empty. If it is not empty, every time a command has been recognized the cache will be used to make the bot more performant.
 
+### Limit Server
+To prevent spam there is a limit cache server
+
+
+### Conversation Server
 Furthermore a conversation cache server has also been added to add support for longer command conversations. If you , for example, start with a command, the bot then can answer back with a second question. You will then answer back etc. All these commands will be explained in the next sub-chapter.
 
 
