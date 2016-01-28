@@ -8,21 +8,19 @@ from tgbot.basicapi.parser import commandparser
 from tgbot.basicapi.parser import textparser,inlineparser
 from tgbot.resources import emoji
 from tgbot.tgredis import *
-from tgbot import config
-wartungsmodus = False
+import tgbot
 regex = re.compile(r'/(?P<command>\w+)(\s(?P<parameter>.+))?')
-data = config
 
 def isadmin(message):
         user = message.from_User
-        if str(user.chat_id) in data.get("basics", "superadmins"):
+        if str(user.chat_id) in tgbot.iniconfig.get("basics", "superadmins"):
             logger.debug("@" + user.username + "(" + str(user.chat_id) + ") ist ein SuperAdmin.")
             return True
         else:
             logger.debug("@" + user.username + "(" + str(user.chat_id) + ") ist kein SuperAdmin")
             return False
 
-def parsemessage(message,wartungsmodus,args):
+def parsemessage(message,args,wartungsmodus):
     user = message.from_User
     # parsereplycommand(message)
     if message.text is not None:

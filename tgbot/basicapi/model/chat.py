@@ -12,14 +12,16 @@ class Chat(Base):
         self.chat_id = data["id"]
 
         if self.chattype == "private":
-            if data["username"]:
+            if data.get("username"):
                 self.username = data["username"]
-            self.first_name = data["first_name"]
-            self.last_name = data["last_name"]
+            if data.get("first_name"):
+                self.first_name = data["first_name"]
+            if data.get("last_name"):
+                self.last_name = data["last_name"]
         elif self.chattype == "group":
             self.title = data["title"]
         elif self.chattype == "channel":
-            if data["username"]:
+            if data.get("username"):
                 self.username = data["username"]
             self.title = data["title"]
 

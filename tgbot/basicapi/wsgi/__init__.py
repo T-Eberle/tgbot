@@ -7,6 +7,7 @@ from tgbot.basicapi import activatebot
 import json
 from tgbot.tglogging import logger
 import tgbot
+from peewee import MySQLDatabase
 
 class TGBotWSGI:
     def setFiles(self,files):
@@ -15,7 +16,7 @@ class TGBotWSGI:
     def getFiles(self):
         return self.files
 
-    def __init__(self,files,wartungsmodus,commandclasses,inlineclasses=None,redis_limitserver=0,redis_convserver=1,redis_fileserver=2,configfile="basicconfig.ini",configpath="tgbot.resources.config"):
+    def __init__(self,files,commandclasses,inlineclasses=None,redis_limitserver=0,redis_convserver=1,redis_fileserver=2,configfile="basicconfig.ini",configpath="tgbot.resources.config",wartungsmodus=False,database="",dbuser="",dbpassword="",dbhost="127.0.0.1",dbport=3306):
         self.redis_convserver = redis_convserver
         self.redis_fileserver = redis_fileserver
         self.redis_limitserver = redis_limitserver
@@ -28,6 +29,7 @@ class TGBotWSGI:
         self.configpath = configpath
         self.configParser = TGBotConfigParser(self.configfile,self.configpath)
         tgbot.iniconfig = self.configParser.load()
+        tgbot.database = MySQLDatabase(database=database,host=dbhost,port=dbport,user=dbuser,passwd=dbpassword,charset='utf8mb4')
         logger.debug("CONFIG: "+str(tgbot.iniconfig))
 
     def application(self,environ, start_response):
@@ -37,6 +39,7 @@ class TGBotWSGI:
         logger.debug("START_RESPONSE: "+str(start_response))
         #while True:
         files = self.getFiles()
+        tgbot.database.connect()
         self.filereader = JSONConfigReader(files)
         self.filereader.createcacheforfiles()
         start_response('200 OK', [('Content-Type', 'text/html')])
@@ -50,6 +53,6 @@ class TGBotWSGI:
             obj = json.loads(request_body.decode('utf-8'))
             activatebot(obj,self.wartungsmodus,self.commandclasses,self.inlineclasses)
         self.filereader.savecachetofiles()
-
+        tgbot.database.close()
         return b''
 

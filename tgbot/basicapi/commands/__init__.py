@@ -10,6 +10,7 @@ from tgbot.basicapi.http.httprequestcontroller import HTTPRequestController
 from tgbot.config.tgbotconfigparser import TGBotConfigParser
 from tgbot.tglogging import logger
 from tgbot.basicapi.model.message import Message
+
 suffix = re.compile(r"^(.*/)*(?P<suffix>\w+)$")
 
 basicconfig = TGBotConfigParser("basicconfig.ini","tgbot.resources.config")
@@ -37,14 +38,16 @@ def sendrequestwithfile(method_name,file_id,file,filename=None,oldvalues={},
     for key in kwargs:
         values[str(key)] = kwargs[key]
     url = basicdata.get("tgapi", "bot_link")+tgbot.iniconfig.get("basics","bot_id")+"/"+basicdata.get("tgapi", method_name + "_Method")
-    values["parse_mode"] = "Markdown"
-    return HTTPRequestController.requestwithfile(url,values,file_id,file,filename)
+    # values["parse_mode"] = "Markdown"
+    answer =  HTTPRequestController.requestwithfile(url,values,file_id,file,filename)
+    checkanswer(answer)
 
 def answerInline(inline_query_id,results,oldValues={}):
-    sendrequest("answerInlineQuery",oldvalues=oldValues,inline_query_id=inline_query_id,results=json.dumps(results))
+    return sendrequest("answerInlineQuery",oldvalues=oldValues,inline_query_id=inline_query_id,results=json.dumps(results))
 
 def sendmessage(oldvalues={},markdown=True,**kwargs):
-    return sendrequest("sendMessage",oldvalues=oldvalues,markdown=markdown,**kwargs)
+    answer = sendrequest("sendMessage",oldvalues=oldvalues,markdown=markdown,**kwargs)
+    checkanswer(answer)
 
 def sendtextwithoutmarkup(chat_id, text):
     logger.debug("Text sent! -> " + text)
@@ -52,58 +55,63 @@ def sendtextwithoutmarkup(chat_id, text):
 
 def sendtext(chat_id, text, markdown = True):
     logger.debug("Text sent! -> " + text)
-    return sendmessage(chat_id=chat_id,text=text,oldvalues={},markdown=markdown)
-
+    answer = sendmessage(chat_id=chat_id,text=text,oldvalues={},markdown=markdown)
 
 def sendreply_markup(values,**kwargs):
     markup_values = {}
     for key in kwargs:
         markup_values[str(key)] = kwargs[key]
-    sendmessage(oldvalues=values,reply_markup=json.dumps(markup_values))
+    return sendmessage(oldvalues=values,reply_markup=json.dumps(markup_values))
 
 
 def sendreply(message: Message, chat_id, text):
     logger.debug("Reply sent! -> " + text)
-    sendmessage(chat_id=chat_id,text=text,
+    return sendmessage(chat_id=chat_id,text=text,
                                   reply_to_message_id=message.message_id)
 
 
-def sendforcereply(message: Message, chat_id, text):
-    values = {"chat_id": chat_id, "reply_to_message_id": message.message_id,"text": text}
+def sendforcereply(message: Message, chat_id, text,**kwargs):
+    values = {"chat_id": chat_id,"text": text}
+    for key, value in kwargs.items():
+        values[key] = value
     logger.debug("Forced Reply sent! -> " + text)
-    sendreply_markup(values,force_reply=True,selective=True)
+    return sendreply_markup(values,force_reply=True,selective=True)
 
 
-def sendreply_one_keyboardmarkup(message,chat_id,text,keyboard,resize_keyboard=False):
-    values = {"chat_id": chat_id, "text": text, "reply_to_message_id": message.message_id}
-    sendreply_markup(values,keyboard=keyboard,
+def sendreply_one_keyboardmarkup(message,chat_id,text,keyboard,resize_keyboard=False,**kwargs):
+    values = {"chat_id": chat_id, "text": text}
+    for key, value in kwargs.items():
+        values[key] = value
+    return sendreply_markup(values,keyboard=keyboard,
                                        one_time_keyboard=True,selective=True,resize_keyboard=resize_keyboard)
 
 
-def hide_keyboard(message,chat_id,text):
-    values = {"chat_id": chat_id, "text": text, "reply_to_message_id": message.message_id}
-    sendreply_markup(values,hide_keyboard=True,selective=True)
+def hide_keyboard(message,chat_id,text,**kwargs):
+    values = {"chat_id": chat_id, "text": text}
+    for key, value in kwargs.items():
+        values[key] = value
+    return sendreply_markup(values,hide_keyboard=True,selective=True)
 
 
 def sendvoice(chat_id, file):
-    sendrequestwithfile("sendVoice","voice",open(file,"rb"),filename=None,chat_id=chat_id)
+    return sendrequestwithfile("sendVoice","voice",open(file,"rb"),filename=None,chat_id=chat_id)
 
 
 def sendaudio(chat_id,filename,file):
-    sendrequestwithfile("sendAudio","audio",open(file,"rb"),filename=filename,chat_id=chat_id)
+    return sendrequestwithfile("sendAudio","audio",open(file,"rb"),filename=filename,chat_id=chat_id)
 
 
 def sendsticker(chat_id, stickername,sticker):
-    sendrequestwithfile("sendSticker","sticker",
+    return sendrequestwithfile("sendSticker","sticker",
                         open(sticker,"rb"),filename=stickername,chat_id=chat_id)
 
 
 def senddocument(chat_id,filename,file):
-    sendrequestwithfile("sendDocument","document",file,filename=filename,chat_id=chat_id)
+    return sendrequestwithfile("sendDocument","document",file,filename=filename,chat_id=chat_id)
 
 
 def sendstringasfile(chat_id,file_id,filename,filestring):
-    sendrequestwithfile("sendDocument",file_id,filestring,filename=filename,chat_id=chat_id)
+    return sendrequestwithfile("sendDocument",file_id,filestring,filename=filename,chat_id=chat_id)
 
 
 def sendphoto(chat_id, photoname,photo,caption=None,**kwargs):
@@ -123,9 +131,9 @@ def sendphotofromurl(chat_id,photoname,url,caption=None):
                     temp.write(chunk)
             temp.seek(0)
             if content_type=="gif":
-                senddocument(chat_id,photoname,temp)
+                return senddocument(chat_id,photoname,temp)
             else:
-                sendphoto(chat_id,photoname,temp,caption=caption)
+                return sendphoto(chat_id,photoname,temp,caption=caption)
             temp.close()
 
 
@@ -136,6 +144,23 @@ def sendphoto_hidekeyboard(message,chat_id, photoname,photo,caption=None):
 
 
 def sendChatAction(chat_id,chataction):
-    sendrequest("sendChatAction",chat_id=chat_id,action=chataction)
-    pass
+    return sendrequest("sendChatAction",chat_id=chat_id,action=chataction)
 
+
+# Hilfsmethoden
+
+def checkanswer(answer):
+    message = tgbot.mainmessage
+    if not message:
+        return
+    error_msg_403 = tgbot.iniconfig.get("error_messages","403")
+    error_msg_peer_invalid = tgbot.iniconfig.get("error_messages","PEER_INVALID")
+    user = message.from_User
+    error_code = answer.get("error_code")
+    if error_code == 403:
+        sendtext(message.chat_id(),"%s, %s \n"
+                                   "Fehlermeldung: ```%s```"%(user.first_name,error_msg_403,answer.get("description")))
+    elif error_code == 400 and "PEER_ID_INVALID" in answer.get("description"):
+        sendtext(message.chat_id(),"%s, %s \n"
+                                   "Fehlermeldung: ```%s```"%
+                 (user.first_name,error_msg_peer_invalid,answer.get("description")))

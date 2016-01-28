@@ -4,3 +4,5 @@ pytz >= 2015.4
 feedparser >= 5.2.1
 redis >= 2.10.3
 setuptools >= 18.3.1
+peewee >= 2.8.0
+pymysql >= 0.7.1
